@@ -38,13 +38,36 @@ h1 em{color:var(--sky);font-style:italic;letter-spacing:-0.01em}
 .tag.minor{color:rgba(246,250,255,.96);background:rgba(22,80,160,.50)}
 /* optional small-caps line under a tag title, like the caption line on the original map's label box */
 .tag small{display:block;margin-top:5px;text-align:center;font-family:"Inter";font-weight:600;font-size:13px;letter-spacing:.24em;color:var(--sky);text-shadow:none}
-#attr{right:22px;bottom:16px;text-align:right;font-family:"Inter";font-weight:600;color:rgba(235,242,255,.72);font-size:12.5px;line-height:1.35;letter-spacing:.005em;text-shadow:0 1px 6px rgba(0,8,35,.6)}
+/* candidate portrait (transparent cut-out) with a soft backlight so he separates from the map lines */
+#jimglow{border-radius:50%;pointer-events:none;background:radial-gradient(circle,rgba(143,214,242,.42) 0%,rgba(90,160,240,.18) 40%,rgba(20,70,150,0) 70%)}
+#jim{filter:drop-shadow(0 0 24px rgba(143,214,242,.28)) drop-shadow(0 10px 30px rgba(0,8,35,.45))}
+/* navy fade under the portrait, as in the rough; masked so it doesn't dim the map on the left */
+#botfade{left:0;right:0;bottom:0;height:300px;pointer-events:none;
+  background:linear-gradient(180deg,rgba(6,32,86,0) 0%,rgba(6,32,86,.55) 45%,rgba(5,27,74,.94) 100%);
+  -webkit-mask-image:linear-gradient(90deg,transparent 30%,#000 52%);mask-image:linear-gradient(90deg,transparent 30%,#000 52%)}
+#caption{text-align:center;transform:translateX(-50%);white-space:nowrap}
+#caption .name{font-family:"Head";font-size:50px;line-height:1;color:#fff;letter-spacing:-0.01em;transform:scaleX(.88);
+  text-shadow:-1px 0 0 rgba(255,70,90,.3),1px 0 0 rgba(70,150,255,.3),0 4px 18px rgba(0,8,35,.6)}
+#caption .role{margin-top:8px;font-family:"Inter";font-weight:500;font-size:22px;line-height:1.25;color:var(--sky);text-shadow:0 2px 10px rgba(0,8,35,.6)}
+/* education badge on the map: hand-drawn mortarboard in a glowing ring */
+#badge{transform:translate(-50%,-50%);border-radius:50%;display:grid;place-items:center;
+  background:radial-gradient(circle at 50% 40%,#1d5cb4,#0b3478 75%);
+  box-shadow:0 0 0 3px rgba(255,255,255,.92),0 0 22px 6px rgba(143,214,242,.55),0 8px 24px rgba(0,8,35,.5)}
+#badge svg{width:64%;height:64%;overflow:visible}
+#attr{left:22px;bottom:16px;text-align:left;font-family:"Inter";font-weight:600;color:rgba(235,242,255,.72);font-size:12.5px;line-height:1.35;letter-spacing:.005em;text-shadow:0 1px 6px rgba(0,8,35,.6)}
 </style></head>
 <body><div id="stage">
   <img id="map" class="abs" src="map.svg">
   <div id="tags"></div>
   <div id="topfade" class="abs"></div>
   <div id="leak" class="abs"></div>
+  <div id="badge" class="abs"><svg viewBox="0 0 64 64" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M32 13 58 24 32 35 6 24Z"/><path d="M16 29.5V41c0 3.6 7.2 6.5 16 6.5S48 44.6 48 41V29.5"/>
+    <path d="M32 24 52 26.5V41"/><path d="M49.6 41h4.8l1.2 8h-7.2Z" fill="#fff"/></svg></div>
+  <div id="jimglow" class="abs"></div>
+  <img id="jim" class="abs" src="jim.png" alt="Jim Overend">
+  <div id="botfade" class="abs"></div>
+  <div id="caption" class="abs"><div class="name"><span style="display:inline-block">Jim Overend</span></div><div class="role">Liberal Candidate for Greenvale</div></div>
   <div id="attr" class="abs">Map data © OpenStreetMap contributors<br>Electorate boundary © State of Victoria (Vicmap), CC BY 4.0</div>
   <div id="vign" class="abs"></div>
   <h1 id="h"></h1>
@@ -59,7 +82,11 @@ const P = Object.assign({
   head:'A selective school<br>for <em>the north.</em>',
   sub:'<b>A new select-entry high school</b> in the<br>Craigieburn, Roxburgh Park area.',
   // map tags: [text, centre x, centre y, font px, minor?, caption?]  (map.svg pixel space)
-  tags:[['Greenvale',400,706,40,1],['Roxburgh Park',641,612,40,1]],
+  tags:[['Greenvale',220,706,40,1],['Roxburgh Park',461,612,40,1]],
+  badge:[470,532,74],             // education badge: centre x, centre y, diameter (indicative: Craigieburn / Roxburgh Park area)
+  jim:[489,400,710],              // portrait: left, top, width (jim.png is 1254x1202)
+  glow:[840,600,520],             // backlight: centre x, centre y, diameter
+  caption:[840,968],              // name block: centre x, top
   leakY:425, leakRot:-5, leakO:0.11   // faint rainbow light leak
 }, JSON.parse(decodeURIComponent(new URLSearchParams(location.search).get('p')||'{}')));
 // solid navy (with the subtle vertical lift seen in the refs) down to P.fade, then an eased dissolve over P.fadeLen
@@ -72,6 +99,10 @@ document.getElementById('tags').innerHTML=P.tags.map(([t,x,y,fs,minor,cap])=>
   `<div class="tag${minor?' minor':''}" style="left:${x}px;top:${y}px;font-size:${fs}px"><span>${t}</span>${cap?`<small>${cap}</small>`:''}</div>`).join('');
 const h=document.getElementById('h'); h.innerHTML=P.head; h.style.top=P.hTop+'px'; h.style.fontSize=P.hSize+'px';
 const s=document.getElementById('s'); s.innerHTML=P.sub; s.style.top=P.sTop+'px'; s.style.fontSize=P.sSize+'px';
+{ const b=document.getElementById('badge'); b.style.left=P.badge[0]+'px'; b.style.top=P.badge[1]+'px'; b.style.width=b.style.height=P.badge[2]+'px';
+  const j=document.getElementById('jim'); j.style.left=P.jim[0]+'px'; j.style.top=P.jim[1]+'px'; j.style.width=P.jim[2]+'px';
+  const g=document.getElementById('jimglow'); g.style.left=(P.glow[0]-P.glow[2]/2)+'px'; g.style.top=(P.glow[1]-P.glow[2]/2)+'px'; g.style.width=g.style.height=P.glow[2]+'px';
+  const c=document.getElementById('caption'); c.style.left=P.caption[0]+'px'; c.style.top=P.caption[1]+'px'; }
 const L=document.getElementById('leak'); L.style.top=P.leakY+'px'; L.style.transform=`rotate(${P.leakRot}deg)`; L.style.setProperty('--leak-o',P.leakO||.16);
 </script>
 </body></html>
