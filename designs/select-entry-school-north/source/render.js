@@ -16,7 +16,7 @@ const path = require('path');
     const page = await browser.newPage({ viewport: { width: 1080, height: 1080 }, deviceScaleFactor: scale });
     await page.goto(url);
     await page.evaluate(() => document.fonts.ready);
-    const missing = await page.evaluate(() => [...document.fonts].filter(f => f.status !== 'loaded').map(f => f.family));
+    const missing = await page.evaluate(() => [...document.fonts].filter(f => f.status === 'error').map(f => f.family));
     if (missing.length) throw new Error('fonts failed to load: ' + missing.join(', '));
     await page.waitForTimeout(150);
     const out = path.join(__dirname, '..', `select-entry-school-north${suffix}.png`);

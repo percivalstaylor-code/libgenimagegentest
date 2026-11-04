@@ -43,7 +43,9 @@ Data (fetched from public GitHub mirrors; not committed — too large):
 | Electorate boundary (highlight) | `assets/data/districts.geojson` in [dean8000/vic-votes-2026](https://github.com/dean8000/vic-votes-2026) — Vicmap Admin electoral districts, feature `GREENVALE` (created 2021-11-19); cross-checked against an independent copy in hayleypring2/victoria-land-doesnt-vote | CC BY 4.0 — © State of Victoria (Vicmap) |
 | Suburb boundaries (label placement only, not drawn) | `suburb-10-vic.geojson` in [tonywr71/GeoJson-Data](https://github.com/tonywr71/GeoJson-Data) | CC BY 4.0 — © Geoscape Australia |
 
-The OpenStreetMap and Vicmap credits are drawn bottom-left on the tile and must stay.
+The data credits are **not** on the tile — they go in the post caption. Both licences require them:
+
+> Map data © OpenStreetMap contributors. Electorate boundary © State of Victoria (Vicmap), CC BY 4.0.
 
 To rebuild or re-frame the map (`--mpp` = metres per pixel, `--center lon,lat` lands at `--anchor x,y`):
 
@@ -57,12 +59,15 @@ python source/map/build_map.py --roads networkCleaned.xml.gz --suburbs suburb-10
 The street network is a routing graph, so streets are drawn node-to-node: curves are slightly
 faceted up close, which is invisible at tile size.
 
-## Portrait
+## Portrait and watermark
 
 `source/jim.png` — campaign-supplied transparent cut-out of the candidate (solid areas normalised
 to full opacity so the map doesn't show through).
 
+`source/logo.png` — campaign-supplied white "Jess Wilson's Liberal Victoria" wordmark, cropped to its
+artwork; placed bottom-left as a small watermark (`logoW`, default 165px).
+
 ## Fonts
 
 DM Serif Display (headline and labels, condensed to 88% to match the brand serif) and Inter
-(subhead, credits), both SIL Open Font License — licence texts included in `source/`.
+(subhead, caption), both SIL Open Font License — licence texts included in `source/`.
