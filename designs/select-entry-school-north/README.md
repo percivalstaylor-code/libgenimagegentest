@@ -65,8 +65,8 @@ faceted up close, which is invisible at tile size.
 ## Classroom version
 
 `source/slide-classroom.html` swaps the portrait for `source/classroom.webp` (campaign-supplied stock
-photo, 1024×682): cropped to the student writing, graded toward the navy palette (desaturate +
-blue colour/multiply layers) and masked so it dissolves into the map on the left and the navy at
+photo, 1024×682): cropped to the student writing, lightly graded (natural colour, with a faint
+blue colour/multiply layer) and masked so it dissolves into the map on the left and the navy at
 top and bottom. Its `photo` param sets crop and mask; `mapSrc:"map-stacked.svg"` switches to a
 smaller, lower map for a photo-band-on-top layout (tried, not used). The photo is close to native
 size at 1080, so the @2x render is soft in the photo area — a larger original would fix that.
