@@ -6,13 +6,14 @@
 @font-face{font-family:"Inter";font-weight:500;src:url(Inter-Medium.otf)}
 @font-face{font-family:"Inter";font-weight:600;src:url(Inter-SemiBold.otf)}
 :root{
-  --navy:#052964; --navy2:#0a3c7c; --sky:#8fd6f2; --ink:#ffffff;
+  --navy:#052964; --sky:#8fd6f2; --ink:#ffffff;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{width:1080px;height:1080px;overflow:hidden;background:var(--navy)}
 #stage{position:relative;width:1080px;height:1080px;overflow:hidden;background:var(--navy)}
 .abs{position:absolute}
-#map{position:absolute;transform-origin:0 0;filter:saturate(1.05) contrast(1.04)}
+/* vector map built by map/build_map.py from OpenStreetMap roads + Victorian locality boundaries */
+#map{left:0;top:0;width:1080px;height:1080px}
 /* top band: solid navy that dissolves into the map, like the photo fade in the refs */
 #topfade{inset:0}
 /* faint rainbow light leak, as seen across refs 1 & 2 */
@@ -28,19 +29,25 @@ h1 em{color:var(--sky);font-style:italic;letter-spacing:-0.01em}
 .sub{position:absolute;left:0;right:0;text-align:center;font-family:"Inter";font-weight:500;color:#fff;
   letter-spacing:-0.006em;line-height:1.32;text-shadow:0 2px 14px rgba(0,8,35,.55)}
 .sub b{font-weight:500;color:var(--sky)}
-#clip{transform-origin:50% 50%;filter:drop-shadow(0 18px 22px rgba(0,8,30,.55)) drop-shadow(0 3px 4px rgba(0,8,30,.35))}
-#attr{font-family:"Inter";font-weight:600;color:rgba(235,242,255,.78);font-size:15px;letter-spacing:.005em;text-shadow:0 1px 6px rgba(0,8,35,.6)}
+/* suburb tags: translucent blue plates with the condensed brand serif, as on the original map frame */
+.tag{position:absolute;transform:translate(-50%,-50%);padding:4px 16px 8px;border-radius:8px;white-space:nowrap;
+  font-family:"Head";color:#fff;letter-spacing:-0.01em;line-height:1;
+  background:rgba(22,92,178,.62);backdrop-filter:blur(3px);box-shadow:0 6px 24px rgba(0,10,40,.35);
+  text-shadow:0 2px 10px rgba(0,10,40,.45)}
+.tag span{display:inline-block;transform:scaleX(.88)}
+.tag.minor{color:rgba(225,236,255,.78);background:rgba(22,80,160,.42)}
+#attr{right:22px;bottom:16px;text-align:right;font-family:"Inter";font-weight:600;color:rgba(235,242,255,.72);font-size:12.5px;line-height:1.35;letter-spacing:.005em;text-shadow:0 1px 6px rgba(0,8,35,.6)}
 #dots{left:50%;transform:translateX(-50%);top:988px;height:44px;padding:0 13px;border-radius:22px;display:flex;gap:15px;align-items:center;
   background:rgba(14,22,52,.55);backdrop-filter:blur(6px)}
 #dots i{display:block;width:22px;height:22px;border-radius:50%;background:#7fb6d6;box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}
 #dots i.on{background:#fff;box-shadow:0 0 6px rgba(255,236,200,.75)}
 </style></head>
 <body><div id="stage">
-  <img id="map" src="map_clean.jpg">
+  <img id="map" class="abs" src="map.svg">
+  <div id="tags"></div>
   <div id="topfade" class="abs"></div>
   <div id="leak" class="abs"></div>
-  <img id="clip" class="abs" src="clipping.png">
-  <div id="attr" class="abs">Map data © OpenStreetMap contributors</div>
+  <div id="attr" class="abs">Map data © OpenStreetMap contributors<br>Boundaries © Geoscape Australia, CC BY 4.0</div>
   <div id="vign" class="abs"></div>
   <h1 id="h"></h1>
   <p class="sub" id="s"></p>
@@ -50,30 +57,25 @@ h1 em{color:var(--sky);font-style:italic;letter-spacing:-0.01em}
 <script>
 const P = Object.assign({
   // Defaults = the final published layout. Override any of these via ?p={"key":value} (see render.js).
-  s:1.08, mx:0, my:410,           // map scale; map crop x (source px); output y where source y=712 (bottom of old label box) lands
-  fade:412, fadeLen:58,           // solid navy down to `fade`, then dissolves over `fadeLen` px (hides the old map headline box)
+  fade:392, fadeLen:60,           // solid navy down to `fade`, then dissolves over `fadeLen` px
   hTop:64, hSize:118, sTop:304, sSize:33,
   head:'A selective school<br>for <em>the north.</em>',
   sub:'<b>A new select-entry high school</b> in the<br>Craigieburn, Roxburgh Park area.',
-  cw:470, cx:-38, cy:728, rot:3,  // news clipping width/left/top/rotation (deg)
-  ax:736, ay:1050,                // OpenStreetMap attribution position (null = hide — don't, the licence requires it)
-  leakY:440, leakRot:-7, leakO:0.22,  // faint rainbow light leak
+  // suburb tags: [text, centre x, centre y, font px, minor?]  (map.svg pixel space)
+  tags:[['Craigieburn',545,532,54,0],['Roxburgh Park',555,860,50,0],['Greenvale',250,905,42,1]],
+  leakY:425, leakRot:-5, leakO:0.11,  // faint rainbow light leak
   dot:0                           // active carousel dot (0-4)
 }, JSON.parse(decodeURIComponent(new URLSearchParams(location.search).get('p')||'{}')));
-const m=document.getElementById('map');
-m.style.width=(1080*P.s)+'px';
-m.style.left=(-P.mx*P.s)+'px';
-m.style.top=(P.my-712*P.s)+'px';
 // solid navy (with the subtle vertical lift seen in the refs) down to P.fade, then an eased dissolve over P.fadeLen
 {
   const F=P.fade, Lh=P.fadeLen||90, c='12,60,128', stops=[`#052862 0px`,`#073170 ${F*0.45}px`,`rgb(${c}) ${F}px`];
   for(let i=1;i<=8;i++){const t=i/8, a=1-(t*t*(3-2*t)); stops.push(`rgba(${c},${a.toFixed(3)}) ${(F+Lh*t).toFixed(1)}px`);}
   document.getElementById('topfade').style.background=`linear-gradient(180deg,${stops.join(',')})`;
 }
+document.getElementById('tags').innerHTML=P.tags.map(([t,x,y,fs,minor])=>
+  `<div class="tag${minor?' minor':''}" style="left:${x}px;top:${y}px;font-size:${fs}px"><span>${t}</span></div>`).join('');
 const h=document.getElementById('h'); h.innerHTML=P.head; h.style.top=P.hTop+'px'; h.style.fontSize=P.hSize+'px';
 const s=document.getElementById('s'); s.innerHTML=P.sub; s.style.top=P.sTop+'px'; s.style.fontSize=P.sSize+'px';
-const c=document.getElementById('clip'); c.style.width=P.cw+'px'; c.style.left=P.cx+'px'; c.style.top=P.cy+'px'; c.style.transform=`rotate(${P.rot}deg)`;
-const a=document.getElementById('attr'); if(P.ax===null){a.style.display='none'} else {a.style.left=P.ax+'px'; a.style.top=P.ay+'px'}
 const L=document.getElementById('leak'); L.style.top=P.leakY+'px'; L.style.transform=`rotate(${P.leakRot}deg)`; L.style.setProperty('--leak-o',P.leakO||.16);
 [...document.querySelectorAll('#dots i')].forEach((d,i)=>d.className=i===P.dot?'on':'');
 </script>
