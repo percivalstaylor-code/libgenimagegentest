@@ -1,8 +1,12 @@
-"""Build a stylised vector map of Craigieburn / Roxburgh Park for the 1080x1080 tile.
+"""Build a stylised vector map for the 1080x1080 tile, highlighting one area.
 
 Inputs (OSM-derived / open data):
   --roads    MATSim Melbourne network (networkCleaned.xml.gz, EPSG:28355, links tagged with OSM highway type)
-  --suburbs  Victorian locality boundaries GeoJSON (suburb-10-vic.geojson, EPSG:4326)
+  --suburbs  Victorian locality boundaries GeoJSON (suburb-10-vic.geojson, EPSG:4326) — used for label anchors,
+             and as the highlight when --focus-geojson is not given (Craigieburn + Roxburgh Park)
+  --focus-geojson / --focus-field / --focus-value
+             highlight a feature from another GeoJSON instead, e.g. a Vicmap electoral district:
+             --focus-geojson districts.geojson --focus-field district --focus-value GREENVALE
 Outputs:
   map.svg          full-tile (1080x1080) SVG, no text
   map_labels.json  pixel anchors for suburb labels (labels are set in HTML so they use the brand fonts)
@@ -19,6 +23,9 @@ ap.add_argument('--out', default='.')
 ap.add_argument('--mpp', type=float, default=14.0, help='metres per pixel')
 ap.add_argument('--center', default='144.9225,-37.6035', help='lon,lat placed at --anchor')
 ap.add_argument('--anchor', default='540,700', help='tile pixel for --center')
+ap.add_argument('--focus-geojson')
+ap.add_argument('--focus-field', default='district')
+ap.add_argument('--focus-value')
 a = ap.parse_args()
 
 TILE = 1080
@@ -90,9 +97,9 @@ gj = json.load(open(a.suburbs))
 sub = {}
 for feat in gj['features']:
     name = (feat['properties'].get('vic_loca_2') or '').upper()
-    if name in ('CRAIGIEBURN', 'ROXBURGH PARK', 'GREENVALE', 'MICKLEHAM', 'SOMERTON', 'KALKALLO', 'CAMPBELLFIELD', 'MEADOW HEIGHTS', 'COOLAROO', 'ATTWOOD', 'WOLLERT'):
+    if name in ('CRAIGIEBURN', 'ROXBURGH PARK', 'GREENVALE', 'MICKLEHAM', 'SOMERTON', 'KALKALLO', 'CAMPBELLFIELD', 'MEADOW HEIGHTS', 'COOLAROO', 'ATTWOOD', 'WOLLERT', 'WESTMEADOWS', 'DALLAS', 'BROADMEADOWS', 'TULLAMARINE', 'GLADSTONE PARK', 'BULLA'):
         g = shape(feat['geometry'])
-        sub[name] = shp_transform(lambda x, y, z=None: P(*to_mga.transform(x, y)), g)
+        sub[name] = shp_transform(lambda x, y, z=None: P(*to_mga.transform(x, y)), g).buffer(0)
 
 
 def ring_path(geom):
@@ -105,12 +112,19 @@ def ring_path(geom):
     return ''.join(d)
 
 
-focus = unary_union([sub['CRAIGIEBURN'], sub['ROXBURGH PARK']]).buffer(0)
-shared = sub['CRAIGIEBURN'].boundary.intersection(sub['ROXBURGH PARK'].boundary)
 shared_d = ''
-for ln in (getattr(shared, 'geoms', [shared])):
-    if ln.geom_type == 'LineString' and len(ln.coords) > 1:
-        shared_d += 'M' + 'L'.join('%.1f %.1f' % pt for pt in ln.coords)
+if a.focus_geojson:
+    hits = [f for f in json.load(open(a.focus_geojson))['features']
+            if str(f['properties'].get(a.focus_field, '')).upper() == a.focus_value.upper()]
+    if len(hits) != 1:
+        raise SystemExit(f'expected exactly one feature with {a.focus_field}={a.focus_value}, found {len(hits)}')
+    focus = shp_transform(lambda x, y, z=None: P(*to_mga.transform(x, y)), shape(hits[0]['geometry'])).buffer(0)
+else:
+    focus = unary_union([sub['CRAIGIEBURN'], sub['ROXBURGH PARK']]).buffer(0)
+    shared = sub['CRAIGIEBURN'].boundary.intersection(sub['ROXBURGH PARK'].boundary)
+    for ln in (getattr(shared, 'geoms', [shared])):
+        if ln.geom_type == 'LineString' and len(ln.coords) > 1:
+            shared_d += 'M' + 'L'.join('%.1f %.1f' % pt for pt in ln.coords)
 focus_d = ring_path(focus)
 
 # ---------- svg ----------
@@ -163,7 +177,12 @@ def label_anchor(g):
     return [round(p.x, 1), round(p.y, 1)]
 
 
-labels = {n.title(): {'rep': label_anchor(g), 'bounds': [round(v, 1) for v in g.bounds]} for n, g in sub.items()}
+labels = {'_focus': {'rep': label_anchor(focus), 'centroid': label_anchor(focus.centroid), 'bounds': [round(v, 1) for v in focus.bounds]}}
+for n, g in sub.items():
+    inner = g.intersection(focus)
+    labels[n.title()] = {'rep': label_anchor(g), 'bounds': [round(v, 1) for v in g.bounds],
+                         'in_focus_rep': label_anchor(inner) if inner.area > 1 else None,
+                         'in_focus_share': round(inner.area / g.area, 3)}
 json.dump(labels, open(f'{a.out}/map_labels.json', 'w'), indent=1)
 print('roads:', {k: len(v) for k, v in roads.items()}, 'svg KB', len(svg) // 1024)
 for n, v in labels.items():

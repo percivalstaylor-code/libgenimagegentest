@@ -17,30 +17,37 @@ cd source && node render.js '{"dot":2}'
 ```
 
 Any key from the defaults block can be overridden the same way (e.g. `head`, `sub`, or `tags` —
-`[text, x, y, fontPx, minor]` per suburb label). Requires `playwright` and a Chromium it can launch.
+`[text, x, y, fontPx, minor, caption]` per map label). Requires `playwright` and a Chromium it can launch.
 
 ## The map
 
 `source/map.svg` is a vector map drawn from open data by `source/map/build_map.py` (no raster
-basemap, no Hume Fwy marker). It draws every street in frame faintly by road class, then
-Craigieburn + Roxburgh Park as one glowing area with brighter streets inside and a dashed line
-on their shared boundary. Labels are set in HTML so they use the brand fonts.
+basemap, no Hume Fwy marker). It draws every street in frame faintly by road class, then the
+**Greenvale state electorate (Greenvale District)** as one glowing area with brighter streets
+inside. Labels ("Greenvale / ELECTORATE", "Roxburgh Park") are set in HTML so they use the
+brand fonts.
+
+The district covers Greenvale, Roxburgh Park, Meadow Heights, Attwood and Somerton, about half
+of Westmeadows, and the southern ~14% of Craigieburn (2021 VEC redivision boundaries, in force
+for the 2022 and 2026 elections).
 
 Data (fetched from public GitHub mirrors; not committed — too large):
 
 | Layer | Source | Licence |
 |---|---|---|
 | Streets (OSM highway types) | MATSim Melbourne network, `melbourne-baseline/networkCleaned.xml.gz` in [rhys-newbury/matsim_melbourne](https://github.com/rhys-newbury/matsim_melbourne), generated from OpenStreetMap | ODbL — © OpenStreetMap contributors |
-| Suburb boundaries | `suburb-10-vic.geojson` in [tonywr71/GeoJson-Data](https://github.com/tonywr71/GeoJson-Data) (Victorian locality boundaries, Geoscape Administrative Boundaries) | CC BY 4.0 — © Geoscape Australia |
+| Electorate boundary (highlight) | `assets/data/districts.geojson` in [dean8000/vic-votes-2026](https://github.com/dean8000/vic-votes-2026) — Vicmap Admin electoral districts, feature `GREENVALE` (created 2021-11-19); cross-checked against an independent copy in hayleypring2/victoria-land-doesnt-vote | CC BY 4.0 — © State of Victoria (Vicmap) |
+| Suburb boundaries (label placement only, not drawn) | `suburb-10-vic.geojson` in [tonywr71/GeoJson-Data](https://github.com/tonywr71/GeoJson-Data) | CC BY 4.0 — © Geoscape Australia |
 
-Both credits are drawn bottom-right on the tile and must stay.
+The OpenStreetMap and Vicmap credits are drawn bottom-right on the tile and must stay.
 
 To rebuild or re-frame the map (`--mpp` = metres per pixel, `--center lon,lat` lands at `--anchor x,y`):
 
 ```bash
 pip install pyproj shapely
 python source/map/build_map.py --roads networkCleaned.xml.gz --suburbs suburb-10-vic.geojson \
-  --out source --mpp 16.5 --anchor 535,703
+  --focus-geojson districts.geojson --focus-field district --focus-value GREENVALE \
+  --out source --mpp 19 --center 144.9043,-37.6404 --anchor 540,708
 ```
 
 The street network is a routing graph, so streets are drawn node-to-node: curves are slightly
