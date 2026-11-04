@@ -1,0 +1,97 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face{font-family:"Head";src:url(DMSerifDisplay-Regular.ttf)}
+@font-face{font-family:"Head";font-style:italic;src:url(DMSerifDisplay-Italic.ttf)}
+@font-face{font-family:"Inter";font-weight:500;src:url(Inter-Medium.otf)}
+@font-face{font-family:"Inter";font-weight:600;src:url(Inter-SemiBold.otf)}
+:root{
+  --navy:#052964; --sky:#8fd6f2; --ink:#ffffff;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1080px;overflow:hidden;background:var(--navy)}
+#stage{position:relative;width:1080px;height:1080px;overflow:hidden;background:var(--navy)}
+.abs{position:absolute}
+/* vector map built by map/build_map.py from OpenStreetMap roads + Victorian locality boundaries */
+#map{left:0;top:0;width:1080px;height:1080px}
+/* top band: solid navy that dissolves into the map, like the photo fade in the refs */
+#topfade{inset:0}
+/* faint rainbow light leak, as seen across refs 1 & 2 */
+#leak{left:-120px;width:1320px;height:46px;filter:blur(20px);opacity:var(--leak-o,.16);mix-blend-mode:screen;
+  background:linear-gradient(90deg,transparent 0%,#ff4d4d 18%,#ffd34d 32%,#5dff8a 46%,#4dd2ff 60%,#9b6bff 74%,transparent 92%);}
+#vign{inset:0;pointer-events:none;background:radial-gradient(ellipse 85% 80% at 50% 45%,transparent 60%,rgba(2,14,40,.45) 100%)}
+#grain{inset:0;pointer-events:none;opacity:.10;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.95' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 1.6 -.3'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");}
+h1{position:absolute;left:0;right:0;text-align:center;font-family:"Head";font-weight:400;color:var(--ink);
+  letter-spacing:-0.02em;line-height:.93;transform:scaleX(.88);transform-origin:50% 0;
+  text-shadow:-1.3px 0 0 rgba(255,70,90,.38),1.3px 0 0 rgba(70,150,255,.38),0 2px 3px rgba(0,8,35,.35),0 8px 30px rgba(0,8,35,.45);}
+h1 em{color:var(--sky);font-style:italic;letter-spacing:-0.01em}
+.sub{position:absolute;left:0;right:0;text-align:center;font-family:"Inter";font-weight:500;color:#fff;
+  letter-spacing:-0.006em;line-height:1.32;text-shadow:0 2px 14px rgba(0,8,35,.55)}
+.sub b{font-weight:500;color:var(--sky)}
+/* suburb tags: translucent blue plates with the condensed brand serif, as on the original map frame */
+.tag{position:absolute;transform:translate(-50%,-50%);padding:4px 16px 8px;border-radius:8px;white-space:nowrap;
+  font-family:"Head";color:#fff;letter-spacing:-0.01em;line-height:1;
+  background:rgba(22,92,178,.62);backdrop-filter:blur(3px);box-shadow:0 6px 24px rgba(0,10,40,.35);
+  text-shadow:0 2px 10px rgba(0,10,40,.45)}
+.tag span{display:inline-block;transform:scaleX(.88)}
+.tag.minor{color:rgba(246,250,255,.96);background:rgba(22,80,160,.50)}
+/* optional small-caps line under a tag title, like the caption line on the original map's label box */
+.tag small{display:block;margin-top:5px;text-align:center;font-family:"Inter";font-weight:600;font-size:13px;letter-spacing:.24em;color:var(--sky);text-shadow:none}
+/* classroom photo: cropped in a masked box, graded toward the navy palette so it sits with the map */
+#photo{overflow:hidden;isolation:isolate;pointer-events:none}
+#photo img{position:absolute;filter:saturate(.7) contrast(1.1) brightness(.9)}
+#photo .tint{position:absolute;inset:0;mix-blend-mode:color;background:rgba(30,80,170,.38)}
+#photo .shade{position:absolute;inset:0;mix-blend-mode:multiply;background:linear-gradient(180deg,rgba(60,110,200,.30),rgba(20,60,150,.45))}
+#logo{left:28px;bottom:24px;opacity:.92;filter:drop-shadow(0 2px 8px rgba(0,8,35,.5))}
+</style></head>
+<body><div id="stage">
+  <img id="map" class="abs" src="map.svg">
+  <div id="photo" class="abs"><img src="classroom.webp" alt="Students writing in a classroom"><div class="tint"></div><div class="shade"></div></div>
+  <div id="tags"></div>
+  <div id="topfade" class="abs"></div>
+  <div id="leak" class="abs"></div>
+  <img id="logo" class="abs" src="logo.png" alt="Jess Wilson's Liberal Victoria">
+  <div id="vign" class="abs"></div>
+  <h1 id="h"></h1>
+  <p class="sub" id="s"></p>
+  <div id="grain" class="abs"></div>
+</div>
+<script>
+const P = Object.assign({
+  // Defaults = the final published layout. Override any of these via ?p={"key":value} (see render.js).
+  fade:392, fadeLen:60,           // solid navy down to `fade`, then dissolves over `fadeLen` px
+  hTop:64, hSize:118, sTop:304, sSize:33,
+  head:'A selective school<br>for <em>the north.</em>',
+  sub:'<b>A new select-entry high school</b> in the<br>Craigieburn, Roxburgh Park area.',
+  // map tags: [text, centre x, centre y, font px, minor?, caption?]  (map.svg pixel space)
+  tags:[['Greenvale',220,706,0,1],['Roxburgh Park',461,612,0,1]],   // font px 0 = use tagSize
+  mapSrc:'map.svg',               // map.svg (electorate left, as in the Jim version) or map-stacked.svg (smaller, lower)
+  tagSize:40,
+  // photo: box [left, top, width, height]; img [left, top, width] inside the box (classroom.webp is 1024x682);
+  // mask: CSS mask layers (intersected) that dissolve the photo into the map
+  photo:{box:[500,330,580,750], img:[-300,-30,1120],
+         mask:['linear-gradient(90deg,transparent 0%,#000 34%)','linear-gradient(180deg,transparent 8%,#000 26%,#000 72%,transparent 100%)']},
+  logoW:165,                      // watermark width (px)
+  leakY:425, leakRot:-5, leakO:0.11   // faint rainbow light leak
+}, JSON.parse(new URLSearchParams(location.search).get('p')||'{}'));
+// solid navy (with the subtle vertical lift seen in the refs) down to P.fade, then an eased dissolve over P.fadeLen
+{
+  const F=P.fade, Lh=P.fadeLen||90, c='12,60,128', stops=[`#052862 0px`,`#073170 ${F*0.45}px`,`rgb(${c}) ${F}px`];
+  for(let i=1;i<=8;i++){const t=i/8, a=1-(t*t*(3-2*t)); stops.push(`rgba(${c},${a.toFixed(3)}) ${(F+Lh*t).toFixed(1)}px`);}
+  document.getElementById('topfade').style.background=`linear-gradient(180deg,${stops.join(',')})`;
+}
+document.getElementById('tags').innerHTML=P.tags.map(([t,x,y,fs,minor,cap])=>
+  `<div class="tag${minor?' minor':''}" style="left:${x}px;top:${y}px;font-size:${fs||P.tagSize}px"><span>${t}</span>${cap?`<small>${cap}</small>`:''}</div>`).join('');
+const h=document.getElementById('h'); h.innerHTML=P.head; h.style.top=P.hTop+'px'; h.style.fontSize=P.hSize+'px';
+const s=document.getElementById('s'); s.innerHTML=P.sub; s.style.top=P.sTop+'px'; s.style.fontSize=P.sSize+'px';
+{ document.getElementById('logo').style.width=P.logoW+'px';
+  document.getElementById('map').src=P.mapSrc;
+  const ph=document.getElementById('photo'), [bx,by,bw,bh]=P.photo.box, [ix,iy,iw]=P.photo.img, im=ph.querySelector('img');
+  Object.assign(ph.style,{left:bx+'px',top:by+'px',width:bw+'px',height:bh+'px'});
+  Object.assign(im.style,{left:ix+'px',top:iy+'px',width:iw+'px'});
+  const mk=P.photo.mask.join(','), comp=P.photo.mask.map(()=> 'intersect').join(',');
+  ph.style.webkitMaskImage=mk; ph.style.maskImage=mk; ph.style.maskComposite=comp; ph.style.webkitMaskComposite=P.photo.mask.map(()=>'source-in').join(','); }
+const L=document.getElementById('leak'); L.style.top=P.leakY+'px'; L.style.transform=`rotate(${P.leakRot}deg)`; L.style.setProperty('--leak-o',P.leakO||.16);
+</script>
+</body></html>

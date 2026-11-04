@@ -80,7 +80,7 @@ const P = Object.assign({
   caption:[840,968],              // name block: centre x, top
   logoW:165,                      // watermark width (px)
   leakY:425, leakRot:-5, leakO:0.11   // faint rainbow light leak
-}, JSON.parse(decodeURIComponent(new URLSearchParams(location.search).get('p')||'{}')));
+}, JSON.parse(new URLSearchParams(location.search).get('p')||'{}'));
 // solid navy (with the subtle vertical lift seen in the refs) down to P.fade, then an eased dissolve over P.fadeLen
 {
   const F=P.fade, Lh=P.fadeLen||90, c='12,60,128', stops=[`#052862 0px`,`#073170 ${F*0.45}px`,`rgb(${c}) ${F}px`];

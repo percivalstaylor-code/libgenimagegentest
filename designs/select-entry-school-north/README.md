@@ -10,6 +10,8 @@ portrait on the right with a soft backlight, a navy fade, and the caption
 
 - `select-entry-school-north.png` — 1080×1080, for upload
 - `select-entry-school-north@2x.png` — 2160×2160, crisper type for print/zoom
+- `select-entry-school-north-classroom.png` / `@2x` — alternative version: Jim replaced by a classroom
+  photo (`source/slide-classroom.html`)
 
 ## Re-rendering / editing the tile
 
@@ -18,6 +20,7 @@ Everything is plain HTML/CSS in `source/slide.html`; the defaults at the bottom 
 
 ```bash
 cd source && node render.js '{"sub":"A new select-entry high school<br>for Roxburgh Park."}'
+cd source && node render.js '{}' slide-classroom.html select-entry-school-north-classroom   # classroom version
 ```
 
 Any key from the defaults block can be overridden the same way (e.g. `head`, `sub`, `tags` —
@@ -58,6 +61,16 @@ python source/map/build_map.py --roads networkCleaned.xml.gz --suburbs suburb-10
 
 The street network is a routing graph, so streets are drawn node-to-node: curves are slightly
 faceted up close, which is invisible at tile size.
+
+## Classroom version
+
+`source/slide-classroom.html` swaps the portrait for `source/classroom.webp` (campaign-supplied stock
+photo, 1024×682): cropped to the student writing, graded toward the navy palette (desaturate +
+blue colour/multiply layers) and masked so it dissolves into the map on the left and the navy at
+top and bottom. Its `photo` param sets crop and mask; `mapSrc:"map-stacked.svg"` switches to a
+smaller, lower map for a photo-band-on-top layout (tried, not used). The photo is close to native
+size at 1080, so the @2x render is soft in the photo area — a larger original would fix that.
+Confirm the photo's licence covers political/advertising use with identifiable minors.
 
 ## Portrait and watermark
 

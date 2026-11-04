@@ -1,7 +1,9 @@
-// Renders slide.html to PNG with headless Chromium (Playwright).
+// Renders a slide page to PNG with headless Chromium (Playwright).
 //
-//   node render.js                      -> ../select-entry-school-north.png (1080x1080) and @2x (2160x2160)
-//   node render.js '{"dot":1}'          -> same, with any layout/copy params overridden (see defaults in slide.html)
+//   node render.js                                   -> slide.html -> ../select-entry-school-north.png (+ @2x)
+//   node render.js '{}' slide-classroom.html select-entry-school-north-classroom
+//                                                    -> the classroom-photo version
+//   any page's defaults can be overridden with the JSON params argument (see the defaults block in each page)
 //
 // Needs `playwright` resolvable from Node (npm i playwright) and a Chromium it can launch.
 const { chromium } = require('playwright');
@@ -9,8 +11,10 @@ const path = require('path');
 
 (async () => {
   const params = process.argv[2] || '{}';
+  const pageFile = process.argv[3] || 'slide.html';
+  const outBase = process.argv[4] || 'select-entry-school-north';
   JSON.parse(params); // fail fast on bad JSON
-  const url = 'file://' + path.join(__dirname, 'slide.html') + '?p=' + encodeURIComponent(params);
+  const url = 'file://' + path.join(__dirname, pageFile) + '?p=' + encodeURIComponent(params);
   const browser = await chromium.launch();
   for (const [scale, suffix] of [[1, ''], [2, '@2x']]) {
     const page = await browser.newPage({ viewport: { width: 1080, height: 1080 }, deviceScaleFactor: scale });
@@ -19,7 +23,7 @@ const path = require('path');
     const missing = await page.evaluate(() => [...document.fonts].filter(f => f.status === 'error').map(f => f.family));
     if (missing.length) throw new Error('fonts failed to load: ' + missing.join(', '));
     await page.waitForTimeout(150);
-    const out = path.join(__dirname, '..', `select-entry-school-north${suffix}.png`);
+    const out = path.join(__dirname, '..', `${outBase}${suffix}.png`);
     await page.screenshot({ path: out });
     console.log('wrote', out);
     await page.close();
