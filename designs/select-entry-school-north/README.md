@@ -4,8 +4,7 @@
 (navy headline band dissolving into a full-bleed image, condensed high-contrast serif
 headline with a light-blue italic tail, sans subhead). No carousel dots, so it works as a standalone post.
 
-Layout: headline and subhead on top; Greenvale electorate map on the left with an education badge
-(hand-drawn mortarboard, inline SVG) marking the Craigieburn / Roxburgh Park area; candidate
+Layout: headline and subhead on top; Greenvale electorate map on the left; candidate
 portrait on the right with a soft backlight, a navy fade, and the caption
 "Jim Overend / Liberal Candidate for Greenvale".
 
@@ -22,7 +21,7 @@ cd source && node render.js '{"sub":"A new select-entry high school<br>for Roxbu
 ```
 
 Any key from the defaults block can be overridden the same way (e.g. `head`, `sub`, `tags` —
-`[text, x, y, fontPx, minor, caption]` per map label — `badge`, `jim`, `glow`, `caption`). Requires `playwright` and a Chromium it can launch.
+`[text, x, y, fontPx, minor, caption]` per map label — `jim`, `glow`, `caption`). Requires `playwright` and a Chromium it can launch.
 
 ## The map
 
@@ -58,13 +57,10 @@ python source/map/build_map.py --roads networkCleaned.xml.gz --suburbs suburb-10
 The street network is a routing graph, so streets are drawn node-to-node: curves are slightly
 faceted up close, which is invisible at tile size.
 
-## Portrait and icon
+## Portrait
 
-- `source/jim.png` — campaign-supplied transparent cut-out of the candidate (solid areas normalised
-  to full opacity so the map doesn't show through).
-- The mortarboard icon is drawn in-house as SVG in `slide.html` (no stock asset), so it carries no
-  third-party licence. Its map position is indicative of the Craigieburn / Roxburgh Park area,
-  not a site.
+`source/jim.png` — campaign-supplied transparent cut-out of the candidate (solid areas normalised
+to full opacity so the map doesn't show through).
 
 ## Fonts
 
