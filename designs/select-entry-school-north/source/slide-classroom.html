@@ -51,6 +51,7 @@ h1 em{color:var(--sky);font-style:italic;letter-spacing:-0.01em}
   <img id="map" class="abs" src="map.svg">
   <div id="photobed" class="abs"></div>
   <div id="photo" class="abs"><img src="classroom.webp" alt="Students writing in a classroom"><div class="tint"></div><div class="shade"></div></div>
+  <img id="outline" class="abs" src="map-outline.svg" style="left:0;top:0;width:1080px;height:1080px;pointer-events:none">
   <div id="tags"></div>
   <div id="topfade" class="abs"></div>
   <div id="leak" class="abs"></div>
@@ -74,7 +75,7 @@ const P = Object.assign({
   // photo: box [left, top, width, height]; img [left, top, width] inside the box (classroom.webp is 1024x682);
   // mask: CSS mask layers (intersected) that dissolve the photo into the map
   // box starts right of the electorate (east tip at x~687) so the map stays uncovered
-  photo:{box:[690,330,390,750], img:[-460,-30,1120],
+  photo:{box:[580,330,500,750], img:[-380,-30,1120],
          mask:['linear-gradient(90deg,transparent 0%,rgba(0,0,0,.45) 16%,#000 34%)','linear-gradient(180deg,transparent 10%,rgba(0,0,0,.4) 22%,#000 36%,#000 72%,transparent 100%)'],
          bedMask:['linear-gradient(90deg,transparent 0%,#000 22%)','linear-gradient(180deg,transparent 6%,#000 24%,#000 78%,transparent 100%)']},
   logoW:165,                      // watermark width (px)
@@ -92,6 +93,7 @@ const h=document.getElementById('h'); h.innerHTML=P.head; h.style.top=P.hTop+'px
 const s=document.getElementById('s'); s.innerHTML=P.sub; s.style.top=P.sTop+'px'; s.style.fontSize=P.sSize+'px';
 { document.getElementById('logo').style.width=P.logoW+'px';
   document.getElementById('map').src=P.mapSrc;
+  document.getElementById('outline').src=P.mapSrc.replace('.svg','-outline.svg');
   const ph=document.getElementById('photo'), [bx,by,bw,bh]=P.photo.box, [ix,iy,iw]=P.photo.img, im=ph.querySelector('img');
   Object.assign(ph.style,{left:bx+'px',top:by+'px',width:bw+'px',height:bh+'px'});
   Object.assign(im.style,{left:ix+'px',top:iy+'px',width:iw+'px'});

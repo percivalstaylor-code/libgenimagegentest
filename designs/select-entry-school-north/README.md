@@ -65,8 +65,9 @@ faceted up close, which is invisible at tile size.
 ## Classroom version
 
 `source/slide-classroom.html` swaps the portrait for `source/classroom.webp` (campaign-supplied stock
-photo, 1024×682): natural colour (no grade), cropped to the student writing and placed right of the
-electorate so the map stays uncovered. Its edges are masked to dissolve into a soft navy bed
+photo, 1024×682): natural colour (no grade), cropped to the student writing and overlapping only the
+electorate's eastern tip; the boundary line is re-drawn above the photo from `map-outline.svg`
+(the outline paths of `map.svg`) so the electorate shape stays complete. Its edges are masked to dissolve into a soft navy bed
 (`#photobed`), so the fade reads as navy rather than road lines. Its `photo` param sets crop and mask; `mapSrc:"map-stacked.svg"` switches to a
 smaller, lower map for a photo-band-on-top layout (tried, not used). The photo is close to native
 size at 1080, so the @2x render is soft in the photo area — a larger original would fix that.
