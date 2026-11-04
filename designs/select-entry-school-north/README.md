@@ -10,8 +10,8 @@ portrait on the right with a soft backlight, a navy fade, and the caption
 
 - `select-entry-school-north.png` — 1080×1080, for upload
 - `select-entry-school-north@2x.png` — 2160×2160, crisper type for print/zoom
-- `select-entry-school-north-classroom.png` / `@2x` — alternative version: Jim replaced by a classroom
-  photo (`source/slide-classroom.html`)
+- `select-entry-school-north-classroom.png` / `@2x` / `@4x` (4320×4320) — alternative version: Jim
+  replaced by a classroom photo (`source/slide-classroom.html`)
 
 ## Re-rendering / editing the tile
 
@@ -20,7 +20,7 @@ Everything is plain HTML/CSS in `source/slide.html`; the defaults at the bottom 
 
 ```bash
 cd source && node render.js '{"sub":"A new select-entry high school<br>for Roxburgh Park."}'
-cd source && node render.js '{}' slide-classroom.html select-entry-school-north-classroom   # classroom version
+cd source && node render.js '{}' slide-classroom.html select-entry-school-north-classroom 1,2,4   # classroom version (+@4x)
 ```
 
 Any key from the defaults block can be overridden the same way (e.g. `head`, `sub`, `tags` —
@@ -69,8 +69,11 @@ photo, 1024×682): natural colour (no grade), cropped to the student writing and
 electorate's eastern tip; the boundary line is re-drawn above the photo from `map-outline.svg`
 (the outline paths of `map.svg`) so the electorate shape stays complete. Its edges are masked to dissolve into a soft navy bed
 (`#photobed`), so the fade reads as navy rather than road lines. Its `photo` param sets crop and mask; `mapSrc:"map-stacked.svg"` switches to a
-smaller, lower map for a photo-band-on-top layout (tried, not used). The photo is close to native
-size at 1080, so the @2x render is soft in the photo area — a larger original would fix that.
+smaller, lower map for a photo-band-on-top layout (tried, not used). The page uses `classroom-x4.webp`,
+a 4× (4096×2728) upscale of the original made with OpenCV's EDSR super-resolution model (a
+non-generative model, so facial features are not invented or altered), which keeps the photo crisp
+in the @2x and @4x renders. Everything else on the tile is vector or high-res, so it is sharp at any
+scale. A larger original photo would still beat the upscale.
 Confirm the photo's licence covers political/advertising use with identifiable minors.
 
 ## Portrait and watermark
