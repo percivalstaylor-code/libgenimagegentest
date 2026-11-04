@@ -35,14 +35,10 @@ h1 em{color:var(--sky);font-style:italic;letter-spacing:-0.01em}
   background:rgba(22,92,178,.62);backdrop-filter:blur(3px);box-shadow:0 6px 24px rgba(0,10,40,.35);
   text-shadow:0 2px 10px rgba(0,10,40,.45)}
 .tag span{display:inline-block;transform:scaleX(.88)}
-.tag.minor{color:rgba(225,236,255,.82);background:rgba(22,80,160,.46)}
+.tag.minor{color:rgba(246,250,255,.96);background:rgba(22,80,160,.50)}
 /* optional small-caps line under a tag title, like the caption line on the original map's label box */
 .tag small{display:block;margin-top:5px;text-align:center;font-family:"Inter";font-weight:600;font-size:13px;letter-spacing:.24em;color:var(--sky);text-shadow:none}
 #attr{right:22px;bottom:16px;text-align:right;font-family:"Inter";font-weight:600;color:rgba(235,242,255,.72);font-size:12.5px;line-height:1.35;letter-spacing:.005em;text-shadow:0 1px 6px rgba(0,8,35,.6)}
-#dots{left:50%;transform:translateX(-50%);top:988px;height:44px;padding:0 13px;border-radius:22px;display:flex;gap:15px;align-items:center;
-  background:rgba(14,22,52,.55);backdrop-filter:blur(6px)}
-#dots i{display:block;width:22px;height:22px;border-radius:50%;background:#7fb6d6;box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}
-#dots i.on{background:#fff;box-shadow:0 0 6px rgba(255,236,200,.75)}
 </style></head>
 <body><div id="stage">
   <img id="map" class="abs" src="map.svg">
@@ -53,7 +49,6 @@ h1 em{color:var(--sky);font-style:italic;letter-spacing:-0.01em}
   <div id="vign" class="abs"></div>
   <h1 id="h"></h1>
   <p class="sub" id="s"></p>
-  <div id="dots" class="abs"><i class="on"></i><i></i><i></i><i></i><i></i></div>
   <div id="grain" class="abs"></div>
 </div>
 <script>
@@ -64,9 +59,8 @@ const P = Object.assign({
   head:'A selective school<br>for <em>the north.</em>',
   sub:'<b>A new select-entry high school</b> in the<br>Craigieburn, Roxburgh Park area.',
   // map tags: [text, centre x, centre y, font px, minor?, caption?]  (map.svg pixel space)
-  tags:[['Greenvale',428,716,60,0,'ELECTORATE'],['Roxburgh Park',641,612,38,1]],
-  leakY:425, leakRot:-5, leakO:0.11,  // faint rainbow light leak
-  dot:0                           // active carousel dot (0-4)
+  tags:[['Greenvale',400,706,40,1],['Roxburgh Park',641,612,40,1]],
+  leakY:425, leakRot:-5, leakO:0.11   // faint rainbow light leak
 }, JSON.parse(decodeURIComponent(new URLSearchParams(location.search).get('p')||'{}')));
 // solid navy (with the subtle vertical lift seen in the refs) down to P.fade, then an eased dissolve over P.fadeLen
 {
@@ -79,6 +73,5 @@ document.getElementById('tags').innerHTML=P.tags.map(([t,x,y,fs,minor,cap])=>
 const h=document.getElementById('h'); h.innerHTML=P.head; h.style.top=P.hTop+'px'; h.style.fontSize=P.hSize+'px';
 const s=document.getElementById('s'); s.innerHTML=P.sub; s.style.top=P.sTop+'px'; s.style.fontSize=P.sSize+'px';
 const L=document.getElementById('leak'); L.style.top=P.leakY+'px'; L.style.transform=`rotate(${P.leakRot}deg)`; L.style.setProperty('--leak-o',P.leakO||.16);
-[...document.querySelectorAll('#dots i')].forEach((d,i)=>d.className=i===P.dot?'on':'');
 </script>
 </body></html>

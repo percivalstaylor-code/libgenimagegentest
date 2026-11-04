@@ -2,7 +2,7 @@
 
 1080×1080 social tile in the style of the existing Liberal Victoria policy carousel
 (navy headline band dissolving into a full-bleed image, condensed high-contrast serif
-headline with a light-blue italic tail, sans subhead, pagination dots).
+headline with a light-blue italic tail, sans subhead). No carousel dots, so it works as a standalone post.
 
 - `select-entry-school-north.png` — 1080×1080, for upload
 - `select-entry-school-north@2x.png` — 2160×2160, crisper type for print/zoom
@@ -10,10 +10,10 @@ headline with a light-blue italic tail, sans subhead, pagination dots).
 ## Re-rendering / editing the tile
 
 Everything is plain HTML/CSS in `source/slide.html`; the defaults at the bottom of that file
-*are* the published layout. To change copy, the active carousel dot, or label placement:
+*are* the published layout. To change copy or label placement:
 
 ```bash
-cd source && node render.js '{"dot":2}'
+cd source && node render.js '{"sub":"A new select-entry high school<br>for Roxburgh Park."}'
 ```
 
 Any key from the defaults block can be overridden the same way (e.g. `head`, `sub`, or `tags` —
@@ -24,7 +24,7 @@ Any key from the defaults block can be overridden the same way (e.g. `head`, `su
 `source/map.svg` is a vector map drawn from open data by `source/map/build_map.py` (no raster
 basemap, no Hume Fwy marker). It draws every street in frame faintly by road class, then the
 **Greenvale state electorate (Greenvale District)** as one glowing area with brighter streets
-inside. Labels ("Greenvale / ELECTORATE", "Roxburgh Park") are set in HTML so they use the
+inside. Labels ("Greenvale", "Roxburgh Park" — matching tags) are set in HTML so they use the
 brand fonts.
 
 The district covers Greenvale, Roxburgh Park, Meadow Heights, Attwood and Somerton, about half
