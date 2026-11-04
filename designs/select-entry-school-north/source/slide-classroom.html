@@ -40,13 +40,16 @@ h1 em{color:var(--sky);font-style:italic;letter-spacing:-0.01em}
 .tag small{display:block;margin-top:5px;text-align:center;font-family:"Inter";font-weight:600;font-size:13px;letter-spacing:.24em;color:var(--sky);text-shadow:none}
 /* classroom photo: cropped in a masked box, graded toward the navy palette so it sits with the map */
 #photo{overflow:hidden;isolation:isolate;pointer-events:none}
-#photo img{position:absolute;filter:saturate(.92) contrast(1.06) brightness(.96)}
-#photo .tint{position:absolute;inset:0;mix-blend-mode:color;background:rgba(30,80,170,.10)}
-#photo .shade{position:absolute;inset:0;mix-blend-mode:multiply;background:linear-gradient(180deg,rgba(90,130,200,.10),rgba(30,70,150,.22))}
+/* soft navy bed under the photo so its fading edges dissolve into calm navy, not into bright road lines */
+#photobed{pointer-events:none;background:rgba(9,42,104,.82)}
+#photo img{position:absolute;filter:contrast(1.03)}
+#photo .tint{position:absolute;inset:0;mix-blend-mode:color;background:transparent}
+#photo .shade{position:absolute;inset:0;mix-blend-mode:multiply;background:transparent}
 #logo{left:28px;bottom:24px;opacity:.92;filter:drop-shadow(0 2px 8px rgba(0,8,35,.5))}
 </style></head>
 <body><div id="stage">
   <img id="map" class="abs" src="map.svg">
+  <div id="photobed" class="abs"></div>
   <div id="photo" class="abs"><img src="classroom.webp" alt="Students writing in a classroom"><div class="tint"></div><div class="shade"></div></div>
   <div id="tags"></div>
   <div id="topfade" class="abs"></div>
@@ -70,8 +73,10 @@ const P = Object.assign({
   tagSize:40,
   // photo: box [left, top, width, height]; img [left, top, width] inside the box (classroom.webp is 1024x682);
   // mask: CSS mask layers (intersected) that dissolve the photo into the map
-  photo:{box:[500,330,580,750], img:[-300,-30,1120],
-         mask:['linear-gradient(90deg,transparent 0%,#000 34%)','linear-gradient(180deg,transparent 8%,#000 26%,#000 72%,transparent 100%)']},
+  // box starts right of the electorate (east tip at x~687) so the map stays uncovered
+  photo:{box:[690,330,390,750], img:[-460,-30,1120],
+         mask:['linear-gradient(90deg,transparent 0%,rgba(0,0,0,.45) 16%,#000 34%)','linear-gradient(180deg,transparent 10%,rgba(0,0,0,.4) 22%,#000 36%,#000 72%,transparent 100%)'],
+         bedMask:['linear-gradient(90deg,transparent 0%,#000 22%)','linear-gradient(180deg,transparent 6%,#000 24%,#000 78%,transparent 100%)']},
   logoW:165,                      // watermark width (px)
   leakY:425, leakRot:-5, leakO:0.11   // faint rainbow light leak
 }, JSON.parse(new URLSearchParams(location.search).get('p')||'{}'));
@@ -91,6 +96,9 @@ const s=document.getElementById('s'); s.innerHTML=P.sub; s.style.top=P.sTop+'px'
   Object.assign(ph.style,{left:bx+'px',top:by+'px',width:bw+'px',height:bh+'px'});
   Object.assign(im.style,{left:ix+'px',top:iy+'px',width:iw+'px'});
   const mk=P.photo.mask.join(','), comp=P.photo.mask.map(()=> 'intersect').join(',');
+  const bed=document.getElementById('photobed'), bm=P.photo.bedMask.join(',');
+  Object.assign(bed.style,{left:bx+'px',top:by+'px',width:bw+'px',height:bh+'px'});
+  bed.style.webkitMaskImage=bm; bed.style.maskImage=bm; bed.style.maskComposite=comp; bed.style.webkitMaskComposite=P.photo.bedMask.map(()=>'source-in').join(',');
   ph.style.webkitMaskImage=mk; ph.style.maskImage=mk; ph.style.maskComposite=comp; ph.style.webkitMaskComposite=P.photo.mask.map(()=>'source-in').join(','); }
 const L=document.getElementById('leak'); L.style.top=P.leakY+'px'; L.style.transform=`rotate(${P.leakRot}deg)`; L.style.setProperty('--leak-o',P.leakO||.16);
 </script>
