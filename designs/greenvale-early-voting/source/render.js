@@ -1,6 +1,7 @@
 // Renders a slide page to PNG with headless Chromium (Playwright).
 //
 //   node render.js                 -> early-voting.html -> ../greenvale-early-voting.png (+ @2x)
+//   node render.js '{}' early-voting-portrait.html greenvale-early-voting-portrait   -> 1080x1350 version
 //   any page's defaults can be overridden with the JSON params argument (see the defaults block in each page)
 //
 // Needs `playwright` resolvable from Node (npm i playwright) and a Chromium it can launch.
@@ -18,6 +19,9 @@ const path = require('path');
   for (const [scale, suffix] of scales.map(n => [n, n === 1 ? '' : `@${n}x`])) {
     const page = await browser.newPage({ viewport: { width: 1080, height: 1080 }, deviceScaleFactor: scale });
     await page.goto(url);
+    // size the viewport to the page's stage (1080x1080 square, 1080x1350 portrait, ...)
+    const [w, h] = await page.evaluate(() => { const r = document.getElementById('stage').getBoundingClientRect(); return [Math.round(r.width), Math.round(r.height)]; });
+    await page.setViewportSize({ width: w, height: h });
     await page.evaluate(() => document.fonts.ready);
     const missing = await page.evaluate(() => [...document.fonts].filter(f => f.status === 'error').map(f => f.family));
     if (missing.length) throw new Error('fonts failed to load: ' + missing.join(', '));

@@ -4,8 +4,12 @@
 headline "Vote early in *Greenvale.*", pre-poll dates and hours, the Greenvale electorate map with
 numbered pins, a matching numbered venue list, and the Jess Wilson's Liberal Victoria watermark.
 
-- `greenvale-early-voting.png` — 1080×1080, for upload
-- `greenvale-early-voting@2x.png` — 2160×2160
+- `greenvale-early-voting-portrait.png` / `@2x` — **1080×1350 card** (4:5, feed-friendly) laid out after the
+  "Early Voting centres" reference: headline, rounded venue panel, candidate cut-out bottom-left overlapping
+  the panel, name block and logo bottom-right — in the Greenvale campaign style (navy/sky, condensed serif,
+  glowing electorate mini-map with numbered pins, road-map texture background). Source:
+  `source/early-voting-portrait.html`.
+- `greenvale-early-voting.png` / `@2x` — earlier 1080×1080 square version (map left, list right).
 
 ## Content (as supplied by the campaign — check against the VEC before posting)
 
@@ -21,7 +25,8 @@ All copy and placement live in the defaults block of `source/early-voting.html`
 (`head`, `sub`, `venues` — `[name, address, pin x, pin y]` — and `list` for the column layout).
 
 ```bash
-cd source && node render.js            # -> ../greenvale-early-voting.png and @2x
+cd source && node render.js '{}' early-voting-portrait.html greenvale-early-voting-portrait   # portrait card
+node render.js                         # -> ../greenvale-early-voting.png and @2x (square)
 node render.js '{}' early-voting.html greenvale-early-voting 1,2,4   # also a 4320px @4x
 ```
 
@@ -36,7 +41,12 @@ and all three confirmed inside the Greenvale District boundary:
 | 23 Yellowbox Drive, Craigieburn (OSM address) | -37.618619, 144.944015 | 433.8, 631.1 |
 | 75 Lakeside Drive, Roxburgh Park (OSM address) | -37.630192, 144.930896 | 386.7, 685.6 |
 
-Pixels use the same projection as `source/map.svg` (EPSG:28355, 24 m/px, lon/lat 144.9043,-37.6404
+Portrait card mini-map (`source/map-mini.svg`, 34 m/px, lon/lat 144.9043,-37.6404 at 540,540):
+Attwood 524.8,640.5 · Yellowbox 641.5,466.6 · Lakeside 608.3,505.2 (map-mini px; the page offsets them by
+its `mini.box`/`mini.crop`). `map-mini-outline.svg` re-draws the boundary unmasked on top, and
+`map-bg.svg` is `map.svg` with the highlight removed (roads only), used as background texture.
+
+Square tile pixels use the same projection as `source/map.svg` (EPSG:28355, 24 m/px, lon/lat 144.9043,-37.6404
 at 290,735). If the map is re-framed, recompute them with those parameters.
 
 ## Map and credits

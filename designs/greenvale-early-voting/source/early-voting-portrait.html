@@ -1,0 +1,122 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<!-- 1080x1350 early voting card: layout after the "Early Voting centres" reference (headline, rounded list
+     panel, candidate cut-out bottom-left, name block, logo), in the Greenvale campaign's navy / sky / serif
+     style with the glowing electorate map. -->
+<style>
+@font-face{font-family:"Head";src:url(DMSerifDisplay-Regular.ttf)}
+@font-face{font-family:"Head";font-style:italic;src:url(DMSerifDisplay-Italic.ttf)}
+@font-face{font-family:"Inter";font-weight:500;src:url(Inter-Medium.otf)}
+@font-face{font-family:"Inter";font-weight:600;src:url(Inter-SemiBold.otf)}
+:root{ --navy:#052964; --sky:#8fd6f2; --ink:#ffffff; }
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1350px;overflow:hidden;background:var(--navy)}
+#stage{position:relative;width:1080px;height:1350px;overflow:hidden;
+  background:linear-gradient(180deg,#052862 0%,#0a3a7c 45%,#0d4290 100%)}
+.abs{position:absolute}
+/* background: roads-only map texture (map-bg.svg), dimmed toward the top so the headline sits on navy */
+#bg{left:-135px;top:0;width:1350px;height:1350px;opacity:.85}
+#bgshade{inset:0;background:linear-gradient(180deg,#052862 0%,rgba(5,40,98,.92) 16%,rgba(8,48,112,.35) 42%,rgba(8,48,112,.15) 100%)}
+#leak{left:-120px;width:1320px;height:46px;filter:blur(20px);opacity:var(--leak-o,.16);mix-blend-mode:screen;
+  background:linear-gradient(90deg,transparent 0%,#ff4d4d 18%,#ffd34d 32%,#5dff8a 46%,#4dd2ff 60%,#9b6bff 74%,transparent 92%);}
+#vign{inset:0;pointer-events:none;background:radial-gradient(ellipse 90% 85% at 50% 42%,transparent 58%,rgba(2,14,40,.5) 100%)}
+#grain{inset:0;pointer-events:none;opacity:.10;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.95' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 1.6 -.3'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");}
+h1{position:absolute;left:0;right:0;text-align:center;font-family:"Head";font-weight:400;color:var(--ink);white-space:nowrap;
+  letter-spacing:-0.02em;line-height:.93;transform:scaleX(.88);transform-origin:50% 0;
+  text-shadow:-1.3px 0 0 rgba(255,70,90,.38),1.3px 0 0 rgba(70,150,255,.38),0 2px 3px rgba(0,8,35,.35),0 8px 30px rgba(0,8,35,.45);}
+h1 em{color:var(--sky);font-style:italic;letter-spacing:-0.01em}
+.sub{position:absolute;left:0;right:0;text-align:center;font-family:"Inter";font-weight:500;color:#fff;
+  letter-spacing:-0.006em;line-height:1.32;text-shadow:0 2px 14px rgba(0,8,35,.55)}
+.sub b{font-weight:500;color:var(--sky)}
+/* the list panel: frosted navy plate, like the reference's rounded box */
+#panel{border-radius:36px;background:linear-gradient(160deg,rgba(10,52,120,.78),rgba(5,32,84,.86));
+  backdrop-filter:blur(6px);box-shadow:inset 0 0 0 1px rgba(170,215,255,.16),0 30px 60px rgba(0,8,35,.45)}
+.num{display:grid;place-items:center;border-radius:50%;font-family:"Inter";font-weight:600;color:#06285f;
+  background:radial-gradient(circle at 50% 35%,#c4ecff,#8fd6f2 70%);
+  box-shadow:0 0 0 3px #fff,0 0 18px 5px rgba(143,214,242,.55),0 6px 16px rgba(0,8,35,.5)}
+.pin{transform:translate(-50%,-50%)}
+#list{display:flex;flex-direction:column}
+.item{display:flex;gap:22px;align-items:flex-start}
+.item .num{flex:none;margin-top:6px}
+.item .sub-title{font-family:"Head";color:#fff;line-height:1;letter-spacing:-0.01em;transform:scaleX(.88);transform-origin:0 0;
+  white-space:nowrap;text-shadow:0 2px 12px rgba(0,8,35,.5)}
+.item .venue{margin-top:8px;font-family:"Inter";font-weight:500;color:#fff;line-height:1.28}
+.item .addr{margin-top:2px;font-family:"Inter";font-weight:500;color:var(--sky);line-height:1.28}
+/* compact electorate map inside the panel (crop of map-mini.svg), edges faded into the panel */
+#mini{overflow:hidden;
+  -webkit-mask-image:radial-gradient(ellipse 62% 60% at 50% 50%,#000 62%,transparent 100%);
+  mask-image:radial-gradient(ellipse 62% 60% at 50% 50%,#000 62%,transparent 100%)}
+#mini img,#miniline img{position:absolute;width:1080px;height:1080px}
+#miniline{overflow:hidden;pointer-events:none}   /* boundary on top, unmasked, so the electorate's tips never fade */
+/* candidate */
+#jimglow{border-radius:50%;pointer-events:none;background:radial-gradient(circle,rgba(143,214,242,.40) 0%,rgba(90,160,240,.16) 42%,rgba(20,70,150,0) 70%)}
+#jim{filter:drop-shadow(0 0 22px rgba(143,214,242,.25)) drop-shadow(0 10px 30px rgba(0,8,35,.45))}
+#name .n{font-family:"Head";color:#fff;line-height:1;letter-spacing:-0.01em;transform:scaleX(.88);transform-origin:0 0;white-space:nowrap;
+  text-shadow:-1px 0 0 rgba(255,70,90,.3),1px 0 0 rgba(70,150,255,.3),0 4px 18px rgba(0,8,35,.6)}
+#name .r{margin-top:10px;font-family:"Inter";font-weight:500;color:var(--sky);line-height:1.25;text-shadow:0 2px 10px rgba(0,8,35,.6)}
+#logo{filter:drop-shadow(0 2px 8px rgba(0,8,35,.5))}
+</style></head>
+<body><div id="stage">
+  <img id="bg" class="abs" src="map-bg.svg">
+  <div id="bgshade" class="abs"></div>
+  <div id="leak" class="abs"></div>
+  <div id="panel" class="abs"></div>
+  <div id="mini" class="abs"><img src="map-mini.svg"></div>
+  <div id="miniline" class="abs"><img src="map-mini-outline.svg"></div>
+  <div id="pins"></div>
+  <div id="list" class="abs"></div>
+  <div id="jimglow" class="abs"></div>
+  <img id="jim" class="abs" src="jim.png" alt="Jim Overend">
+  <div id="name" class="abs"><div class="n"></div><div class="r"></div></div>
+  <img id="logo" class="abs" src="logo.png" alt="Jess Wilson's Liberal Victoria">
+  <div id="vign" class="abs"></div>
+  <h1 id="h"></h1>
+  <p class="sub" id="s"></p>
+  <div id="grain" class="abs"></div>
+</div>
+<script>
+const P = Object.assign({
+  // Defaults = the published layout. Override any key via ?p={"key":value} (see render.js).
+  hTop:72, hSize:110, sTop:212, sSize:32,
+  head:'Early voting <em>centres.</em>',
+  sub:'<b>Pre-poll: 18–27 November</b><br>9 am–6 pm, closed Sunday 22 November.',
+  panel:[56,330,968,590],          // left, top, width, height
+  // venues: [suburb, venue, address, pin x, pin y in map-mini.svg px (mpp 34, 144.9043,-37.6404 at 540,540)]
+  venues:[
+    ['Attwood','Attwood House Community Centre','202 Erinbank Crescent',524.8,640.5],
+    ['Craigieburn','Yellowbox Drive Voting Centre','23 Yellowbox Drive',641.5,466.6],
+    ['Roxburgh Park','Roxburgh Park Football Club','Lakeside Reserve, 75 Lakeside Drive',608.3,505.2],
+  ],
+  list:{left:104, top:386, width:500, gap:50, titleSize:52, venueSize:25, addrSize:23, num:46, numFont:22},
+  mini:{box:[590,428,424,380], crop:[328,350], pin:38, pinFont:19},   // box on the tile; crop = map-mini.svg x,y at the box's top-left
+  jim:[-100,812,660], glow:[228,1004,500],
+  name:{left:566, top:1146, size:58, role:'Liberal Candidate<br>for Greenvale', roleSize:26, text:'Jim Overend'},
+  logo:[896,1166,148],              // left, top, width
+  leakY:300, leakRot:-5, leakO:0.10
+}, JSON.parse(new URLSearchParams(location.search).get('p')||'{}'));
+const $=id=>document.getElementById(id), px=v=>v+'px';
+const [pl,pt,pw,ph]=P.panel; Object.assign($('panel').style,{left:px(pl),top:px(pt),width:px(pw),height:px(ph)});
+const badge=(i,cls,size,font,extra='')=>`<div class="num ${cls}" style="width:${size}px;height:${size}px;font-size:${font}px;${extra}">${i+1}</div>`;
+const L=P.list; Object.assign($('list').style,{left:px(L.left),top:px(L.top),width:px(L.width),gap:px(L.gap)});
+$('list').innerHTML=P.venues.map(([sub,venue,addr],i)=>`<div class="item">${badge(i,'',L.num,L.numFont)}<div>
+  <div class="sub-title" style="font-size:${L.titleSize}px">${sub}</div>
+  <div class="venue" style="font-size:${L.venueSize}px">${venue}</div>
+  <div class="addr" style="font-size:${L.addrSize}px">${addr}</div></div></div>`).join('');
+const M=P.mini, [mx,my,mw,mh]=M.box, [cx,cy]=M.crop;
+Object.assign($('mini').style,{left:px(mx),top:px(my),width:px(mw),height:px(mh)});
+Object.assign($('mini').querySelector('img').style,{left:px(-cx),top:px(-cy)});
+Object.assign($('miniline').style,{left:px(mx),top:px(my),width:px(mw),height:px(mh)});
+Object.assign($('miniline').querySelector('img').style,{left:px(-cx),top:px(-cy)});
+$('pins').innerHTML=P.venues.map(([, , , x, y],i)=>badge(i,'pin abs',M.pin,M.pinFont,`left:${mx+x-cx}px;top:${my+y-cy}px`)).join('');
+const [jx,jy,jw]=P.jim; Object.assign($('jim').style,{left:px(jx),top:px(jy),width:px(jw)});
+const [gx,gy,gd]=P.glow; Object.assign($('jimglow').style,{left:px(gx-gd/2),top:px(gy-gd/2),width:px(gd),height:px(gd)});
+const N=P.name; Object.assign($('name').style,{left:px(N.left),top:px(N.top)});
+$('name').querySelector('.n').innerHTML=N.text; $('name').querySelector('.n').style.fontSize=px(N.size);
+$('name').querySelector('.r').innerHTML=N.role; $('name').querySelector('.r').style.fontSize=px(N.roleSize);
+const [lx,ly,lw]=P.logo; Object.assign($('logo').style,{left:px(lx),top:px(ly),width:px(lw)});
+const h=$('h'); h.innerHTML=P.head; h.style.top=px(P.hTop); h.style.fontSize=px(P.hSize);
+const s=$('s'); s.innerHTML=P.sub; s.style.top=px(P.sTop); s.style.fontSize=px(P.sSize);
+const Lk=$('leak'); Lk.style.top=px(P.leakY); Lk.style.transform=`rotate(${P.leakRot}deg)`; Lk.style.setProperty('--leak-o',P.leakO||.16);
+</script>
+</body></html>
