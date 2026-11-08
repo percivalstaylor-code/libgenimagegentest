@@ -4,7 +4,13 @@
 headline "Vote early in *Greenvale.*", pre-poll dates and hours, the Greenvale electorate map with
 numbered pins, a matching numbered venue list, and the Jess Wilson's Liberal Victoria watermark.
 
-- `greenvale-early-voting-portrait.png` / `@2x` — **1080×1350 card** (4:5, feed-friendly) laid out after the
+- `greenvale-early-voting-light.png` / `@2x` — **latest: 1080×1350 light card** after the "Postal" reference:
+  white ground, heavy navy Inter ExtraBold heading, blue condensed serif (Instrument Serif light + DM Serif
+  Display bold), bold navy sans supporting lines with a soft text shadow; venues on the left, candidate
+  cut-out with name on the right, navy logo (`logo-navy.png`, the white wordmark recoloured #162133). No map.
+  Source: `source/early-voting-light.html`
+  (`node render.js '{}' early-voting-light.html greenvale-early-voting-light`).
+- `greenvale-early-voting-portrait.png` / `@2x` — 1080×1350 card (4:5, feed-friendly) laid out after the
   "Early Voting centres" reference: headline, rounded venue panel, candidate cut-out bottom-left overlapping
   the panel, name block and logo bottom-right — in the Greenvale campaign style (navy/sky, condensed serif,
   glowing electorate mini-map with numbered pins, road-map texture background). Source:
@@ -64,4 +70,4 @@ Credits go in the post caption (both licences require them):
 
 > Map data © OpenStreetMap contributors. Electorate boundary © State of Victoria (Vicmap), CC BY 4.0.
 
-Fonts: DM Serif Display and Inter, SIL Open Font License (texts in `source/`).
+Fonts: DM Serif Display, Instrument Serif and Inter, SIL Open Font License (texts in `source/`).

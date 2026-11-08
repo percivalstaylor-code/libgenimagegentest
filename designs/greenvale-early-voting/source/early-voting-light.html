@@ -1,0 +1,78 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<!-- 1080x1350 early voting card, light style after the "Postal" reference: white ground, heavy navy sans
+     heading, blue condensed serif in light + bold, bold navy sans supporting lines, soft text shadow. -->
+<style>
+@font-face{font-family:"Serif Bold";src:url(DMSerifDisplay-Regular.ttf)}
+@font-face{font-family:"Serif Light";src:url(InstrumentSerif-Regular.ttf)}
+@font-face{font-family:"Inter";font-weight:500;src:url(Inter-Medium.otf)}
+@font-face{font-family:"Inter";font-weight:600;src:url(Inter-SemiBold.otf)}
+@font-face{font-family:"Inter";font-weight:700;src:url(Inter-Bold.otf)}
+@font-face{font-family:"Inter";font-weight:800;src:url(Inter-ExtraBold.otf)}
+:root{ --navy:#162133; --blue:#00539a; --shadow:0 2px 6px rgba(20,32,60,.16); }
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1350px;overflow:hidden;background:#fff}
+#stage{position:relative;width:1080px;height:1350px;overflow:hidden;background:#fff}
+.abs{position:absolute}
+.center{left:0;right:0;text-align:center}
+h1{font-family:"Inter";font-weight:800;color:var(--navy);letter-spacing:-.035em;line-height:1;text-shadow:var(--shadow)}
+/* blue serif: light phrases in Instrument Serif, bold phrases in DM Serif Display condensed */
+.serif{color:var(--blue);line-height:1.08;letter-spacing:-.015em;text-shadow:var(--shadow)}
+.serif .lt{font-family:"Serif Light";font-size:1.12em;letter-spacing:-.02em}
+.serif .bd{font-family:"Serif Bold";display:inline-block;transform:scaleX(.86);transform-origin:50% 50%}
+.note{font-family:"Inter";font-weight:700;color:var(--navy);letter-spacing:-.02em;line-height:1.25;text-shadow:var(--shadow)}
+#list{display:flex;flex-direction:column}
+.v .sub{font-family:"Serif Bold";color:var(--blue);line-height:1;letter-spacing:-.01em;transform:scaleX(.86);transform-origin:0 50%;white-space:nowrap;text-shadow:var(--shadow)}
+.v .venue{margin-top:10px;font-family:"Inter";font-weight:700;color:var(--navy);letter-spacing:-.015em;line-height:1.25;text-shadow:var(--shadow)}
+.v .addr{margin-top:3px;font-family:"Inter";font-weight:600;color:rgba(22,33,51,.72);letter-spacing:-.01em;line-height:1.25}
+#rule{height:3px;border-radius:2px;background:var(--blue);opacity:.85}
+#name{text-align:center;transform:translateX(-50%)}
+#name .n{font-family:"Serif Bold";color:var(--navy);line-height:1;letter-spacing:-.01em;transform:scaleX(.86);transform-origin:50% 50%;white-space:nowrap;text-shadow:var(--shadow)}
+#name .r{margin-top:8px;font-family:"Inter";font-weight:700;color:var(--blue);letter-spacing:-.015em;line-height:1.25}
+/* soft blue halo behind the candidate so the cut-out sits on the white rather than floating */
+#halo{border-radius:50%;background:radial-gradient(circle,rgba(0,83,154,.13) 0%,rgba(0,83,154,.05) 45%,rgba(0,83,154,0) 70%)}
+</style></head>
+<body><div id="stage">
+  <h1 id="h" class="abs center"></h1>
+  <div id="dates" class="abs center serif"></div>
+  <div id="hours" class="abs center note"></div>
+  <div id="rule" class="abs"></div>
+  <div id="list" class="abs"></div>
+  <div id="halo" class="abs"></div>
+  <img id="jim" class="abs" src="jim.png" alt="Jim Overend">
+  <div id="name" class="abs"><div class="n"></div><div class="r"></div></div>
+  <img id="logo" class="abs" src="logo-navy.png" alt="Jess Wilson's Liberal Victoria">
+</div>
+<script>
+const P = Object.assign({
+  // Defaults = the published layout. Override any key via ?p={"key":value} (see render.js).
+  head:'Early voting', hTop:118, hSize:132,
+  dates:'<span class="lt">Pre<span style="margin:0 -.07em">-</span>poll is open</span><br><span class="bd">18–27 November</span>', dTop:276, dSize:78,
+  hours:'9 am–6 pm, closed Sunday 22 November.', hrTop:478, hrSize:34,
+  rule:[490,566,100],                       // short blue rule: left, top, width (centred under the header)
+  venues:[
+    ['Attwood','Attwood House Community Centre','202 Erinbank Crescent'],
+    ['Craigieburn','Yellowbox Drive Voting Centre','23 Yellowbox Drive'],
+    ['Roxburgh Park','Roxburgh Park Football Club','Lakeside Reserve, 75 Lakeside Drive'],
+  ],
+  list:{left:84, top:630, gap:40, subSize:56, venueSize:28, addrSize:25},
+  jim:[552,770,630], halo:[866,1000,600],    // portrait left, top, width; halo centre x, y, diameter
+  name:{left:858, top:650, size:56, text:'Jim Overend', role:'Liberal Candidate<br>for Greenvale', roleSize:25},
+  logo:[84,1196,170]                         // left, top, width
+}, JSON.parse(new URLSearchParams(location.search).get('p')||'{}'));
+const $=id=>document.getElementById(id), px=v=>v+'px';
+Object.assign($('h').style,{top:px(P.hTop),fontSize:px(P.hSize)}); $('h').innerHTML=P.head;
+Object.assign($('dates').style,{top:px(P.dTop),fontSize:px(P.dSize)}); $('dates').innerHTML=P.dates;
+Object.assign($('hours').style,{top:px(P.hrTop),fontSize:px(P.hrSize)}); $('hours').innerHTML=P.hours;
+Object.assign($('rule').style,{left:px(P.rule[0]),top:px(P.rule[1]),width:px(P.rule[2])});
+const L=P.list; Object.assign($('list').style,{left:px(L.left),top:px(L.top),gap:px(L.gap)});
+$('list').innerHTML=P.venues.map(([s,v,a])=>`<div class="v"><div class="sub" style="font-size:${L.subSize}px">${s}</div>
+  <div class="venue" style="font-size:${L.venueSize}px">${v}</div><div class="addr" style="font-size:${L.addrSize}px">${a}</div></div>`).join('');
+const [jx,jy,jw]=P.jim; Object.assign($('jim').style,{left:px(jx),top:px(jy),width:px(jw)});
+const [hx,hy,hd]=P.halo; Object.assign($('halo').style,{left:px(hx-hd/2),top:px(hy-hd/2),width:px(hd),height:px(hd)});
+const N=P.name; Object.assign($('name').style,{left:px(N.left),top:px(N.top)});
+$('name').querySelector('.n').innerHTML=N.text; $('name').querySelector('.n').style.fontSize=px(N.size);
+$('name').querySelector('.r').innerHTML=N.role; $('name').querySelector('.r').style.fontSize=px(N.roleSize);
+const [lx,ly,lw]=P.logo; Object.assign($('logo').style,{left:px(lx),top:px(ly),width:px(lw)});
+</script>
+</body></html>
