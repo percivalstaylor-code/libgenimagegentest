@@ -6,8 +6,9 @@ numbered pins, a matching numbered venue list, and the Jess Wilson's Liberal Vic
 
 - `greenvale-early-voting-light.png` / `@2x` — **latest: 1080×1350 light card** after the "Postal" reference:
   white ground, heavy navy Inter ExtraBold heading, blue condensed serif (Instrument Serif light + DM Serif
-  Display bold), bold navy sans supporting lines with a soft text shadow; venues on the left, candidate
-  cut-out with name on the right, navy logo (`logo-navy.png`, the white wordmark recoloured #162133). No map.
+  Display bold), bold navy sans supporting lines with a soft text shadow; all type centred with generous white
+  space like the reference; venues, name and logo centred in the left column beside a large candidate
+  cut-out bleeding off the right and bottom edges; navy logo (`logo-navy.png`, the white wordmark recoloured #162133). No map.
   Source: `source/early-voting-light.html`
   (`node render.js '{}' early-voting-light.html greenvale-early-voting-light`).
 - `greenvale-early-voting-portrait.png` / `@2x` — 1080×1350 card (4:5, feed-friendly) laid out after the

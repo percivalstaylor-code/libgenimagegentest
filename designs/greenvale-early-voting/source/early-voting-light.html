@@ -21,12 +21,12 @@ h1{font-family:"Inter";font-weight:800;color:var(--navy);letter-spacing:-.035em;
 .serif .lt{font-family:"Serif Light";font-size:1.12em;letter-spacing:-.02em}
 .serif .bd{font-family:"Serif Bold";display:inline-block;transform:scaleX(.86);transform-origin:50% 50%}
 .note{font-family:"Inter";font-weight:700;color:var(--navy);letter-spacing:-.02em;line-height:1.25;text-shadow:var(--shadow)}
-#list{display:flex;flex-direction:column}
-.v .sub{font-family:"Serif Bold";color:var(--blue);line-height:1;letter-spacing:-.01em;transform:scaleX(.86);transform-origin:0 50%;white-space:nowrap;text-shadow:var(--shadow)}
+#list{display:flex;flex-direction:column;text-align:center}
+.v .sub{font-family:"Serif Bold";color:var(--blue);line-height:1;letter-spacing:-.01em;transform:scaleX(.86);transform-origin:50% 50%;white-space:nowrap;text-shadow:var(--shadow)}
 .v .venue{margin-top:10px;font-family:"Inter";font-weight:700;color:var(--navy);letter-spacing:-.015em;line-height:1.25;text-shadow:var(--shadow)}
 .v .addr{margin-top:3px;font-family:"Inter";font-weight:600;color:rgba(22,33,51,.72);letter-spacing:-.01em;line-height:1.25}
-#rule{height:3px;border-radius:2px;background:var(--blue);opacity:.85}
-#name{text-align:center;transform:translateX(-50%)}
+#rule{display:none}
+#name{text-align:center}
 #name .n{font-family:"Serif Bold";color:var(--navy);line-height:1;letter-spacing:-.01em;transform:scaleX(.86);transform-origin:50% 50%;white-space:nowrap;text-shadow:var(--shadow)}
 #name .r{margin-top:8px;font-family:"Inter";font-weight:700;color:var(--blue);letter-spacing:-.015em;line-height:1.25}
 /* soft blue halo behind the candidate so the cut-out sits on the white rather than floating */
@@ -46,31 +46,31 @@ h1{font-family:"Inter";font-weight:800;color:var(--navy);letter-spacing:-.035em;
 <script>
 const P = Object.assign({
   // Defaults = the published layout. Override any key via ?p={"key":value} (see render.js).
-  head:'Early voting', hTop:118, hSize:132,
-  dates:'<span class="lt">Pre<span style="margin:0 -.07em">-</span>poll is open</span><br><span class="bd">18–27 November</span>', dTop:276, dSize:78,
-  hours:'9 am–6 pm, closed Sunday 22 November.', hrTop:478, hrSize:34,
+  head:'Early voting', hTop:104, hSize:136,
+  dates:'<span class="lt">Pre<span style="margin:0 -.07em">-</span>poll is open</span><br><span class="bd">18–27 November</span>', dTop:264, dSize:80,
+  hours:'9 am–6 pm, closed Sunday 22 November.', hrTop:470, hrSize:34,
   rule:[490,566,100],                       // short blue rule: left, top, width (centred under the header)
   venues:[
     ['Attwood','Attwood House Community Centre','202 Erinbank Crescent'],
     ['Craigieburn','Yellowbox Drive Voting Centre','23 Yellowbox Drive'],
     ['Roxburgh Park','Roxburgh Park Football Club','Lakeside Reserve, 75 Lakeside Drive'],
   ],
-  list:{left:84, top:630, gap:40, subSize:56, venueSize:28, addrSize:25},
-  jim:[552,770,630], halo:[866,1000,600],    // portrait left, top, width; halo centre x, y, diameter
-  name:{left:858, top:650, size:56, text:'Jim Overend', role:'Liberal Candidate<br>for Greenvale', roleSize:25},
-  logo:[84,1196,170]                         // left, top, width
+  list:{left:36, top:586, width:520, gap:34, subSize:52, venueSize:26, addrSize:23},
+  jim:[432,526,860], halo:[860,860,760],    // portrait left, top, width; halo centre x, y, diameter
+  name:{left:36, width:520, top:1128, size:54, text:'Jim Overend', role:'Liberal Candidate for Greenvale', roleSize:23},
+  logo:[221,1244,150]                         // left, top, width
 }, JSON.parse(new URLSearchParams(location.search).get('p')||'{}'));
 const $=id=>document.getElementById(id), px=v=>v+'px';
 Object.assign($('h').style,{top:px(P.hTop),fontSize:px(P.hSize)}); $('h').innerHTML=P.head;
 Object.assign($('dates').style,{top:px(P.dTop),fontSize:px(P.dSize)}); $('dates').innerHTML=P.dates;
 Object.assign($('hours').style,{top:px(P.hrTop),fontSize:px(P.hrSize)}); $('hours').innerHTML=P.hours;
 Object.assign($('rule').style,{left:px(P.rule[0]),top:px(P.rule[1]),width:px(P.rule[2])});
-const L=P.list; Object.assign($('list').style,{left:px(L.left),top:px(L.top),gap:px(L.gap)});
+const L=P.list; Object.assign($('list').style,{left:px(L.left),top:px(L.top),width:px(L.width),gap:px(L.gap)});
 $('list').innerHTML=P.venues.map(([s,v,a])=>`<div class="v"><div class="sub" style="font-size:${L.subSize}px">${s}</div>
   <div class="venue" style="font-size:${L.venueSize}px">${v}</div><div class="addr" style="font-size:${L.addrSize}px">${a}</div></div>`).join('');
 const [jx,jy,jw]=P.jim; Object.assign($('jim').style,{left:px(jx),top:px(jy),width:px(jw)});
 const [hx,hy,hd]=P.halo; Object.assign($('halo').style,{left:px(hx-hd/2),top:px(hy-hd/2),width:px(hd),height:px(hd)});
-const N=P.name; Object.assign($('name').style,{left:px(N.left),top:px(N.top)});
+const N=P.name; Object.assign($('name').style,{left:px(N.left),top:px(N.top),width:px(N.width)});
 $('name').querySelector('.n').innerHTML=N.text; $('name').querySelector('.n').style.fontSize=px(N.size);
 $('name').querySelector('.r').innerHTML=N.role; $('name').querySelector('.r').style.fontSize=px(N.roleSize);
 const [lx,ly,lw]=P.logo; Object.assign($('logo').style,{left:px(lx),top:px(ly),width:px(lw)});
