@@ -1,0 +1,92 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face{font-family:"Head";src:url(DMSerifDisplay-Regular.ttf)}
+@font-face{font-family:"Head";font-style:italic;src:url(DMSerifDisplay-Italic.ttf)}
+@font-face{font-family:"Inter";font-weight:500;src:url(Inter-Medium.otf)}
+@font-face{font-family:"Inter";font-weight:600;src:url(Inter-SemiBold.otf)}
+:root{ --navy:#052964; --sky:#8fd6f2; --ink:#ffffff; }
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1080px;overflow:hidden;background:var(--navy)}
+#stage{position:relative;width:1080px;height:1080px;overflow:hidden;background:var(--navy)}
+.abs{position:absolute}
+/* vector map built by map/build_map.py: OpenStreetMap roads + Greenvale District (Vicmap) highlighted */
+#map{left:0;top:0;width:1080px;height:1080px}
+#topfade{inset:0}
+/* soft navy panel behind the venue list so it reads over the map lines */
+#panel{top:0;bottom:0;right:0;width:560px;pointer-events:none;
+  background:linear-gradient(90deg,rgba(7,36,92,0) 0%,rgba(7,36,92,.72) 22%,rgba(7,36,92,.86) 100%)}
+#leak{left:-120px;width:1320px;height:46px;filter:blur(20px);opacity:var(--leak-o,.16);mix-blend-mode:screen;
+  background:linear-gradient(90deg,transparent 0%,#ff4d4d 18%,#ffd34d 32%,#5dff8a 46%,#4dd2ff 60%,#9b6bff 74%,transparent 92%);}
+#vign{inset:0;pointer-events:none;background:radial-gradient(ellipse 85% 80% at 50% 45%,transparent 60%,rgba(2,14,40,.45) 100%)}
+#grain{inset:0;pointer-events:none;opacity:.10;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.95' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 1.6 -.3'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");}
+h1{position:absolute;left:0;right:0;text-align:center;font-family:"Head";font-weight:400;color:var(--ink);
+  letter-spacing:-0.02em;line-height:.93;transform:scaleX(.88);transform-origin:50% 0;
+  text-shadow:-1.3px 0 0 rgba(255,70,90,.38),1.3px 0 0 rgba(70,150,255,.38),0 2px 3px rgba(0,8,35,.35),0 8px 30px rgba(0,8,35,.45);}
+h1 em{color:var(--sky);font-style:italic;letter-spacing:-0.01em}
+.sub{position:absolute;left:0;right:0;text-align:center;font-family:"Inter";font-weight:500;color:#fff;
+  letter-spacing:-0.006em;line-height:1.32;text-shadow:0 2px 14px rgba(0,8,35,.55)}
+.sub b{font-weight:500;color:var(--sky)}
+/* numbered markers: same badge on the map pins and in the list */
+.num{display:grid;place-items:center;border-radius:50%;font-family:"Inter";font-weight:600;color:#06285f;
+  background:radial-gradient(circle at 50% 35%,#c4ecff,#8fd6f2 70%);
+  box-shadow:0 0 0 3px #fff,0 0 18px 5px rgba(143,214,242,.6),0 6px 16px rgba(0,8,35,.5)}
+.pin{transform:translate(-50%,-50%)}
+#list{display:flex;flex-direction:column}
+.item{display:flex;gap:20px;align-items:flex-start}
+.item .num{flex:none;margin-top:2px}
+.item .name{font-family:"Head";color:#fff;line-height:1.02;letter-spacing:-0.01em;transform:scaleX(.88);transform-origin:0 0;
+  width:calc(100%/.88);text-shadow:0 2px 12px rgba(0,8,35,.5)}
+.item .addr{margin-top:8px;font-family:"Inter";font-weight:500;color:rgba(225,240,255,.9);line-height:1.3;text-shadow:0 2px 10px rgba(0,8,35,.6)}
+#logo{left:28px;bottom:24px;opacity:.92;filter:drop-shadow(0 2px 8px rgba(0,8,35,.5))}
+</style></head>
+<body><div id="stage">
+  <img id="map" class="abs" src="map.svg">
+  <div id="panel" class="abs"></div>
+  <div id="pins"></div>
+  <div id="topfade" class="abs"></div>
+  <div id="leak" class="abs"></div>
+  <div id="list" class="abs"></div>
+  <img id="logo" class="abs" src="logo.png" alt="Jess Wilson's Liberal Victoria">
+  <div id="vign" class="abs"></div>
+  <h1 id="h"></h1>
+  <p class="sub" id="s"></p>
+  <div id="grain" class="abs"></div>
+</div>
+<script>
+const P = Object.assign({
+  // Defaults = the published layout. Override any key via ?p={"key":value} (see render.js).
+  fade:392, fadeLen:60,
+  hTop:56, hSize:112, sTop:282, sSize:32,
+  head:'Vote early in<br><em>Greenvale.</em>',
+  sub:'<b>Pre-poll: 18–27 November</b><br>9 am–6 pm, closed Sunday 22 November.',
+  // venues: [name, address, pin x, pin y]  — pin pixels from the geocoded points projected with the
+  // same parameters as map.svg (mpp 24, centre 144.9043,-37.6404 at 290,735); see README
+  venues:[
+    ['Attwood House<br>Community Centre','202 Erinbank Crescent, Attwood',268.4,877.3],
+    ['Yellowbox Drive Voting Centre','23 Yellowbox Drive, Craigieburn',433.8,631.1],
+    ['Roxburgh Park Football Club','Lakeside Reserve, 75 Lakeside Drive,<br>Roxburgh Park',386.7,685.6],
+  ],
+  pinSize:44, numFont:22,
+  list:{left:572, top:505, width:480, gap:40, nameSize:33, addrSize:21},
+  logoW:165,
+  leakY:425, leakRot:-5, leakO:0.11
+}, JSON.parse(new URLSearchParams(location.search).get('p')||'{}'));
+{
+  const F=P.fade, Lh=P.fadeLen||90, c='12,60,128', stops=[`#052862 0px`,`#073170 ${F*0.45}px`,`rgb(${c}) ${F}px`];
+  for(let i=1;i<=8;i++){const t=i/8, a=1-(t*t*(3-2*t)); stops.push(`rgba(${c},${a.toFixed(3)}) ${(F+Lh*t).toFixed(1)}px`);}
+  document.getElementById('topfade').style.background=`linear-gradient(180deg,${stops.join(',')})`;
+}
+const badge=(i,cls,extra='')=>`<div class="num ${cls}" style="width:${P.pinSize}px;height:${P.pinSize}px;font-size:${P.numFont}px;${extra}">${i+1}</div>`;
+document.getElementById('pins').innerHTML=P.venues.map(([, , x, y],i)=>badge(i,'pin abs',`left:${x}px;top:${y}px`)).join('');
+const L=P.list, list=document.getElementById('list');
+Object.assign(list.style,{left:L.left+'px',top:L.top+'px',width:L.width+'px',gap:L.gap+'px'});
+list.innerHTML=P.venues.map(([n,a],i)=>`<div class="item">${badge(i,'')}<div style="flex:1;min-width:0">
+  <div class="name" style="font-size:${L.nameSize}px">${n}</div><div class="addr" style="font-size:${L.addrSize}px">${a}</div></div></div>`).join('');
+const h=document.getElementById('h'); h.innerHTML=P.head; h.style.top=P.hTop+'px'; h.style.fontSize=P.hSize+'px';
+const s=document.getElementById('s'); s.innerHTML=P.sub; s.style.top=P.sTop+'px'; s.style.fontSize=P.sSize+'px';
+document.getElementById('logo').style.width=P.logoW+'px';
+const Lk=document.getElementById('leak'); Lk.style.top=P.leakY+'px'; Lk.style.transform=`rotate(${P.leakRot}deg)`; Lk.style.setProperty('--leak-o',P.leakO||.16);
+</script>
+</body></html>
