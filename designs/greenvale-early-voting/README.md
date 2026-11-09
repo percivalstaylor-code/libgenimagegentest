@@ -6,7 +6,7 @@ numbered pins, a matching numbered venue list, and the Jess Wilson's Liberal Vic
 
 - `greenvale-early-voting-panel.png` / `@2x` — **latest: 1080×1350 card, "Early Voting centres" reference
   layout in the light style, symmetrical (no candidate photo)**: heading "Greenvale / *Early voting* centres"
-  (Inter ExtraBold, "Early voting" in blue), serif dates line, pale-blue rounded panel with blue ticks, suburb
+  (Inter ExtraBold; "Greenvale" 1.3× larger with a thick blue underline; "Early voting" in blue), serif dates line, pale-blue rounded panel with blue ticks, suburb
   in condensed serif and "venue | address" in navy sans in one centred column, and a larger centred
   footer stacking "Jim Overend / LIBERAL FOR GREENVALE" above the navy Liberal Victoria logo. Source: `source/early-voting-panel.html`
   (`node render.js '{}' early-voting-panel.html greenvale-early-voting-panel`).

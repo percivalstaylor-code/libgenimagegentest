@@ -17,6 +17,9 @@ html,body{width:1080px;height:1350px;overflow:hidden;background:#fff}
 .center{left:0;right:0;text-align:center}
 h1{font-family:"Inter";font-weight:800;color:var(--navy);letter-spacing:-.035em;line-height:1;white-space:nowrap;text-shadow:var(--shadow)}
 h1 .acc{color:var(--blue)}
+/* the electorate name: larger, with a thick blue underline */
+h1 .gv{display:inline-block;font-size:1.3em;letter-spacing:-.04em;margin-bottom:.16em;
+  text-decoration:underline;text-decoration-color:var(--blue);text-decoration-thickness:.075em;text-underline-offset:.13em}
 .serif{color:var(--blue);line-height:1.08;letter-spacing:-.015em;text-shadow:var(--shadow)}
 .serif .lt{font-family:"Serif Light";font-size:1.12em;letter-spacing:-.02em}
 .serif .bd{font-family:"Serif Bold";display:inline-block;transform:scaleX(.86);transform-origin:50% 50%}
@@ -49,18 +52,18 @@ h1 .acc{color:var(--blue)}
 <script>
 const P = Object.assign({
   // Defaults = the published layout. Override any key via ?p={"key":value} (see render.js).
-  head:'Greenvale<br><span class="acc">Early voting</span> centres', hTop:56, hSize:94,
-  dates:'<span class="lt">Pre<span style="margin:0 -.07em">-</span>poll is open</span> <span class="bd">18–27 November</span>', dTop:270, dSize:58,
-  hours:'9 am–6 pm, closed Sunday 22 November.', hrTop:352, hrSize:28,
-  panel:[60,430,960,568],                  // left, top, width, height
+  head:'<span class="gv">Greenvale</span><br><span class="acc">Early voting</span> centres', hTop:54, hSize:94,
+  dates:'<span class="lt">Pre<span style="margin:0 -.07em">-</span>poll is open</span> <span class="bd">18–27 November</span>', dTop:310, dSize:58,
+  hours:'9 am–6 pm, closed Sunday 22 November.', hrTop:392, hrSize:28,
+  panel:[60,468,960,540],                  // left, top, width, height
   // venues: [suburb, venue, address, left, top, width] — one centred column; long lines wrap after the bar
   venues:[
-    ['Attwood','Attwood House Community Centre','202 Erinbank Crescent',140,486,820],
-    ['Craigieburn','Yellowbox Drive Voting Centre','23 Yellowbox Drive',140,648,820],
-    ['Roxburgh Park','Roxburgh Park Football Club','Lakeside Reserve, 75 Lakeside Drive',140,810,820],
+    ['Attwood','Attwood House Community Centre','202 Erinbank Crescent',140,524,820],
+    ['Craigieburn','Yellowbox Drive Voting Centre','23 Yellowbox Drive',140,674,820],
+    ['Roxburgh Park','Roxburgh Park Football Club','Lakeside Reserve, 75 Lakeside Drive',140,824,820],
   ],
   subSize:54, detSize:26,
-  footerTop:1054, footerGap:24,
+  footerTop:1062, footerGap:18,
   name:{size:74, text:'Jim Overend', role:'Liberal for Greenvale', roleSize:25},
   logoW:210
 }, JSON.parse(new URLSearchParams(location.search).get('p')||'{}'));
