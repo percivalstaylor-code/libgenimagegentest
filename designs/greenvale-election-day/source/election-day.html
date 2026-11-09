@@ -1,0 +1,113 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<!-- 1080x1350 election day voting centres card, matching the light early-voting panel card:
+     underlined "Greenvale" title, blue serif date line, pale-blue panel with centres grouped by suburb in
+     two columns, centred name block + navy Liberal Victoria logo. -->
+<style>
+@font-face{font-family:"Serif Bold";src:url(DMSerifDisplay-Regular.ttf)}
+@font-face{font-family:"Serif Light";src:url(InstrumentSerif-Regular.ttf)}
+@font-face{font-family:"Inter";font-weight:500;src:url(Inter-Medium.otf)}
+@font-face{font-family:"Inter";font-weight:600;src:url(Inter-SemiBold.otf)}
+@font-face{font-family:"Inter";font-weight:700;src:url(Inter-Bold.otf)}
+@font-face{font-family:"Inter";font-weight:800;src:url(Inter-ExtraBold.otf)}
+:root{ --navy:#162133; --blue:#00539a; --shadow:0 2px 6px rgba(20,32,60,.16); }
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1350px;overflow:hidden;background:#fff}
+#stage{position:relative;width:1080px;height:1350px;overflow:hidden;background:#fff}
+.abs{position:absolute}
+.center{left:0;right:0;text-align:center}
+h1{font-family:"Inter";font-weight:800;color:var(--navy);letter-spacing:-.035em;line-height:1;white-space:nowrap;text-shadow:var(--shadow)}
+h1 .acc{color:var(--blue)}
+h1 .gv{display:inline-block;font-size:1.3em;letter-spacing:-.04em;margin-bottom:.16em;
+  text-decoration:underline;text-decoration-color:var(--blue);text-decoration-thickness:.075em;text-underline-offset:.13em}
+.serif{color:var(--blue);line-height:1.08;letter-spacing:-.015em;text-shadow:var(--shadow)}
+.serif .lt{font-family:"Serif Light";font-size:1.12em;letter-spacing:-.02em}
+.serif .bd{font-family:"Serif Bold";display:inline-block;transform:scaleX(.86);transform-origin:50% 50%}
+.note{font-family:"Inter";font-weight:700;color:var(--navy);letter-spacing:-.02em;line-height:1.25;text-shadow:var(--shadow)}
+#panel{border-radius:40px;background:linear-gradient(170deg,#f1f6fc 0%,#e6eff9 100%);
+  box-shadow:inset 0 0 0 1.5px rgba(0,83,154,.10),0 18px 40px rgba(20,40,80,.08)}
+#cols{display:flex;gap:var(--colgap)}
+.col{flex:1;min-width:0;display:flex;flex-direction:column;gap:var(--groupgap)}
+.grp .sub{font-family:"Serif Bold";color:var(--blue);line-height:1;letter-spacing:-.01em;transform:scaleX(.86);transform-origin:0 50%;
+  white-space:nowrap;text-shadow:var(--shadow);padding-bottom:6px;margin-bottom:9px;border-bottom:2px solid rgba(0,83,154,.18);
+  width:calc(100%/.86)}
+.ent{margin-top:var(--entgap)}
+.ent:first-of-type{margin-top:0}
+.ent .venue{font-family:"Inter";font-weight:700;color:var(--navy);letter-spacing:-.015em;line-height:1.22}
+.ent .addr{font-family:"Inter";font-weight:500;color:rgba(22,33,51,.78);letter-spacing:-.01em;line-height:1.25}
+.ent .acc{font-family:"Inter";font-weight:600;color:var(--blue);letter-spacing:-.01em;line-height:1.25}
+#footer{left:0;right:0;display:flex;flex-direction:column;align-items:center;gap:var(--fgap,16px)}
+#name{text-align:center}
+#name .n{font-family:"Serif Bold";color:var(--navy);line-height:1;letter-spacing:-.01em;white-space:nowrap;text-shadow:var(--shadow);
+  display:inline-block;transform:scaleX(.86)}
+#name .r{margin-top:6px;font-family:"Inter";font-weight:700;color:var(--blue);letter-spacing:.035em;text-transform:uppercase;line-height:1.25}
+</style></head>
+<body><div id="stage">
+  <h1 id="h" class="abs center"></h1>
+  <div id="dates" class="abs center serif"></div>
+  <div id="hours" class="abs center note"></div>
+  <div id="panel" class="abs"></div>
+  <div id="cols" class="abs"></div>
+  <div id="footer" class="abs">
+    <div id="name"><div class="n"></div><div class="r"></div></div>
+    <img id="logo" src="logo-navy.png" alt="Jess Wilson's Liberal Victoria">
+  </div>
+</div>
+<script>
+const P = Object.assign({
+  // Defaults = the published layout. Override any key via ?p={"key":value} (see render.js).
+  head:'<span class="gv">Greenvale</span><br><span class="acc">Election day centres</span>', hTop:38, hSize:78,
+  dates:'<span class="lt">Election day is</span> <span class="bd">Saturday 28 November</span>', dTop:250, dSize:48,
+  hours:'Voting centres are open 8 am–6 pm.', hrTop:316, hrSize:25,
+  panelTop:368, panelPad:[32,52],          // top; padding [vertical, horizontal]
+  colGap:44, groupGap:18, entGap:10, subSize:33, venueSize:20, addrSize:18,
+  // groups: [suburb, column (0|1), [[venue, address, access note?], ...]]
+  groups:[
+    ['Attwood',0,[['Attwood House Community Centre','202 Erinbank Crescent']]],
+    ['Coolaroo',0,[['Coolaroo South Primary School','52–72 Bushfield Crescent']]],
+    ['Craigieburn',0,[
+      ['Our Lady’s Primary School','169–171 Craigieburn Road','Access via Bridgewater Road'],
+      ['Craigieburn Secondary College','102 Hothlyn Drive'],
+      ['Yellowbox Drive Voting Centre','23 Yellowbox Drive']]],
+    ['Greenvale',0,[
+      ['Greenvale Primary School','5 Langton Way'],
+      ['Keelonith Primary School','1 Blossom Drive'],
+      ['Greenvale Recreation Centre','27 Barrymore Road']]],
+    ['Meadow Heights',1,[['Meadow Heights Primary School','46–62 Paringa Boulevard']]],
+    ['Roxburgh Park',1,[
+      ['Roxburgh Park Football Club','Lakeside Reserve, 75 Lakeside Drive'],
+      ['Roxburgh Homestead Primary School','21–33 McPherson Boulevard','Access via Homestead Run'],
+      ['Roxburgh Park Primary School','7–21 Almands Avenue','Access via Sommeville Drive'],
+      ['Roxburgh Rise Primary School','35–59 Lockwood Drive'],
+      ['Good Samaritan Primary School','1–29 Southern Cross Drive']]],
+    ['Westmeadows',1,[['Westmeadows Community Centre','9A Ardlie Street']]],
+  ],
+  footerGapAbove:28, footerGap:12,
+  name:{size:52, text:'Jim Overend', role:'Liberal for Greenvale', roleSize:20},
+  logoW:150
+}, JSON.parse(new URLSearchParams(location.search).get('p')||'{}'));
+const $=id=>document.getElementById(id), px=v=>v+'px';
+Object.assign($('h').style,{top:px(P.hTop),fontSize:px(P.hSize)}); $('h').innerHTML=P.head;
+Object.assign($('dates').style,{top:px(P.dTop),fontSize:px(P.dSize)}); $('dates').innerHTML=P.dates;
+Object.assign($('hours').style,{top:px(P.hrTop),fontSize:px(P.hrSize)}); $('hours').innerHTML=P.hours;
+const cols=$('cols'), [pv,phz]=P.panelPad, PL=60, PW=960;
+Object.assign(cols.style,{left:px(PL+phz),top:px(P.panelTop+pv),width:px(PW-2*phz)});
+cols.style.setProperty('--colgap',px(P.colGap)); cols.style.setProperty('--groupgap',px(P.groupGap)); cols.style.setProperty('--entgap',px(P.entGap));
+cols.innerHTML=[0,1].map(c=>`<div class="col">${P.groups.filter(g=>g[1]===c).map(([sub,,ents])=>`<div class="grp">
+  <div class="sub" style="font-size:${P.subSize}px">${sub}</div>
+  ${ents.map(([v,a,x])=>`<div class="ent"><div class="venue" style="font-size:${P.venueSize}px">${v}</div>
+    <div class="addr" style="font-size:${P.addrSize}px">${a}</div>${x?`<div class="acc" style="font-size:${P.addrSize}px">${x}</div>`:''}</div>`).join('')}
+</div>`).join('')}</div>`).join('');
+$('name').querySelector('.n').innerHTML=P.name.text; $('name').querySelector('.n').style.fontSize=px(P.name.size);
+$('name').querySelector('.r').innerHTML=P.name.role; $('name').querySelector('.r').style.fontSize=px(P.name.roleSize);
+$('logo').style.width=px(P.logoW); $('footer').style.setProperty('--fgap',px(P.footerGap));
+// size the panel to the taller column and hang the footer below it
+document.fonts.ready.then(()=>{
+  document.querySelectorAll('.serif .bd').forEach(el=>{const m=-(el.offsetWidth*(1-0.86)/2); el.style.marginLeft=el.style.marginRight=m+'px';});
+  const h=cols.getBoundingClientRect().height;
+  Object.assign($('panel').style,{left:px(PL),top:px(P.panelTop),width:px(PW),height:px(h+2*pv)});
+  $('footer').style.top=px(P.panelTop+h+2*pv+P.footerGapAbove);
+  document.body.dataset.layout=JSON.stringify({panelBottom:Math.round(P.panelTop+h+2*pv),footerBottom:Math.round($('footer').getBoundingClientRect().bottom)});
+});
+</script>
+</body></html>
