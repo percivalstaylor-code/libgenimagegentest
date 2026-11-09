@@ -1,8 +1,7 @@
 <!doctype html>
 <html><head><meta charset="utf-8">
 <!-- 1080x1350 early voting card: the "Early Voting centres" reference layout (two-tone heading, rounded
-     panel with ticked venues, candidate cut-out bottom-left overlapping the panel, last venue set beside him,
-     name block + logo along the bottom) in the light "Postal" style (white, navy/blue, Inter + condensed serif). -->
+     panel with ticked venues, name block + logo along the bottom; candidate photo left out for symmetry) in the light "Postal" style (white, navy/blue, Inter + condensed serif). -->
 <style>
 @font-face{font-family:"Serif Bold";src:url(DMSerifDisplay-Regular.ttf)}
 @font-face{font-family:"Serif Light";src:url(InstrumentSerif-Regular.ttf)}
@@ -30,8 +29,9 @@ h1 .acc{color:var(--blue)}
 .v .sub{font-family:"Serif Bold";color:var(--blue);line-height:1;letter-spacing:-.01em;transform:scaleX(.86);transform-origin:0 50%;white-space:nowrap;text-shadow:var(--shadow)}
 .v .det{margin-top:12px;font-family:"Inter";font-weight:600;color:var(--navy);letter-spacing:-.015em;line-height:1.32}
 .v .det .bar{color:var(--blue);font-weight:500;margin:0 .35em}
-#halo{border-radius:50%;background:radial-gradient(circle,rgba(0,83,154,.12) 0%,rgba(0,83,154,.04) 45%,rgba(0,83,154,0) 70%)}
+#footer{left:0;right:0;display:flex;justify-content:center;align-items:center;gap:40px}
 #name{text-align:center}
+#divider{width:2px;align-self:stretch;margin:6px 0;background:rgba(0,83,154,.28);border-radius:1px}
 #name .n{font-family:"Serif Bold";color:var(--navy);line-height:1;letter-spacing:-.01em;white-space:nowrap;text-shadow:var(--shadow);
   display:inline-block;transform:scaleX(.86)}
 #name .r{margin-top:8px;font-family:"Inter";font-weight:700;color:var(--blue);letter-spacing:.035em;text-transform:uppercase;line-height:1.25}
@@ -42,28 +42,29 @@ h1 .acc{color:var(--blue)}
   <div id="hours" class="abs center note"></div>
   <div id="panel" class="abs"></div>
   <div id="list"></div>
-  <div id="halo" class="abs"></div>
-  <img id="jim" class="abs" src="jim.png" alt="Jim Overend">
-  <div id="name" class="abs"><div class="n"></div><div class="r"></div></div>
-  <img id="logo" class="abs" src="logo-navy.png" alt="Jess Wilson's Liberal Victoria">
+  <div id="footer" class="abs">
+    <div id="name"><div class="n"></div><div class="r"></div></div>
+    <div id="divider"></div>
+    <img id="logo" src="logo-navy.png" alt="Jess Wilson's Liberal Victoria">
+  </div>
 </div>
 <script>
 const P = Object.assign({
   // Defaults = the published layout. Override any key via ?p={"key":value} (see render.js).
-  head:'<span class="acc">Early</span> voting centres', hTop:66, hSize:96,
-  dates:'<span class="lt">Pre<span style="margin:0 -.07em">-</span>poll is open</span> <span class="bd">18–27 November</span>', dTop:190, dSize:58,
-  hours:'9 am–6 pm, closed Sunday 22 November.', hrTop:272, hrSize:28,
-  panel:[60,346,960,664],                  // left, top, width, height
-  // venues: [suburb, venue, address, left, top, width]  (3rd sits beside the candidate, as in the reference)
+  head:'Greenvale<br><span class="acc">Early voting</span> centres', hTop:84, hSize:94,
+  dates:'<span class="lt">Pre<span style="margin:0 -.07em">-</span>poll is open</span> <span class="bd">18–27 November</span>', dTop:298, dSize:58,
+  hours:'9 am–6 pm, closed Sunday 22 November.', hrTop:380, hrSize:28,
+  panel:[60,458,960,568],                  // left, top, width, height
+  // venues: [suburb, venue, address, left, top, width] — one centred column; long lines wrap after the bar
   venues:[
-    ['Attwood','Attwood House Community Centre','202 Erinbank Crescent',112,398,880],
-    ['Craigieburn','Yellowbox Drive Voting Centre','23 Yellowbox Drive',112,572,880],
-    ['Roxburgh Park','Roxburgh Park Football Club','Lakeside Reserve, 75 Lakeside Drive',430,764,560],
+    ['Attwood','Attwood House Community Centre','202 Erinbank Crescent',140,514,820],
+    ['Craigieburn','Yellowbox Drive Voting Centre','23 Yellowbox Drive',140,676,820],
+    ['Roxburgh Park','Roxburgh Park Football Club','Lakeside Reserve, 75 Lakeside Drive',140,838,820],
   ],
   subSize:54, detSize:26,
-  jim:[-124,708,724], halo:[236,930,620],   // portrait left, top, width; halo centre x, y, diameter
-  name:{cx:782, top:1096, size:64, text:'Jim Overend', role:'Liberal for Greenvale', roleSize:22},
-  logo:[704,1218,156]
+  footerTop:1160,
+  name:{size:60, text:'Jim Overend', role:'Liberal for Greenvale', roleSize:21},
+  logoW:168
 }, JSON.parse(new URLSearchParams(location.search).get('p')||'{}'));
 const $=id=>document.getElementById(id), px=v=>v+'px';
 Object.assign($('h').style,{top:px(P.hTop),fontSize:px(P.hSize)}); $('h').innerHTML=P.head;
@@ -73,14 +74,12 @@ const [pl,pt,pw,ph]=P.panel; Object.assign($('panel').style,{left:px(pl),top:px(
 const tick=`<svg class="tick" viewBox="0 0 46 46" fill="none" stroke="#00539a" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 24.5 18.5 35 38 11"/></svg>`;
 $('list').innerHTML=P.venues.map(([s,v,a,x,y,w])=>`<div class="v" style="left:${x}px;top:${y}px;width:${w}px">${tick}<div>
   <div class="sub" style="font-size:${P.subSize}px">${s}</div>
-  <div class="det" style="font-size:${P.detSize}px">${v}<span class="bar">|</span>${w<700?'<br>':''}${a}</div></div></div>`).join('');
+  <div class="det" style="font-size:${P.detSize}px">${v}<span class="bar">|</span>${(v+a).length>60?'<br>':''}${a}</div></div></div>`).join('');
 document.fonts.ready.then(()=>document.querySelectorAll('.serif .bd').forEach(el=>{
   const w=el.offsetWidth, m=-(w*(1-0.86)/2); el.style.marginLeft=el.style.marginRight=m+'px'; }));
-const [jx,jy,jw]=P.jim; Object.assign($('jim').style,{left:px(jx),top:px(jy),width:px(jw)});
-const [hx,hy,hd]=P.halo; Object.assign($('halo').style,{left:px(hx-hd/2),top:px(hy-hd/2),width:px(hd),height:px(hd)});
-const N=P.name; Object.assign($('name').style,{left:px(N.cx-300),width:px(600),top:px(N.top)});
+const N=P.name; $('footer').style.top=px(P.footerTop);
 $('name').querySelector('.n').innerHTML=N.text; $('name').querySelector('.n').style.fontSize=px(N.size);
 $('name').querySelector('.r').innerHTML=N.role; $('name').querySelector('.r').style.fontSize=px(N.roleSize);
-const [lx,ly,lw]=P.logo; Object.assign($('logo').style,{left:px(lx),top:px(ly),width:px(lw)});
+$('logo').style.width=px(P.logoW);
 </script>
 </body></html>
