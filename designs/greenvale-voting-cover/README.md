@@ -3,7 +3,7 @@
 1080×1350 cover slide (plus `@2x`, 2160×2700) for the voting-information carousel, in the light campaign
 style used by the early-voting and election-day cards: underlined "Greenvale" title with "Where & when to
 vote" in blue; three "when" blocks (early voting, postal voting, election day); a "Swipe for every centre →"
-cue; a large Jim Overend cut-out on a pale-blue field, bleeding off the bottom; and the
+cue; a large Jim Overend cut-out on plain white, bleeding off the bottom; and the
 "Jim Overend / LIBERAL FOR GREENVALE" name block with the navy Liberal Victoria logo.
 
 ## Content — confirm against the VEC before posting
@@ -16,7 +16,7 @@ cue; a large Jim Overend cut-out on a pale-blue field, bleeding off the bottom; 
 
 ## Editing / re-rendering
 
-Copy and layout live in the defaults block of `source/cover.html` (`head`, `when`, `swipe`, `jim`, `field`,
+Copy and layout live in the defaults block of `source/cover.html` (`head`, `when`, `swipe`, `jim`,
 `foot`, `name`).
 
 ```bash

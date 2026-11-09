@@ -1,7 +1,7 @@
 <!doctype html>
 <html><head><meta charset="utf-8">
 <!-- 1080x1350 carousel cover: "Greenvale / Where & when to vote", three "when" blocks (early, postal,
-     election day), swipe cue, large Jim Overend cut-out, name block + navy logo. Light campaign style. -->
+     election day), swipe cue, large Jim Overend cut-out on white, name block + navy logo. Light campaign style. -->
 <style>
 @font-face{font-family:"Serif Bold";src:url(DMSerifDisplay-Regular.ttf)}
 @font-face{font-family:"Serif Light";src:url(InstrumentSerif-Regular.ttf)}
@@ -19,9 +19,6 @@ h1{font-family:"Inter";font-weight:800;color:var(--navy);letter-spacing:-.035em;
 h1 .acc{color:var(--blue)}
 h1 .gv{display:inline-block;font-size:1.3em;letter-spacing:-.04em;margin-bottom:.16em;
   text-decoration:underline;text-decoration-color:var(--blue);text-decoration-thickness:.075em;text-underline-offset:.13em}
-/* soft pale-blue field behind Jim, echoing the panel cards */
-#field{border-radius:48px;background:linear-gradient(170deg,#f1f6fc 0%,#e3edf8 100%);
-  box-shadow:inset 0 0 0 1.5px rgba(0,83,154,.08)}
 #jim{-webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 9%);mask-image:linear-gradient(90deg,transparent 0%,#000 9%)}
 #when{display:flex;flex-direction:column}
 .w .lab{font-family:"Inter";font-weight:700;color:var(--blue);letter-spacing:.06em;text-transform:uppercase;line-height:1}
@@ -38,7 +35,6 @@ h1 .gv{display:inline-block;font-size:1.3em;letter-spacing:-.04em;margin-bottom:
 </style></head>
 <body><div id="stage">
   <h1 id="h" class="abs center"></h1>
-  <div id="field" class="abs"></div>
   <img id="jim" class="abs" src="jim.png" alt="Jim Overend">
   <div id="when" class="abs"></div>
   <div id="swipe" class="abs"><span></span><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15M13 6l6 6-6 6"/></svg></div>
@@ -59,8 +55,7 @@ const P = Object.assign({
   ],
   whenBox:[72,350,520], whenGap:40, labSize:20, bigSize:52, detSize:22,
   swipe:{text:'Swipe for every centre', left:72, top:944, size:22},
-  field:[612,392,540,1060],                 // pale field behind Jim: left, top, width, height
-  jim:[436,560,900],                         // left, top, width (jim.png 1254x1202)
+  jim:[336,516,1060],                         // left, top, width (jim.png 1254x1202)
   foot:{left:72, top:1070, gap:16},
   name:{size:56, text:'Jim Overend', role:'Liberal for Greenvale', roleSize:21},
   logoW:150
@@ -71,7 +66,6 @@ const [wx,wy,ww]=P.whenBox; Object.assign($('when').style,{left:px(wx),top:px(wy
 $('when').innerHTML=P.when.map(([l,b,d])=>`<div class="w"><div class="lab" style="font-size:${P.labSize}px">${l}</div>
   <div class="big" style="font-size:${P.bigSize}px">${b}</div><div class="det" style="font-size:${P.detSize}px">${d}</div></div>`).join('');
 const S=P.swipe; Object.assign($('swipe').style,{left:px(S.left),top:px(S.top),fontSize:px(S.size)}); $('swipe').querySelector('span').innerHTML=S.text;
-const [fx,fy,fw,fh]=P.field; Object.assign($('field').style,{left:px(fx),top:px(fy),width:px(fw),height:px(fh)});
 const [jx,jy,jw]=P.jim; Object.assign($('jim').style,{left:px(jx),top:px(jy),width:px(jw)});
 Object.assign($('foot').style,{left:px(P.foot.left),top:px(P.foot.top),gap:px(P.foot.gap)});
 $('name').querySelector('.n').innerHTML=P.name.text; $('name').querySelector('.n').style.fontSize=px(P.name.size);
