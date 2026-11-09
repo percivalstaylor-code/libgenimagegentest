@@ -1,0 +1,81 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<!-- 1080x1350 carousel cover: "Greenvale / Where & when to vote", three "when" blocks (early, postal,
+     election day), swipe cue, large Jim Overend cut-out, name block + navy logo. Light campaign style. -->
+<style>
+@font-face{font-family:"Serif Bold";src:url(DMSerifDisplay-Regular.ttf)}
+@font-face{font-family:"Serif Light";src:url(InstrumentSerif-Regular.ttf)}
+@font-face{font-family:"Inter";font-weight:500;src:url(Inter-Medium.otf)}
+@font-face{font-family:"Inter";font-weight:600;src:url(Inter-SemiBold.otf)}
+@font-face{font-family:"Inter";font-weight:700;src:url(Inter-Bold.otf)}
+@font-face{font-family:"Inter";font-weight:800;src:url(Inter-ExtraBold.otf)}
+:root{ --navy:#162133; --blue:#00539a; --shadow:0 2px 6px rgba(20,32,60,.16); }
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1350px;overflow:hidden;background:#fff}
+#stage{position:relative;width:1080px;height:1350px;overflow:hidden;background:#fff}
+.abs{position:absolute}
+.center{left:0;right:0;text-align:center}
+h1{font-family:"Inter";font-weight:800;color:var(--navy);letter-spacing:-.035em;line-height:1;white-space:nowrap;text-shadow:var(--shadow)}
+h1 .acc{color:var(--blue)}
+h1 .gv{display:inline-block;font-size:1.3em;letter-spacing:-.04em;margin-bottom:.16em;
+  text-decoration:underline;text-decoration-color:var(--blue);text-decoration-thickness:.075em;text-underline-offset:.13em}
+/* soft pale-blue field behind Jim, echoing the panel cards */
+#field{border-radius:48px;background:linear-gradient(170deg,#f1f6fc 0%,#e3edf8 100%);
+  box-shadow:inset 0 0 0 1.5px rgba(0,83,154,.08)}
+#jim{-webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 9%);mask-image:linear-gradient(90deg,transparent 0%,#000 9%)}
+#when{display:flex;flex-direction:column}
+.w .lab{font-family:"Inter";font-weight:700;color:var(--blue);letter-spacing:.06em;text-transform:uppercase;line-height:1}
+.w .big{margin-top:8px;font-family:"Serif Bold";color:var(--navy);line-height:1.02;letter-spacing:-.01em;white-space:nowrap;
+  transform:scaleX(.86);transform-origin:0 50%;text-shadow:var(--shadow)}
+.w .det{margin-top:8px;font-family:"Inter";font-weight:600;color:rgba(22,33,51,.78);letter-spacing:-.015em;line-height:1.3}
+#swipe{display:inline-flex;align-items:center;gap:12px;padding:14px 26px;border-radius:999px;background:var(--blue);color:#fff;
+  font-family:"Inter";font-weight:700;letter-spacing:-.01em;box-shadow:0 10px 24px rgba(0,83,154,.25)}
+#swipe svg{width:1.1em;height:1.1em}
+#foot{display:flex;flex-direction:column;align-items:flex-start}
+#name .n{font-family:"Serif Bold";color:var(--navy);line-height:1;letter-spacing:-.01em;white-space:nowrap;text-shadow:var(--shadow);
+  display:inline-block;transform:scaleX(.86);transform-origin:0 50%}
+#name .r{margin-top:6px;font-family:"Inter";font-weight:700;color:var(--blue);letter-spacing:.035em;text-transform:uppercase;line-height:1.25}
+</style></head>
+<body><div id="stage">
+  <h1 id="h" class="abs center"></h1>
+  <div id="field" class="abs"></div>
+  <img id="jim" class="abs" src="jim.png" alt="Jim Overend">
+  <div id="when" class="abs"></div>
+  <div id="swipe" class="abs"><span></span><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15M13 6l6 6-6 6"/></svg></div>
+  <div id="foot" class="abs">
+    <div id="name"><div class="n"></div><div class="r"></div></div>
+    <img id="logo" src="logo-navy.png" alt="Jess Wilson's Liberal Victoria">
+  </div>
+</div>
+<script>
+const P = Object.assign({
+  // Defaults = the published layout. Override any key via ?p={"key":value} (see render.js).
+  head:'<span class="gv">Greenvale</span><br><span class="acc">Where &amp; when to vote</span>', hTop:52, hSize:84,
+  // when blocks: [label, big line, detail]
+  when:[
+    ['Early voting','18–27 November','9 am–6 pm, closed Sunday 22 Nov<br>3 pre-poll centres'],
+    ['Postal voting','Apply by 25 November','By 6 pm Wednesday. Post it back<br>by 6 pm Saturday 28 Nov'],
+    ['Election day','Saturday 28 November','8 am–6 pm<br>15 voting centres'],
+  ],
+  whenBox:[72,350,520], whenGap:40, labSize:20, bigSize:52, detSize:22,
+  swipe:{text:'Swipe for every centre', left:72, top:944, size:22},
+  field:[612,392,540,1060],                 // pale field behind Jim: left, top, width, height
+  jim:[436,560,900],                         // left, top, width (jim.png 1254x1202)
+  foot:{left:72, top:1070, gap:16},
+  name:{size:56, text:'Jim Overend', role:'Liberal for Greenvale', roleSize:21},
+  logoW:150
+}, JSON.parse(new URLSearchParams(location.search).get('p')||'{}'));
+const $=id=>document.getElementById(id), px=v=>v+'px';
+Object.assign($('h').style,{top:px(P.hTop),fontSize:px(P.hSize)}); $('h').innerHTML=P.head;
+const [wx,wy,ww]=P.whenBox; Object.assign($('when').style,{left:px(wx),top:px(wy),width:px(ww),gap:px(P.whenGap)});
+$('when').innerHTML=P.when.map(([l,b,d])=>`<div class="w"><div class="lab" style="font-size:${P.labSize}px">${l}</div>
+  <div class="big" style="font-size:${P.bigSize}px">${b}</div><div class="det" style="font-size:${P.detSize}px">${d}</div></div>`).join('');
+const S=P.swipe; Object.assign($('swipe').style,{left:px(S.left),top:px(S.top),fontSize:px(S.size)}); $('swipe').querySelector('span').innerHTML=S.text;
+const [fx,fy,fw,fh]=P.field; Object.assign($('field').style,{left:px(fx),top:px(fy),width:px(fw),height:px(fh)});
+const [jx,jy,jw]=P.jim; Object.assign($('jim').style,{left:px(jx),top:px(jy),width:px(jw)});
+Object.assign($('foot').style,{left:px(P.foot.left),top:px(P.foot.top),gap:px(P.foot.gap)});
+$('name').querySelector('.n').innerHTML=P.name.text; $('name').querySelector('.n').style.fontSize=px(P.name.size);
+$('name').querySelector('.r').innerHTML=P.name.role; $('name').querySelector('.r').style.fontSize=px(P.name.roleSize);
+$('logo').style.width=px(P.logoW);
+</script>
+</body></html>
