@@ -1,0 +1,98 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<!-- 1080x1350 policy post, slide 2: the Liberal plan to reduce crime (slide 1 = crime-labor.html).
+     Light polling-card style over the soft-blur aerial photo (bg.jpg) with a white wash. -->
+<style>
+@font-face{font-family:"Serif Bold";src:url(DMSerifDisplay-Regular.ttf)}
+@font-face{font-family:"Serif Light";src:url(InstrumentSerif-Regular.ttf)}
+@font-face{font-family:"Inter";font-weight:500;src:url(Inter-Medium.otf)}
+@font-face{font-family:"Inter";font-weight:600;src:url(Inter-SemiBold.otf)}
+@font-face{font-family:"Inter";font-weight:700;src:url(Inter-Bold.otf)}
+@font-face{font-family:"Inter";font-weight:800;src:url(Inter-ExtraBold.otf)}
+:root{ --navy:#162133; --blue:#00539a; --shadow:0 2px 6px rgba(20,32,60,.16); }
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1350px;overflow:hidden;background:#fff}
+#stage{position:relative;width:1080px;height:1350px;overflow:hidden;background:#fff}
+.abs{position:absolute}
+#bg{inset:0;width:1080px;height:1350px;object-fit:cover}
+#wash{inset:0;background:linear-gradient(180deg,rgba(255,255,255,var(--w-top)) 0%,rgba(255,255,255,var(--w-top)) 20%,rgba(255,255,255,var(--w-mid)) 34%,rgba(255,255,255,var(--w-mid)) 76%,rgba(255,255,255,var(--w-bot)) 90%)}
+#col{left:60px;right:60px;top:var(--top);display:flex;flex-direction:column;align-items:center;text-align:center}
+h1{font-family:"Inter";font-weight:800;color:var(--navy);letter-spacing:-.035em;line-height:1.02;white-space:nowrap;text-shadow:var(--shadow)}
+h1 .acc{color:var(--blue)}
+h1 .ul{text-decoration:underline;text-decoration-color:var(--blue);text-decoration-thickness:.07em;text-underline-offset:.12em}
+.serif{color:var(--blue);line-height:1.1;letter-spacing:-.015em;text-shadow:var(--shadow)}
+.serif .lt{font-family:"Serif Light";font-size:1.12em;letter-spacing:-.02em}
+.serif .bd{font-family:"Serif Bold";display:inline-block;transform:scaleX(.86)}
+.card{width:100%;border-radius:36px;background:rgba(255,255,255,.93);backdrop-filter:blur(6px);
+  box-shadow:inset 0 0 0 1.5px rgba(0,83,154,.10),0 18px 40px rgba(20,40,80,.10)}
+#statcard{padding:26px 34px 32px}
+#statcard .lab{font-family:"Inter";font-weight:700;color:var(--blue);letter-spacing:.07em;text-transform:uppercase;line-height:1;margin-bottom:18px}
+/* "The Liberal Plan" kicker: solid blue pill, counterpart to slide 1's red swipe pill */
+#kicker{display:inline-flex;align-items:center;gap:12px;padding:12px 26px;border-radius:999px;background:var(--blue);color:#fff;
+  font-family:"Inter";font-weight:800;letter-spacing:.08em;text-transform:uppercase;box-shadow:0 10px 24px rgba(0,83,154,.25)}
+#stats{display:flex}
+.st{flex:1;padding:0 10px}
+.st .n{font-family:"Serif Bold";color:var(--blue);line-height:1;display:inline-block;transform:scaleX(.86);text-shadow:var(--shadow)}
+.st .l{margin-top:8px;font-family:"Inter";font-weight:700;color:var(--navy);letter-spacing:-.015em;line-height:1.25}
+#ticks{display:grid;grid-template-columns:1fr 1fr;gap:16px 30px;text-align:left;margin-top:30px}
+.tk{display:flex;gap:14px;align-items:flex-start;font-family:"Inter";font-weight:700;color:var(--navy);letter-spacing:-.015em;line-height:1.25;text-shadow:var(--shadow)}
+.tk svg{flex:none;width:30px;height:30px;margin-top:-2px}
+#quote{padding:30px 44px 28px;text-align:left;background:linear-gradient(170deg,rgba(241,246,252,.94),rgba(226,236,248,.94));position:relative}
+#quote .q{font-family:"Serif Light";color:var(--navy);line-height:1.12;letter-spacing:-.015em}
+#quote .q .bd{font-family:"Serif Bold";color:var(--blue);display:inline-block;transform:scaleX(.86);transform-origin:0 50%}
+#quote .mark{position:absolute;left:30px;top:-6px;font-family:"Serif Bold";color:var(--blue);opacity:.18;line-height:1}
+#quote .who{margin-top:14px;font-family:"Inter";font-weight:700;color:var(--blue);letter-spacing:.04em;text-transform:uppercase}
+#stats .st .l b{font-weight:800}
+#foot{display:flex;flex-direction:column;align-items:center}
+#name .n{font-family:"Serif Bold";color:var(--navy);line-height:1;letter-spacing:-.01em;white-space:nowrap;text-shadow:var(--shadow);display:inline-block;transform:scaleX(.86)}
+#name .r{margin-top:6px;font-family:"Inter";font-weight:700;color:var(--blue);letter-spacing:.035em;text-transform:uppercase;line-height:1.25}
+</style></head>
+<body><div id="stage">
+  <img id="bg" class="abs" src="bg.jpg" alt="">
+  <div id="wash" class="abs"></div>
+  <div id="col" class="abs">
+    <div id="kicker"></div>
+    <h1 id="h"></h1>
+    <div id="lead" class="serif"></div>
+    <div id="statcard" class="card"><div class="lab"></div><div id="stats"></div><div id="ticks"></div></div>
+    <div id="quote" class="card"><div class="mark">“</div><div class="q"></div><div class="who"></div></div>
+    <div id="foot"><div id="name"><div class="n"></div><div class="r"></div></div><img id="logo" src="logo-navy.png" alt="Jess Wilson's Liberal Victoria"></div>
+  </div>
+</div>
+<script>
+const P = Object.assign({
+  // Defaults = the published layout. Override any key via ?p={"key":value} (see render.js).
+  wash:[.86,.18,.86], top:95,
+  kicker:'The Liberal Plan', kickerSize:27, kickerGap:28, cardLab:'What we’ll deliver', labSize:18,
+  head:'Reduce crime.<br><span class="acc ul">Keep Victorians safe.</span>', hSize:84,
+  lead:'<span class="lt">More police on the beat and</span> <span class="bd">real consequences</span>', leadSize:44,
+  stats:[['3,000','more police<br>officers'],['40+','police stations<br>reopened'],['200','more PSOs, back at<br>every metro station']],
+  statN:80, statL:21, statD:18,
+  ticks:['One-strike rule for bail','Adult Crime, Adult Time','Tougher on car theft &amp; arson','New Court of Criminal Appeal','Stronger police pursuit powers','Proven early intervention programs'],
+  tickSize:22,
+  quote:{text:'We must reduce crime in our community so <span class="bd">Victorians can feel safe again.”</span>',
+    size:36, who:'Our Plan to Keep Victorians Safe', whoSize:16, markSize:130},
+  gaps:[24,36,26,40],                    // after head, lead, statcard, quote
+  name:{size:56, text:'Jim Overend', role:'Liberal for Greenvale', roleSize:20}, logoW:150, footGap:14
+}, JSON.parse(new URLSearchParams(location.search).get('p')||'{}'));
+const $=id=>document.getElementById(id), px=v=>v+'px';
+const W=$('wash').style; W.setProperty('--w-top',P.wash[0]); W.setProperty('--w-mid',P.wash[1]); W.setProperty('--w-bot',P.wash[2]);
+$('col').style.setProperty('--top',px(P.top));
+$('h').innerHTML=P.head; $('h').style.fontSize=px(P.hSize);
+$('lead').innerHTML=P.lead; $('lead').style.fontSize=px(P.leadSize);
+$('stats').innerHTML=P.stats.map(([n,l,d])=>`<div class="st"><div class="n" style="font-size:${P.statN}px">${n}</div><div class="l" style="font-size:${P.statL}px">${l}</div>${d?`<div class="d" style="font-size:${P.statD}px">${d}</div>`:''}</div>`).join('');
+const tick=`<svg viewBox="0 0 46 46" fill="none" stroke="#00539a" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 24.5 18.5 35 38 11"/></svg>`;
+$('ticks').innerHTML=P.ticks.map(t=>`<div class="tk" style="font-size:${P.tickSize}px">${tick}<span>${t}</span></div>`).join('');
+const Q=P.quote; $('quote').querySelector('.q').innerHTML='“'+Q.text; $('quote').querySelector('.q').style.fontSize=px(Q.size);
+$('quote').querySelector('.who').innerHTML=Q.who; $('quote').querySelector('.who').style.fontSize=px(Q.whoSize);
+$('quote').querySelector('.mark').style.fontSize=px(Q.markSize); $('quote').querySelector('.mark').style.display='none';
+$('kicker').innerHTML=P.kicker; $('kicker').style.fontSize=px(P.kickerSize); $('kicker').style.marginBottom=px(P.kickerGap);
+$('statcard').querySelector('.lab').innerHTML=P.cardLab; $('statcard').querySelector('.lab').style.fontSize=px(P.labSize);
+['h','lead','statcard','quote'].forEach((id,i)=>$(id).style.marginBottom=px(P.gaps[i]));
+$('name').querySelector('.n').innerHTML=P.name.text; $('name').querySelector('.n').style.fontSize=px(P.name.size);
+$('name').querySelector('.r').innerHTML=P.name.role; $('name').querySelector('.r').style.fontSize=px(P.name.roleSize);
+$('logo').style.width=px(P.logoW);
+document.fonts.ready.then(()=>{document.querySelectorAll('#quote .bd').forEach(el=>{el.style.marginRight=(-el.offsetWidth*0.14)+'px';});});
+document.fonts.ready.then(()=>document.querySelectorAll('.serif .bd').forEach(el=>{const m=-(el.offsetWidth*(1-0.86)/2); el.style.marginLeft=el.style.marginRight=m+'px';})); $('foot').style.gap=px(P.footGap);
+</script>
+</body></html>
