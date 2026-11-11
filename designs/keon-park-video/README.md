@@ -4,8 +4,10 @@
 skyrail b-roll (`public/broll.mp4`).
 
 - Part 1 from 0.30 s; part 2 from 0.53 s (drops the repeated "Platform") to 16.75 s (keeps "Thank you").
-- B-roll push-in over "…the government stupidly decided to build a train station platform", covering the
-  splice between takes.
+- Zoom-blur transition at the splice between takes.
+- B-roll push-in over "where there's all this space on the other side for a platform", handing back to the
+  speaker as "Utter incompetence" lands.
+- Jess Wilson's Liberal Victoria watermark top-left (`public/logo-white.png`) with soft corner shading.
 - Punch-ins on "Utter incompetence" and "Vote 1 for Hamza".
 - Word-synced subtitles (`src/captions.json`, transcribed with faster-whisper `medium.en`, corrected:
   "Creon Park" → "Keon Park"), active word on a Liberal-blue pill. Short fade in/out.
