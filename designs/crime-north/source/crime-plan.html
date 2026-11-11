@@ -42,7 +42,7 @@ h1 .ul{text-decoration:underline;text-decoration-color:var(--blue);text-decorati
 .local{display:flex;gap:26px;align-items:center;padding:28px 40px;text-align:left;
   background:linear-gradient(160deg,#0a62b3 0%,#00539a 55%,#004480 100%);box-shadow:0 18px 40px rgba(0,60,120,.28)}
 .local .ic{flex:none;border-radius:50%;background:#fff;display:grid;place-items:center;box-shadow:0 6px 16px rgba(0,30,70,.25)}
-.local .lab{font-family:"Inter";font-weight:700;color:rgba(255,255,255,.78);letter-spacing:.08em;text-transform:uppercase;line-height:1}
+.local .lab{font-family:"Inter";font-weight:800;color:#fff;letter-spacing:.08em;text-transform:uppercase;line-height:1}
 .local .t{margin-top:10px;font-family:"Serif Bold";color:#fff;line-height:1;letter-spacing:-.01em;white-space:nowrap;display:inline-block;transform:scaleX(.86);transform-origin:0 50%}
 .local .s{margin-top:10px;font-family:"Inter";font-weight:700;color:#fff;letter-spacing:-.015em;line-height:1.25}
 #stats .st .l b{font-weight:800}
@@ -67,7 +67,7 @@ h1 .ul{text-decoration:underline;text-decoration-color:var(--blue);text-decorati
 <script>
 const P = Object.assign({
   // Defaults = the published layout. Override any key via ?p={"key":value} (see render.js).
-  wash:[.86,.18,.86], top:86,
+  wash:[.86,.18,.86], top:82,
   kicker:'The Liberal Plan', kickerSize:27, kickerGap:28, cardLab:'What we’ll deliver for all Victorians', labSize:18,
   head:'Reduce crime.<br><span class="acc ul">Keep Victorians safe.</span>', hSize:84,
   lead:'<span class="lt">More police on the beat and</span> <span class="bd">real consequences</span>', leadSize:44,
@@ -76,9 +76,9 @@ const P = Object.assign({
   ticks:[],                              // replaced by the local commitment cards
   tickSize:22,
   // local commitment cards: [label, title, sub]
-  locals:[['For our community','Craigieburn Police Station','Reopened 24 hours a day, 7 days a week'],
-          ['For our community','PSOs back at our stations','Coolaroo, Jacana, Oak Park, Gowrie and Fawkner']],
-  localLab:17, localTitle:48, localSub:24, localIcon:80, localGap:18,
+  locals:[['For our communities','Craigieburn Police Station','Reopened 24 hours a day, 7 days a week'],
+          ['For our communities','PSOs back at our stations','Coolaroo, Jacana, Oak Park, Gowrie and Fawkner']],
+  localLab:21, localTitle:48, localSub:24, localIcon:80, localGap:18,
   gaps:[24,36,26,40],                    // after head, lead, statcard, locals
   // candidates, ordered by electorate
   cands:[['Baris Duzova','Liberal for Broadmeadows'],['Jim Overend','Liberal for Greenvale'],['Eddie Dadisho','Liberal for Kalkallo']],

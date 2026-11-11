@@ -66,8 +66,8 @@ Serif line: *More police on the beat and **real consequences***
 - **40+** police stations reopened
 - **200** more PSOs, back at every metro station
 - Local commitment cards (solid blue), replacing the tick list. Stats card heading: "What we’ll deliver for all Victorians".
-  -  **"For our community — Craigieburn Police Station, reopened 24 hours a day, 7 days a week"** (answers slide 1's "cut from 24/7 to two days a week")
-  - **"For our community — PSOs back at our stations: Coolaroo, Jacana, Oak Park, Gowrie and Fawkner"**
+  -  **"For our communities — Craigieburn Police Station, reopened 24 hours a day, 7 days a week"** (answers slide 1's "cut from 24/7 to two days a week")
+  - **"For our communities — PSOs back at our stations: Coolaroo, Jacana, Oak Park, Gowrie and Fawkner"**
     (Roxburgh Park is on slide 1's stripped list but not on this card, as supplied — check whether to add it)
 
 **Note on PSO numbers:** the policy document says 270 additional PSOs for stations plus 200 for shopping-centre strike teams. The campaign's latest summary says "200 additional PSOs … return them to every single metropolitan train station". The slide follows the latest summary. Confirm which one is current.
