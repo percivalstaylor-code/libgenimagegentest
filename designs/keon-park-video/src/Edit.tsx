@@ -9,8 +9,13 @@ const A = { from: 0, start: Math.round(data.aIn * FPS), end: Math.round(data.aIn
 const B = { from: data.aLen, start: 16, end: Math.round(data.bOut * FPS) };
 const lenA = A.end - A.start, lenB = B.end - B.start;
 export const totalFrames = lenA + lenB;
-// b-roll covers "where there's all this space on the other side for a platform", ending as "Utter" lands
-const BROLL = { from: 511, dur: 128, srcFrames: 122 };
+// b-roll split into two shots (source broll.mp4 is 122 frames):
+//  1) over "station platform | right next", hiding the splice between the takes (which don't match)
+//  2) over "this space on the other side for a platform", ending as "Utter" lands
+const BROLLS = [
+  { from: 420, dur: 38, srcStart: 0, srcEnd: 38 },
+  { from: 539, dur: 100, srcStart: 40, srcEnd: 122 },
+];
 // punch-ins on emphasis (timeline seconds of "Utter" and "Vote")
 const PUNCH = [{ at: 21.3, scale: 1.06 }, { at: 28.44, scale: 1.11 }];
 
@@ -23,18 +28,6 @@ const ramp = (f: number, len: number, inF: number, outF: number) =>
 
 const fill = { width: "100%", height: "100%", objectFit: "cover" } as const;
 
-/** zoom-blur transition at the splice between the two takes */
-const SpliceOut: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const frame = useCurrentFrame(); const { fps } = useVideoConfig();
-  const p = easeIn(frame, lenA - theme.timing.spliceOut * fps, lenA);
-  return <AbsoluteFill style={{ transform: `scale(${1 + 0.1 * p})`, filter: `blur(${8 * p}px)` }}>{children}</AbsoluteFill>;
-};
-const SpliceIn: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const frame = useCurrentFrame(); const { fps } = useVideoConfig();
-  const p = 1 - easeOut(frame, 0, theme.timing.spliceIn * fps);
-  return <AbsoluteFill style={{ transform: `scale(${1 + 0.1 * p})`, filter: `blur(${8 * p}px)` }}>{children}</AbsoluteFill>;
-};
-
 const Punch: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const frame = useCurrentFrame(); const { fps } = useVideoConfig();
   let scale = 1;
@@ -45,15 +38,15 @@ const Punch: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return <AbsoluteFill style={{ transform: `scale(${scale})`, transformOrigin: "30% 52%" }}>{children}</AbsoluteFill>;
 };
 
-const BRoll: React.FC = () => {
+const BRoll: React.FC<{ dur: number; srcStart: number; srcEnd: number }> = ({ dur, srcStart, srcEnd }) => {
   const frame = useCurrentFrame(); const { fps } = useVideoConfig();
   const enter = easeOut(frame, 0, theme.timing.brollIn * fps);
-  const exit = easeIn(frame, BROLL.dur - 1 - theme.timing.brollOut * fps, BROLL.dur - 1);
-  const kenBurns = interpolate(frame, [0, BROLL.dur], [1, 1.07], { ...clamp, easing: theme.ease.inOut });
+  const exit = easeIn(frame, dur - 1 - theme.timing.brollOut * fps, dur - 1);
+  const kenBurns = interpolate(frame, [0, dur], [1, 1.07], { ...clamp, easing: theme.ease.inOut });
   const scale = interpolate(enter, [0, 1], [1.16, 1]) * kenBurns * interpolate(exit, [0, 1], [1, 1.06]);
   return (
     <AbsoluteFill style={{ opacity: Math.min(enter, 1 - exit), transform: `scale(${scale})`, filter: `blur(${6 * (1 - enter) + 6 * exit}px)` }}>
-      <OffthreadVideo src={staticFile("broll.mp4")} muted playbackRate={BROLL.srcFrames / BROLL.dur}
+      <OffthreadVideo src={staticFile("broll.mp4")} muted startFrom={srcStart} playbackRate={(srcEnd - srcStart) / dur}
         style={{ ...fill, filter: "saturate(1.05) contrast(1.04)" }} />
     </AbsoluteFill>
   );
@@ -82,18 +75,18 @@ export const Edit: React.FC = () => {
   return (
     <AbsoluteFill style={{ backgroundColor: theme.colors.black }}>
       <Sequence from={A.from} durationInFrames={lenA}>
-        <SpliceOut>
-          <OffthreadVideo src={staticFile("part1.mp4")} startFrom={A.start} endAt={A.end}
-            volume={(f) => ramp(f, lenA, 3, join)} style={fill} />
-        </SpliceOut>
+        <OffthreadVideo src={staticFile("part1.mp4")} startFrom={A.start} endAt={A.end}
+          volume={(f) => ramp(f, lenA, 3, join)} style={fill} />
       </Sequence>
       <Sequence from={B.from} durationInFrames={lenB}>
-        <SpliceIn><Punch>
+        <Punch>
           <OffthreadVideo src={staticFile("part2.mp4")} startFrom={B.start} endAt={B.end}
             volume={(f) => ramp(f, lenB, join, fadeOut)} style={fill} />
-        </Punch></SpliceIn>
+        </Punch>
       </Sequence>
-      <Sequence from={BROLL.from} durationInFrames={BROLL.dur}><BRoll /></Sequence>
+      {BROLLS.map((b) => (
+        <Sequence key={b.from} from={b.from} durationInFrames={b.dur}><BRoll {...b} /></Sequence>
+      ))}
       {/* subtle vignette above footage, below graphics */}
       <AbsoluteFill style={{ pointerEvents: "none", background: `radial-gradient(ellipse at 50% 45%, transparent 60%, ${theme.colors.vignette} 100%)` }} />
       <Watermark />

@@ -25,10 +25,8 @@ export const theme = {
     fadeIn: 0.2,        // s, open from black
     fadeOut: 0.4,       // s, close to black (video + audio)
     audioJoin: 0.1,     // s, tiny audio ramps at the splice to avoid clicks
-    brollIn: 0.3,       // s, b-roll entrance (push-in + blur clear)
-    brollOut: 0.27,     // s, b-roll exit (faster than entrance)
-    spliceOut: 0.23,    // s, zoom-blur out of take 1
-    spliceIn: 0.3,      // s, zoom-blur into take 2
+    brollIn: 0.23,      // s, b-roll entrance (push-in + blur clear)
+    brollOut: 0.2,      // s, b-roll exit (faster than entrance)
   },
   watermark: { left: 52, top: 150, width: 228, opacity: 0.95, delay: 0.4, scrim: "rgba(0, 0, 0, 0.32)" },
   caption: { size: 86, centerY: 0.73, maxWidth: 940, stagger: 3 },
