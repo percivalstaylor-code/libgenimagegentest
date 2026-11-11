@@ -1,6 +1,6 @@
 <!doctype html>
 <html><head><meta charset="utf-8">
-<!-- 1080x1350 policy post: Liberal Technical Colleges commitment, tailored to the North.
+<!-- 1080x1350 policy post, slide 2: the Liberal Technical Colleges plan (slide 1 = labor-tafe.html).
      Light polling-card style over the soft-blur aerial photo (bg.jpg) with a white wash. -->
 <style>
 @font-face{font-family:"Serif Bold";src:url(DMSerifDisplay-Regular.ttf)}
@@ -34,12 +34,12 @@ h1 .ul{text-decoration:underline;text-decoration-color:var(--blue);text-decorati
 #ticks{display:grid;grid-template-columns:1fr 1fr;gap:16px 30px;text-align:left;margin-top:26px;padding-top:26px;border-top:2px solid rgba(0,83,154,.12)}
 .tk{display:flex;gap:14px;align-items:flex-start;font-family:"Inter";font-weight:700;color:var(--navy);letter-spacing:-.015em;line-height:1.25;text-shadow:var(--shadow)}
 .tk svg{flex:none;width:30px;height:30px;margin-top:-2px}
-#north{padding:26px 40px 24px;text-align:left;background:linear-gradient(170deg,rgba(241,246,252,.92),rgba(226,236,248,.92))}
-#north .h{font-family:"Serif Bold";color:var(--blue);line-height:1;display:inline-block;transform:scaleX(.86);transform-origin:0 50%;white-space:nowrap}
-#north .rows{margin-top:16px;display:flex;flex-direction:column;gap:12px}
-#north .r{display:flex;gap:18px;align-items:baseline;font-family:"Inter";font-weight:600;color:var(--navy);letter-spacing:-.015em;line-height:1.3}
-#north .r b{flex:none;width:5.2em;font-family:"Inter";font-weight:800;color:var(--blue);letter-spacing:-.02em}
-#north .src{margin-top:12px;font-family:"Inter";font-weight:500;color:rgba(22,33,51,.55);letter-spacing:-.005em}
+#quote{padding:30px 44px 28px;text-align:left;background:linear-gradient(170deg,rgba(241,246,252,.94),rgba(226,236,248,.94));position:relative}
+#quote .q{font-family:"Serif Light";color:var(--navy);line-height:1.12;letter-spacing:-.015em}
+#quote .q .bd{font-family:"Serif Bold";color:var(--blue);display:inline-block;transform:scaleX(.86);transform-origin:0 50%}
+#quote .mark{position:absolute;left:30px;top:-6px;font-family:"Serif Bold";color:var(--blue);opacity:.18;line-height:1}
+#quote .who{margin-top:14px;font-family:"Inter";font-weight:700;color:var(--blue);letter-spacing:.04em;text-transform:uppercase}
+#stats .st .l b{font-weight:800}
 #foot{display:flex;flex-direction:column;align-items:center}
 #name .n{font-family:"Serif Bold";color:var(--navy);line-height:1;letter-spacing:-.01em;white-space:nowrap;text-shadow:var(--shadow);display:inline-block;transform:scaleX(.86)}
 #name .r{margin-top:6px;font-family:"Inter";font-weight:700;color:var(--blue);letter-spacing:.035em;text-transform:uppercase;line-height:1.25}
@@ -51,27 +51,24 @@ h1 .ul{text-decoration:underline;text-decoration-color:var(--blue);text-decorati
     <h1 id="h"></h1>
     <div id="lead" class="serif"></div>
     <div id="statcard" class="card"><div id="stats"></div><div id="ticks"></div></div>
-    <div id="north" class="card"><div class="h"></div><div class="rows"></div><div class="src"></div></div>
+    <div id="quote" class="card"><div class="mark">“</div><div class="q"></div><div class="who"></div></div>
     <div id="foot"><div id="name"><div class="n"></div><div class="r"></div></div><img id="logo" src="logo-navy.png" alt="Jess Wilson's Liberal Victoria"></div>
   </div>
 </div>
 <script>
 const P = Object.assign({
   // Defaults = the published layout. Override any key via ?p={"key":value} (see render.js).
-  wash:[.86,.18,.86], top:104,
+  wash:[.86,.18,.86], top:122,
   head:'Bringing back<br><span class="acc ul">Technical Colleges</span>', hSize:88,
   lead:'<span class="lt">Training the next generation of</span> <span class="bd">tradies sooner</span>', leadSize:46,
   // stats from the 11 Oct 2026 Liberal commitment
-  stats:[['10','new Technical Colleges<br>across Victoria'],['5,000','students in<br>Years 10–12'],['500','students per college,<br>at schools &amp; TAFEs']],
+  stats:[['10','new Technical Colleges<br>across Victoria'],['$222m','over eight years, offset by<br>responsible budget savings']],
   statN:80, statL:21,
-  ticks:['Plumbing, electrical &amp; carpentry','Healthcare &amp; hospitality','Partnered with local industry','Pathways into apprenticeships'],
+  ticks:['Plumbing, electrical &amp; carpentry','Healthcare &amp; hospitality','Full-time, with dedicated teachers','Real vocational qualifications','Partnered with local industry','Pathways into apprenticeships'],
   tickSize:22,
-  north:{head:'Why it matters in the North', hSize:44,
-    rows:[['15,700','Hume locals already work as technicians and trades workers'],
-          ['+4,000','more Hume locals working in construction in five years — one of the biggest jumps of any industry']],
-    rowSize:23,
-    src:'Hume City, ABS Census 2016–2021 (Hume City Council economic profile, economy.id).', srcSize:14},
-  gaps:[24,40,30,48],                    // after head, lead, statcard, north
+  quote:{text:'Not every student thrives in a traditional classroom, and not every young person wants to go to university. <span class="bd">They deserve another pathway to a great career.”</span>',
+    size:34, who:'Jess Wilson, Leader of the Opposition', whoSize:16, markSize:130},
+  gaps:[24,36,26,40],                    // after head, lead, statcard, quote
   name:{size:56, text:'Jim Overend', role:'Liberal for Greenvale', roleSize:20}, logoW:150, footGap:14
 }, JSON.parse(new URLSearchParams(location.search).get('p')||'{}'));
 const $=id=>document.getElementById(id), px=v=>v+'px';
@@ -82,13 +79,14 @@ $('lead').innerHTML=P.lead; $('lead').style.fontSize=px(P.leadSize);
 $('stats').innerHTML=P.stats.map(([n,l])=>`<div class="st"><div class="n" style="font-size:${P.statN}px">${n}</div><div class="l" style="font-size:${P.statL}px">${l}</div></div>`).join('');
 const tick=`<svg viewBox="0 0 46 46" fill="none" stroke="#00539a" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 24.5 18.5 35 38 11"/></svg>`;
 $('ticks').innerHTML=P.ticks.map(t=>`<div class="tk" style="font-size:${P.tickSize}px">${tick}<span>${t}</span></div>`).join('');
-const N=P.north; $('north').querySelector('.h').innerHTML=N.head; $('north').querySelector('.h').style.fontSize=px(N.hSize);
-$('north').querySelector('.rows').innerHTML=N.rows.map(([b,t])=>`<div class="r" style="font-size:${N.rowSize}px"><b style="font-size:${N.rowSize*1.35}px">${b}</b><span>${t}</span></div>`).join('');
-$('north').querySelector('.src').innerHTML=N.src; $('north').querySelector('.src').style.fontSize=px(N.srcSize);
-['h','lead','statcard','north'].forEach((id,i)=>$(id).style.marginBottom=px(P.gaps[i]));
+const Q=P.quote; $('quote').querySelector('.q').innerHTML='“'+Q.text; $('quote').querySelector('.q').style.fontSize=px(Q.size);
+$('quote').querySelector('.who').innerHTML=Q.who; $('quote').querySelector('.who').style.fontSize=px(Q.whoSize);
+$('quote').querySelector('.mark').style.fontSize=px(Q.markSize); $('quote').querySelector('.mark').style.display='none';
+['h','lead','statcard','quote'].forEach((id,i)=>$(id).style.marginBottom=px(P.gaps[i]));
 $('name').querySelector('.n').innerHTML=P.name.text; $('name').querySelector('.n').style.fontSize=px(P.name.size);
 $('name').querySelector('.r').innerHTML=P.name.role; $('name').querySelector('.r').style.fontSize=px(P.name.roleSize);
 $('logo').style.width=px(P.logoW);
+document.fonts.ready.then(()=>{document.querySelectorAll('#quote .bd').forEach(el=>{el.style.marginRight=(-el.offsetWidth*0.14)+'px';});});
 document.fonts.ready.then(()=>document.querySelectorAll('.serif .bd').forEach(el=>{const m=-(el.offsetWidth*(1-0.86)/2); el.style.marginLeft=el.style.marginRight=m+'px';})); $('foot').style.gap=px(P.footGap);
 </script>
 </body></html>

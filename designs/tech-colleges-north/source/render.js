@@ -1,6 +1,6 @@
 // Renders a slide page to PNG with headless Chromium (Playwright).
 //
-//   node render.js                 -> tech-colleges.html -> ../tech-colleges-north.png (+ @2x)
+//   node render.js  -> slide 1 (labor-tafe.html -> ../tech-colleges-1-labor.png); slide 2: node render.js '{}' tech-colleges.html tech-colleges-2-plan
 //   any page's defaults can be overridden with the JSON params argument (see the defaults block in each page)
 //
 // Needs `playwright` resolvable from Node (npm i playwright) and a Chromium it can launch.
@@ -9,8 +9,8 @@ const path = require('path');
 
 (async () => {
   const params = process.argv[2] || '{}';
-  const pageFile = process.argv[3] || 'tech-colleges.html';
-  const outBase = process.argv[4] || 'tech-colleges-north';
+  const pageFile = process.argv[3] || 'labor-tafe.html';
+  const outBase = process.argv[4] || 'tech-colleges-1-labor';
   const scales = (process.argv[5] || '1,2').split(',').map(Number);   // e.g. '1,2,4' adds a 4320px @4x
   JSON.parse(params); // fail fast on bad JSON
   const url = 'file://' + path.join(__dirname, pageFile) + '?p=' + encodeURIComponent(params);
