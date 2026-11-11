@@ -23,7 +23,7 @@ Across Victoria, 723 people became a victim of crime every single day in the yea
 Our Liberal and Nationals team has a comprehensive plan to reduce crime and keep Victorians safe. We will:
 
 ✅ Recruit 3,000 more police officers
-✅ Reopen the more than 40 police stations closed under Labor
+✅ Reopen the more than 40 police stations closed under Labor, including reopening Craigieburn Police Station 24 hours a day, 7 days a week
 ✅ Recruit 200 additional PSOs and return them to every single metropolitan train station
 ✅ Implement real Adult Crime, Adult Time laws, including for arson and motor vehicle theft
 ✅ Introduce a tough new one-strike rule for bail
@@ -63,11 +63,11 @@ Serif line: *More police on the beat and **real consequences***
 - **40+** police stations reopened
 - **200** more PSOs, back at every metro station
 - Ticks: one-strike rule for bail · Adult Crime, Adult Time · tougher on car theft & arson · new Court of Criminal Appeal · stronger police pursuit powers · proven early intervention programs
-- Quote: "We must reduce crime in our community so Victorians can feel safe again." (*Our Plan to Keep Victorians Safe*)
+- Local commitment card (solid blue): **"For our community — Craigieburn Police Station, reopened 24 hours a day, 7 days a week"** (campaign commitment; answers slide 1's "cut from 24/7 to two days a week")
 
 **Note on PSO numbers:** the policy document says 270 additional PSOs for stations plus 200 for shopping-centre strike teams. The campaign's latest summary says "200 additional PSOs … return them to every single metropolitan train station". The slide follows the latest summary. Confirm which one is current.
 
-The slide does **not** claim Craigieburn station will reopen. The plan commits to reopening "the more than 40 stations closed or with reduced hours" but doesn't name them. If Craigieburn is confirmed on that list, a line like "including Craigieburn" would be strong local copy.
+The Craigieburn commitment (reopen, 24/7) was supplied by the campaign — **confirm it is an announced Liberal commitment** before posting.
 
 ---
 
