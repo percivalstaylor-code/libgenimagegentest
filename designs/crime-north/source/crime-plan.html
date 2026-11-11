@@ -44,8 +44,10 @@ h1 .ul{text-decoration:underline;text-decoration-color:var(--blue);text-decorati
 #quote .who{margin-top:14px;font-family:"Inter";font-weight:700;color:var(--blue);letter-spacing:.04em;text-transform:uppercase}
 #stats .st .l b{font-weight:800}
 #foot{display:flex;flex-direction:column;align-items:center}
-#name .n{font-family:"Serif Bold";color:var(--navy);line-height:1;letter-spacing:-.01em;white-space:nowrap;text-shadow:var(--shadow);display:inline-block;transform:scaleX(.86)}
-#name .r{margin-top:6px;font-family:"Inter";font-weight:700;color:var(--blue);letter-spacing:.035em;text-transform:uppercase;line-height:1.25}
+#names{display:flex;justify-content:center;align-items:flex-start;gap:var(--ngap)}
+.cand{text-align:center}
+.cand .n{font-family:"Serif Bold";color:var(--navy);line-height:1;letter-spacing:-.01em;white-space:nowrap;text-shadow:var(--shadow);display:inline-block;transform:scaleX(.86)}
+.cand .r{margin-top:6px;font-family:"Inter";font-weight:700;color:var(--blue);letter-spacing:.035em;text-transform:uppercase;line-height:1.25}
 </style></head>
 <body><div id="stage">
   <img id="bg" class="abs" src="bg.jpg" alt="">
@@ -56,13 +58,13 @@ h1 .ul{text-decoration:underline;text-decoration-color:var(--blue);text-decorati
     <div id="lead" class="serif"></div>
     <div id="statcard" class="card"><div class="lab"></div><div id="stats"></div><div id="ticks"></div></div>
     <div id="quote" class="card"><div class="mark">“</div><div class="q"></div><div class="who"></div></div>
-    <div id="foot"><div id="name"><div class="n"></div><div class="r"></div></div><img id="logo" src="logo-navy.png" alt="Jess Wilson's Liberal Victoria"></div>
+    <div id="foot"><div id="names"></div><img id="logo" src="logo-navy.png" alt="Jess Wilson's Liberal Victoria"></div>
   </div>
 </div>
 <script>
 const P = Object.assign({
   // Defaults = the published layout. Override any key via ?p={"key":value} (see render.js).
-  wash:[.86,.18,.86], top:95,
+  wash:[.86,.18,.86], top:105,
   kicker:'The Liberal Plan', kickerSize:27, kickerGap:28, cardLab:'What we’ll deliver', labSize:18,
   head:'Reduce crime.<br><span class="acc ul">Keep Victorians safe.</span>', hSize:84,
   lead:'<span class="lt">More police on the beat and</span> <span class="bd">real consequences</span>', leadSize:44,
@@ -73,7 +75,9 @@ const P = Object.assign({
   quote:{text:'We must reduce crime in our community so <span class="bd">Victorians can feel safe again.”</span>',
     size:36, who:'Our Plan to Keep Victorians Safe', whoSize:16, markSize:130},
   gaps:[24,36,26,40],                    // after head, lead, statcard, quote
-  name:{size:56, text:'Jim Overend', role:'Liberal for Greenvale', roleSize:20}, logoW:150, footGap:14
+  // candidates, ordered by electorate
+  cands:[['Jim Overend','Liberal for Greenvale'],['Eddie Dadisho','Liberal for Kalkallo']],
+  nameSize:46, roleSize:17, nameGap:64, logoW:136, footGap:14
 }, JSON.parse(new URLSearchParams(location.search).get('p')||'{}'));
 const $=id=>document.getElementById(id), px=v=>v+'px';
 const W=$('wash').style; W.setProperty('--w-top',P.wash[0]); W.setProperty('--w-mid',P.wash[1]); W.setProperty('--w-bot',P.wash[2]);
@@ -89,8 +93,9 @@ $('quote').querySelector('.mark').style.fontSize=px(Q.markSize); $('quote').quer
 $('kicker').innerHTML=P.kicker; $('kicker').style.fontSize=px(P.kickerSize); $('kicker').style.marginBottom=px(P.kickerGap);
 $('statcard').querySelector('.lab').innerHTML=P.cardLab; $('statcard').querySelector('.lab').style.fontSize=px(P.labSize);
 ['h','lead','statcard','quote'].forEach((id,i)=>$(id).style.marginBottom=px(P.gaps[i]));
-$('name').querySelector('.n').innerHTML=P.name.text; $('name').querySelector('.n').style.fontSize=px(P.name.size);
-$('name').querySelector('.r').innerHTML=P.name.role; $('name').querySelector('.r').style.fontSize=px(P.name.roleSize);
+$('names').innerHTML=P.cands.map(([n,r])=>`<div class="cand"><div class="n" style="font-size:${P.nameSize}px">${n}</div><div class="r" style="font-size:${P.roleSize}px">${r}</div></div>`).join('');
+$('names').style.setProperty('--ngap',px(P.nameGap));
+document.fonts.ready.then(()=>document.querySelectorAll('.cand .n').forEach(el=>{const m=-(el.offsetWidth*(1-0.86)/2); el.style.marginLeft=el.style.marginRight=m+'px';}));
 $('logo').style.width=px(P.logoW);
 document.fonts.ready.then(()=>{document.querySelectorAll('#quote .bd').forEach(el=>{el.style.marginRight=(-el.offsetWidth*0.14)+'px';});});
 document.fonts.ready.then(()=>document.querySelectorAll('.serif .bd').forEach(el=>{const m=-(el.offsetWidth*(1-0.86)/2); el.style.marginLeft=el.style.marginRight=m+'px';})); $('foot').style.gap=px(P.footGap);

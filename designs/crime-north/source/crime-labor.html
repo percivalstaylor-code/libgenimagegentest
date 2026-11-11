@@ -43,8 +43,10 @@ h1 .ul{text-decoration:underline;text-decoration-color:var(--red);text-decoratio
   font-family:"Inter";font-weight:700;letter-spacing:-.01em;box-shadow:0 10px 24px rgba(215,38,46,.25)}
 #swipe svg{width:1.1em;height:1.1em}
 #foot{display:flex;flex-direction:column;align-items:center}
-#name .n{font-family:"Serif Bold";color:var(--navy);line-height:1;letter-spacing:-.01em;white-space:nowrap;text-shadow:var(--shadow);display:inline-block;transform:scaleX(.86)}
-#name .r{margin-top:5px;font-family:"Inter";font-weight:700;color:var(--blue);letter-spacing:.035em;text-transform:uppercase;line-height:1.25}
+#names{display:flex;justify-content:center;align-items:flex-start;gap:var(--ngap)}
+.cand{text-align:center}
+.cand .n{font-family:"Serif Bold";color:var(--navy);line-height:1;letter-spacing:-.01em;white-space:nowrap;text-shadow:var(--shadow);display:inline-block;transform:scaleX(.86)}
+.cand .r{margin-top:5px;font-family:"Inter";font-weight:700;color:var(--blue);letter-spacing:.035em;text-transform:uppercase;line-height:1.25}
 </style></head>
 <body><div id="stage">
   <img id="bg" class="abs" src="bg.jpg" alt="">
@@ -55,13 +57,13 @@ h1 .ul{text-decoration:underline;text-decoration-color:var(--red);text-decoratio
     <div id="stats" class="card"></div>
     <div id="record" class="card"><div class="lab"></div><div class="rows"></div></div>
     <div id="swipe"><span></span><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15M13 6l6 6-6 6"/></svg></div>
-    <div id="foot"><div id="name"><div class="n"></div><div class="r"></div></div><img id="logo" src="logo-navy.png" alt="Jess Wilson's Liberal Victoria"></div>
+    <div id="foot"><div id="names"></div><img id="logo" src="logo-navy.png" alt="Jess Wilson's Liberal Victoria"></div>
   </div>
 </div>
 <script>
 const P = Object.assign({
   // Defaults = the published layout. Override any key via ?p={"key":value} (see render.js).
-  wash:[.90,.30,.88], top:106,
+  wash:[.90,.30,.88], top:113,
   head:'Labor has lost<br><span class="acc ul">control of crime.</span>', hSize:94,
   lead:'<span class="lt">Crime across Hume is</span> <span class="bd">up 30% since 2022</span>', leadSize:50,
   // Crime Statistics Agency, Hume LGA, year to June 2026 vs year to December 2022: [big, label, before → after]
@@ -75,7 +77,9 @@ const P = Object.assign({
   ]},
   swipe:'Swipe for our plan', swipeSize:21,
   gaps:[26,44,26,40,0,36],               // after head, lead, stats, record, (unused), swipe
-  name:{size:54, text:'Jim Overend', role:'Liberal for Greenvale', roleSize:19}, logoW:146, footGap:12
+  // candidates, ordered by electorate
+  cands:[['Jim Overend','Liberal for Greenvale'],['Eddie Dadisho','Liberal for Kalkallo']],
+  nameSize:46, roleSize:17, nameGap:64, logoW:136, footGap:14
 }, JSON.parse(new URLSearchParams(location.search).get('p')||'{}'));
 const $=id=>document.getElementById(id), px=v=>v+'px';
 const W=$('wash').style; W.setProperty('--w-top',P.wash[0]); W.setProperty('--w-mid',P.wash[1]); W.setProperty('--w-bot',P.wash[2]);
@@ -88,8 +92,9 @@ $('record').querySelector('.lab').innerHTML=R.lab; $('record').querySelector('.l
 $('record').querySelector('.rows').innerHTML=R.rows.map(t=>`<div class="x" style="font-size:${R.size}px">${cross}<span>${t}</span></div>`).join('');
 $('swipe').querySelector('span').innerHTML=P.swipe; $('swipe').style.fontSize=px(P.swipeSize);
 [['h',0],['lead',1],['stats',2],['record',3],['swipe',5]].forEach(([id,i])=>$(id).style.marginBottom=px(P.gaps[i]));
-$('name').querySelector('.n').innerHTML=P.name.text; $('name').querySelector('.n').style.fontSize=px(P.name.size);
-$('name').querySelector('.r').innerHTML=P.name.role; $('name').querySelector('.r').style.fontSize=px(P.name.roleSize);
+$('names').innerHTML=P.cands.map(([n,r])=>`<div class="cand"><div class="n" style="font-size:${P.nameSize}px">${n}</div><div class="r" style="font-size:${P.roleSize}px">${r}</div></div>`).join('');
+$('names').style.setProperty('--ngap',px(P.nameGap));
+document.fonts.ready.then(()=>document.querySelectorAll('.cand .n').forEach(el=>{const m=-(el.offsetWidth*(1-0.86)/2); el.style.marginLeft=el.style.marginRight=m+'px';}));
 $('logo').style.width=px(P.logoW); $('foot').style.gap=px(P.footGap);
 document.fonts.ready.then(()=>document.querySelectorAll('.serif .bd').forEach(el=>{const m=-(el.offsetWidth*(1-0.86)/2); el.style.marginLeft=el.style.marginRight=m+'px';}));
 </script>
