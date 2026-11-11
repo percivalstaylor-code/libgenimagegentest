@@ -28,6 +28,7 @@ export const theme = {
     brollIn: 0.23,      // s, b-roll entrance (push-in + blur clear)
     brollOut: 0.2,      // s, b-roll exit (faster than entrance)
   },
+  photo: { width: 980, border: 14, rotate: -2, offsetY: -120, flash: 0.2, out: 0.17, clickVolume: 0.55 },
   watermark: { left: 52, top: 150, width: 228, opacity: 0.95, delay: 0.4, scrim: "rgba(0, 0, 0, 0.32)" },
   caption: { size: 86, centerY: 0.73, maxWidth: 940, stagger: 3 },
 } as const;

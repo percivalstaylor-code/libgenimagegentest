@@ -1,4 +1,4 @@
-import { AbsoluteFill, Img, OffthreadVideo, Sequence, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
+import { AbsoluteFill, Audio, Img, OffthreadVideo, Sequence, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
 import { theme } from "./theme";
 import { Captions } from "./Captions";
 import data from "./captions.json";
@@ -9,13 +9,11 @@ const A = { from: 0, start: Math.round(data.aIn * FPS), end: Math.round(data.aIn
 const B = { from: data.aLen, start: 16, end: Math.round(data.bOut * FPS) };
 const lenA = A.end - A.start, lenB = B.end - B.start;
 export const totalFrames = lenA + lenB;
-// b-roll split into two shots (source broll.mp4 is 122 frames):
-//  1) over "station platform | right next", hiding the splice between the takes (which don't match)
-//  2) over "this space on the other side for a platform", ending as "Utter" lands
-const BROLLS = [
-  { from: 420, dur: 38, srcStart: 0, srcEnd: 38 },
-  { from: 539, dur: 100, srcStart: 40, srcEnd: 122 },
-];
+// Keon Park platform photo flashes on (shutter click) over "station platform | right next", hiding the
+// splice between the takes (which don't match); the skyrail b-roll plays over "this space on the other
+// side for a platform", ending as "Utter" lands. broll.mp4 is 122 frames.
+const PHOTO = { from: 418, dur: 44 };
+const BROLLS = [{ from: 539, dur: 100, srcStart: 0, srcEnd: 100 }];
 // punch-ins on emphasis (timeline seconds of "Utter" and "Vote")
 const PUNCH = [{ at: 21.3, scale: 1.06 }, { at: 28.44, scale: 1.11 }];
 
@@ -52,6 +50,32 @@ const BRoll: React.FC<{ dur: number; srcStart: number; srcEnd: number }> = ({ du
   );
 };
 
+/** photo flash: white flash + click, full photo as a tilted print over a blurred copy of itself */
+const PhotoFlash: React.FC = () => {
+  const frame = useCurrentFrame(); const { fps } = useVideoConfig();
+  const T = theme.photo;
+  const enter = spring({ frame, fps, config: theme.spring.snappy });
+  const exit = easeIn(frame, PHOTO.dur - 1 - T.out * fps, PHOTO.dur - 1);
+  const flash = 1 - easeOut(frame, 0, T.flash * fps);
+  const drift = interpolate(frame, [0, PHOTO.dur], [1, 1.04], { ...clamp, easing: theme.ease.inOut });
+  const src = staticFile("keon-park-platform.jpg");
+  return (
+    <AbsoluteFill style={{ opacity: 1 - exit }}>
+      <Img src={src} style={{ ...fill, filter: "blur(34px) brightness(0.62) saturate(1.1)", transform: `scale(${1.15 * drift})` }} />
+      <AbsoluteFill style={{ justifyContent: "center", alignItems: "center" }}>
+        <div style={{
+          width: T.width, padding: T.border, background: theme.colors.text, borderRadius: 8,
+          boxShadow: `0 30px 70px ${theme.colors.shadow}, 0 6px 16px ${theme.colors.shadow}`,
+          transform: `translateY(${T.offsetY}px) rotate(${interpolate(enter, [0, 1], [T.rotate - 3, T.rotate])}deg) scale(${interpolate(enter, [0, 1], [1.18, 1]) * drift * interpolate(exit, [0, 1], [1, 0.96])})`,
+        }}>
+          <Img src={src} style={{ width: "100%", display: "block", borderRadius: 3 }} />
+        </div>
+      </AbsoluteFill>
+      <AbsoluteFill style={{ backgroundColor: theme.colors.text, opacity: flash }} />
+    </AbsoluteFill>
+  );
+};
+
 const Watermark: React.FC = () => {
   const frame = useCurrentFrame(); const { fps } = useVideoConfig();
   const W = theme.watermark;
@@ -84,6 +108,8 @@ export const Edit: React.FC = () => {
             volume={(f) => ramp(f, lenB, join, fadeOut)} style={fill} />
         </Punch>
       </Sequence>
+      <Sequence from={PHOTO.from} durationInFrames={PHOTO.dur}><PhotoFlash /></Sequence>
+      <Sequence from={PHOTO.from}><Audio src={staticFile("click.wav")} volume={theme.photo.clickVolume} /></Sequence>
       {BROLLS.map((b) => (
         <Sequence key={b.from} from={b.from} durationInFrames={b.dur}><BRoll {...b} /></Sequence>
       ))}

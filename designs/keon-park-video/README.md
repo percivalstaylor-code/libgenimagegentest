@@ -4,9 +4,11 @@
 skyrail b-roll (`public/broll.mp4`).
 
 - Part 1 from 0.30 s; part 2 from 0.53 s (drops the repeated "Platform") to 16.75 s (keeps "Thank you").
-- B-roll split into two shots: ~1.3 s over "station platform | right next" (hides the splice between the
-  takes, which don't match), and the rest over "this space on the other side for a platform", handing back
-  to the speaker as "Utter incompetence" lands.
+- Keon Park platform photo (`public/keon-park-platform.jpg`) flashes on with a synthesized shutter click
+  (`public/click.wav`) over "station platform | right next", hiding the splice between the takes (which don't
+  match); shown whole as a tilted print over a blurred copy of itself.
+- Skyrail b-roll over "this space on the other side for a platform", handing back to the speaker as
+  "Utter incompetence" lands.
 - Jess Wilson's Liberal Victoria watermark top-left (`public/logo-white.png`) with soft corner shading.
 - Punch-ins on "Utter incompetence" and "Vote 1 for Hamza".
 - Word-synced subtitles (`src/captions.json`, transcribed with faster-whisper `medium.en`, corrected:
