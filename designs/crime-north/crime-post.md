@@ -9,7 +9,7 @@ Two 1080×1350 slides (plus `@2x`, 2160×2700) in the same style as the Technica
 
 ## Post caption (ready to paste)
 
-Under Labor, crime across Hume is up 30% since 2022.
+Labor has lost control of crime. Across Hume, crime is up 30% since 2022.
 
 Motor vehicle thefts have more than doubled. Serious assaults are up 54%. Offences at our train stations have more than tripled. And Craigieburn Police Station has gone from being open 24/7 to just two days a week.
 
@@ -35,12 +35,12 @@ Victorians deserve to feel safe again.
 
 ## Slide copy and where each figure comes from
 
-### Slide 1 — "Under Labor, crime is up 30%"
-Serif line: *Recorded offences across **Hume since 2022***
+### Slide 1 — "Labor has lost control of crime."
+Serif line: *Crime across Hume is **up 30% since 2022***
 
 | On the slide | Figure | Source |
 |---|---|---|
-| crime is up 30% | Total offences 18,186 → 23,691 (+30%) | CSA, Hume LGA, YE Jun 2026 vs YE Dec 2022 |
+| up 30% since 2022 | Total offences 18,186 → 23,691 (+30%) | CSA, Hume LGA, YE Jun 2026 vs YE Dec 2022 |
 | +118% motor vehicle thefts | 789 → 1,721 | same |
 | +54% serious assaults | 643 → 992 | same |
 | +242% train station offences | 149 → 509 (location: train station) | same |
