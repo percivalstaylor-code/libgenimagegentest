@@ -1,7 +1,8 @@
 <!doctype html>
 <html><head><meta charset="utf-8">
-<!-- Slide 1 of the Technical Colleges carousel: the problem under Labor (jobs + TAFE). Same style as slide 2
-     (tech-colleges.html): soft-blur aerial bg, white wash, pale cards, navy/blue type. -->
+<!-- Slide 1 of the Technical Colleges carousel: the problem under Labor. Same layout language as slide 2
+     (tech-colleges.html) but in Labor red and white; only the Liberal sign-off (name block + logo) stays navy/blue.
+     Hard numbers as stat tiles; national rankings as a "Labor's record" list with red crosses (mirrors slide 2's ticks). -->
 <style>
 @font-face{font-family:"Serif Bold";src:url(DMSerifDisplay-Regular.ttf)}
 @font-face{font-family:"Serif Light";src:url(InstrumentSerif-Regular.ttf)}
@@ -9,33 +10,38 @@
 @font-face{font-family:"Inter";font-weight:600;src:url(Inter-SemiBold.otf)}
 @font-face{font-family:"Inter";font-weight:700;src:url(Inter-Bold.otf)}
 @font-face{font-family:"Inter";font-weight:800;src:url(Inter-ExtraBold.otf)}
-:root{ --navy:#162133; --blue:#00539a; --shadow:0 2px 6px rgba(20,32,60,.16); }
+:root{ --ink:#1e1b1c; --red:#d7262e; --red-deep:#b81f26; --navy:#162133; --blue:#00539a; --shadow:0 2px 6px rgba(40,20,20,.14); }
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{width:1080px;height:1350px;overflow:hidden;background:#fff}
 #stage{position:relative;width:1080px;height:1350px;overflow:hidden;background:#fff}
 .abs{position:absolute}
-#bg{inset:0;width:1080px;height:1350px;object-fit:cover}
+#bg{inset:0;width:1080px;height:1350px;object-fit:cover;filter:grayscale(.55) contrast(.95)}
 #wash{inset:0;background:linear-gradient(180deg,rgba(255,255,255,var(--w-top)) 0%,rgba(255,255,255,var(--w-top)) 20%,rgba(255,255,255,var(--w-mid)) 34%,rgba(255,255,255,var(--w-mid)) 76%,rgba(255,255,255,var(--w-bot)) 90%)}
 #col{left:60px;right:60px;top:var(--top);display:flex;flex-direction:column;align-items:center;text-align:center}
-h1{font-family:"Inter";font-weight:800;color:var(--navy);letter-spacing:-.035em;line-height:1.02;white-space:nowrap;text-shadow:var(--shadow)}
-h1 .acc{color:var(--blue)}
-h1 .ul{text-decoration:underline;text-decoration-color:var(--blue);text-decoration-thickness:.07em;text-underline-offset:.12em}
-.serif{color:var(--blue);line-height:1.1;letter-spacing:-.015em;text-shadow:var(--shadow)}
+h1{font-family:"Inter";font-weight:800;color:var(--ink);letter-spacing:-.035em;line-height:1.02;white-space:nowrap;text-shadow:var(--shadow)}
+h1 .acc{color:var(--red)}
+h1 .ul{text-decoration:underline;text-decoration-color:var(--red);text-decoration-thickness:.07em;text-underline-offset:.12em}
+.serif{color:var(--red-deep);line-height:1.1;letter-spacing:-.015em;text-shadow:var(--shadow)}
 .serif .lt{font-family:"Serif Light";font-size:1.12em;letter-spacing:-.02em}
 .serif .bd{font-family:"Serif Bold";display:inline-block;transform:scaleX(.86)}
-.card{width:100%;border-radius:32px;background:rgba(255,255,255,.93);backdrop-filter:blur(6px);
-  box-shadow:inset 0 0 0 1.5px rgba(0,83,154,.10),0 18px 40px rgba(20,40,80,.10);padding:24px 36px 24px;text-align:left}
-.card.pale{background:linear-gradient(170deg,rgba(241,246,252,.94),rgba(226,236,248,.94))}
-.card .lab{font-family:"Inter";font-weight:700;color:var(--blue);letter-spacing:.07em;text-transform:uppercase;line-height:1}
-.rows{margin-top:14px;display:flex;flex-direction:column}
-.row{display:flex;gap:22px;align-items:center;padding:12px 0}
-.row+.row{border-top:1.5px solid rgba(0,83,154,.10)}
-.row .big{flex:none;font-family:"Serif Bold";color:var(--blue);line-height:1;white-space:nowrap;display:inline-block;transform:scaleX(.86);transform-origin:0 50%;text-shadow:var(--shadow)}
-.row .t{font-family:"Inter";font-weight:600;color:var(--navy);letter-spacing:-.015em;line-height:1.28}
-.row .t b{font-weight:800}
-#src{font-family:"Inter";font-weight:500;color:rgba(22,33,51,.6);letter-spacing:-.005em;line-height:1.35;max-width:900px}
-#swipe{display:inline-flex;align-items:center;gap:12px;padding:13px 26px;border-radius:999px;background:var(--blue);color:#fff;
-  font-family:"Inter";font-weight:700;letter-spacing:-.01em;box-shadow:0 10px 24px rgba(0,83,154,.25)}
+.card{width:100%;border-radius:32px;background:rgba(255,255,255,.94);backdrop-filter:blur(6px);
+  box-shadow:inset 0 0 0 1.5px rgba(215,38,46,.14),0 18px 40px rgba(60,20,20,.10)}
+/* stat tiles */
+#stats{display:flex;padding:30px 18px 28px}
+.st{flex:1;padding:0 14px}
+.st+.st{border-left:2px solid rgba(215,38,46,.14)}
+.st .n{font-family:"Serif Bold";color:var(--red);line-height:1;display:inline-block;transform:scaleX(.86);white-space:nowrap;text-shadow:var(--shadow)}
+.st .l{margin-top:10px;font-family:"Inter";font-weight:700;color:var(--ink);letter-spacing:-.015em;line-height:1.25}
+/* Labor's record: red cross list */
+#record{padding:26px 40px 26px;text-align:left;background:linear-gradient(170deg,rgba(255,244,244,.95),rgba(252,232,232,.95))}
+#record .lab{font-family:"Inter";font-weight:700;color:var(--red);letter-spacing:.07em;text-transform:uppercase;line-height:1}
+#record .rows{margin-top:16px;display:flex;flex-direction:column;gap:14px}
+.x{display:flex;gap:18px;align-items:center;font-family:"Inter";font-weight:600;color:var(--ink);letter-spacing:-.015em;line-height:1.28}
+.x b{font-weight:800;color:var(--red)}
+.x svg{flex:none}
+#src{font-family:"Inter";font-weight:500;color:rgba(30,27,28,.6);letter-spacing:-.005em;line-height:1.35;max-width:900px}
+#swipe{display:inline-flex;align-items:center;gap:12px;padding:13px 26px;border-radius:999px;background:var(--red);color:#fff;
+  font-family:"Inter";font-weight:700;letter-spacing:-.01em;box-shadow:0 10px 24px rgba(215,38,46,.25)}
 #swipe svg{width:1.1em;height:1.1em}
 #foot{display:flex;flex-direction:column;align-items:center}
 #name .n{font-family:"Serif Bold";color:var(--navy);line-height:1;letter-spacing:-.01em;white-space:nowrap;text-shadow:var(--shadow);display:inline-block;transform:scaleX(.86)}
@@ -47,7 +53,8 @@ h1 .ul{text-decoration:underline;text-decoration-color:var(--blue);text-decorati
   <div id="col" class="abs">
     <h1 id="h"></h1>
     <div id="lead" class="serif"></div>
-    <div id="cards"></div>
+    <div id="stats" class="card"></div>
+    <div id="record" class="card"><div class="lab"></div><div class="rows"></div></div>
     <div id="src"></div>
     <div id="swipe"><span></span><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15M13 6l6 6-6 6"/></svg></div>
     <div id="foot"><div id="name"><div class="n"></div><div class="r"></div></div><img id="logo" src="logo-navy.png" alt="Jess Wilson's Liberal Victoria"></div>
@@ -56,39 +63,33 @@ h1 .ul{text-decoration:underline;text-decoration-color:var(--blue);text-decorati
 <script>
 const P = Object.assign({
   // Defaults = the published layout. Override any key via ?p={"key":value} (see render.js).
-  wash:[.88,.22,.86], top:88,
-  head:'Under Labor,<br><span class="acc ul">TAFE is failing</span>', hSize:80,
-  lead:'<span class="lt">Victoria is facing a</span> <span class="bd">skills crisis</span>', leadSize:44,
-  // cards: [label, pale?, [[big, text], ...]]
-  cards:[
-    ['Jobs under Labor',0,[
-      ['Highest','unemployment rate in the nation'],
-      ['12%','youth unemployment, and rising'],
-      ['700,000','new vocationally qualified workers needed over the next decade'],
-    ]],
-    ['TAFE under Labor',1,[
-      ['$73.5m','underlying TAFE sector deficit — <b>the largest since 2021</b>'],
-      ['$718m','paid for Free TAFE, with no evidence it’s meeting its goals'],
-      ['Lowest','student satisfaction with training quality in the nation'],
-    ]],
-  ],
-  labSize:17, bigSize:50, bigW:190, textSize:21,
-  src:'Sources: Victorian Auditor-General’s Office, 2025 TAFE audit and Free TAFE audit; Productivity Commission, Report on Government Services 2026 (mid-year); Liberal Party of Victoria.', srcSize:13,
+  wash:[.90,.30,.88], top:102,
+  head:'Under Labor,<br><span class="acc ul">TAFE is failing</span>', hSize:94,
+  lead:'<span class="lt">Victoria is facing a</span> <span class="bd">skills crisis</span>', leadSize:52,
+  stats:[['12%','youth unemployment<br>and rising'],['700,000','vocationally qualified<br>workers needed over<br>the next decade'],['$73.5m','underlying TAFE<br>deficit, the largest<br>since 2021']],
+  statN:80, statL:22,
+  record:{lab:'Labor’s record', labSize:18, size:25, rows:[
+    '<b>Highest</b> unemployment rate in the nation',
+    '<b>Lowest</b> student satisfaction with training quality in the nation',
+    '<b>Worse</b> finances at most Victorian TAFEs in 2025',
+  ]},
+  src:'Sources: Victorian Auditor-General’s Office, results of the 2025 TAFE audits; Productivity Commission, Report on Government Services 2026 (mid-year); Liberal Party of Victoria.', srcSize:13,
   swipe:'Swipe for our plan', swipeSize:21,
-  gaps:[18,26,16,18,22,24],               // after head, lead, card1(=between cards), cards, src, swipe
-  name:{size:44, text:'Jim Overend', role:'Liberal for Greenvale', roleSize:17}, logoW:120, footGap:10
+  gaps:[26,44,26,28,26,32],               // after head, lead, stats, record, src, swipe
+  name:{size:54, text:'Jim Overend', role:'Liberal for Greenvale', roleSize:19}, logoW:146, footGap:12
 }, JSON.parse(new URLSearchParams(location.search).get('p')||'{}'));
 const $=id=>document.getElementById(id), px=v=>v+'px';
 const W=$('wash').style; W.setProperty('--w-top',P.wash[0]); W.setProperty('--w-mid',P.wash[1]); W.setProperty('--w-bot',P.wash[2]);
 $('col').style.setProperty('--top',px(P.top));
 $('h').innerHTML=P.head; $('h').style.fontSize=px(P.hSize);
 $('lead').innerHTML=P.lead; $('lead').style.fontSize=px(P.leadSize);
-$('cards').style.cssText=`width:100%;display:flex;flex-direction:column;gap:${P.gaps[2]}px`;
-$('cards').innerHTML=P.cards.map(([lab,pale,rows])=>`<div class="card${pale?' pale':''}"><div class="lab" style="font-size:${P.labSize}px">${lab}</div><div class="rows">
-  ${rows.map(([b,t])=>`<div class="row"><div style="flex:none;width:${P.bigW}px"><span class="big" style="font-size:${P.bigSize}px">${b}</span></div><div class="t" style="font-size:${P.textSize}px">${t}</div></div>`).join('')}</div></div>`).join('');
+$('stats').innerHTML=P.stats.map(([n,l])=>`<div class="st"><div class="n" style="font-size:${P.statN}px">${n}</div><div class="l" style="font-size:${P.statL}px">${l}</div></div>`).join('');
+const R=P.record, cross=`<svg width="${R.size*1.45}" height="${R.size*1.45}" viewBox="0 0 34 34"><circle cx="17" cy="17" r="16" fill="#d7262e"/><path d="M11.5 11.5l11 11M22.5 11.5l-11 11" stroke="#fff" stroke-width="3.6" stroke-linecap="round"/></svg>`;
+$('record').querySelector('.lab').innerHTML=R.lab; $('record').querySelector('.lab').style.fontSize=px(R.labSize);
+$('record').querySelector('.rows').innerHTML=R.rows.map(t=>`<div class="x" style="font-size:${R.size}px">${cross}<span>${t}</span></div>`).join('');
 $('src').innerHTML=P.src; $('src').style.fontSize=px(P.srcSize);
 $('swipe').querySelector('span').innerHTML=P.swipe; $('swipe').style.fontSize=px(P.swipeSize);
-[['h',0],['lead',1],['cards',3],['src',4],['swipe',5]].forEach(([id,i])=>$(id).style.marginBottom=px(P.gaps[i]));
+[['h',0],['lead',1],['stats',2],['record',3],['src',4],['swipe',5]].forEach(([id,i])=>$(id).style.marginBottom=px(P.gaps[i]));
 $('name').querySelector('.n').innerHTML=P.name.text; $('name').querySelector('.n').style.fontSize=px(P.name.size);
 $('name').querySelector('.r').innerHTML=P.name.role; $('name').querySelector('.r').style.fontSize=px(P.name.roleSize);
 $('logo').style.width=px(P.logoW); $('foot').style.gap=px(P.footGap);
