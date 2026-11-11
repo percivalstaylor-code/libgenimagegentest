@@ -5,9 +5,10 @@ Two 1080×1350 slides (plus `@2x`, 2160×2700) in the same style as the Technica
 1. `crime-1-labor.png` — **Labor's failure**, in Labor red and white
 2. `crime-2-plan.png` — **The Liberal Plan**, in Liberal blue
 
-Both slides are signed off by two candidates, side by side and ordered by electorate:
-**Jim Overend, Liberal for Greenvale** and **Eddie Dadisho, Liberal for Kalkallo**, with the Jess Wilson's
-Liberal Victoria logo centred beneath them (`cands` in each page's defaults).
+Both slides are signed off by three candidates, in equal-width columns ordered alphabetically by electorate
+(which puts Jim in the centre): **Baris Duzova, Liberal for Broadmeadows** · **Jim Overend, Liberal for
+Greenvale** · **Eddie Dadisho, Liberal for Kalkallo**, with the Jess Wilson's Liberal Victoria logo centred
+beneath (`cands` in each page's defaults).
 
 ---
 
