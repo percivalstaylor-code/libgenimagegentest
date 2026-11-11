@@ -29,7 +29,6 @@ h1 .ul{text-decoration:underline;text-decoration-color:var(--red);text-decoratio
 /* stat tiles */
 #stats{display:flex;padding:30px 18px 28px}
 .st{flex:1;padding:0 14px}
-.st+.st{border-left:2px solid rgba(215,38,46,.14)}
 .st .n{font-family:"Serif Bold";color:var(--red);line-height:1;display:inline-block;transform:scaleX(.86);white-space:nowrap;text-shadow:var(--shadow)}
 .st .l{margin-top:10px;font-family:"Inter";font-weight:700;color:var(--ink);letter-spacing:-.015em;line-height:1.25}
 /* Labor's record: red cross list */
@@ -39,7 +38,6 @@ h1 .ul{text-decoration:underline;text-decoration-color:var(--red);text-decoratio
 .x{display:flex;gap:18px;align-items:center;font-family:"Inter";font-weight:600;color:var(--ink);letter-spacing:-.015em;line-height:1.28}
 .x b{font-weight:800;color:var(--red)}
 .x svg{flex:none}
-#src{font-family:"Inter";font-weight:500;color:rgba(30,27,28,.6);letter-spacing:-.005em;line-height:1.35;max-width:900px}
 #swipe{display:inline-flex;align-items:center;gap:12px;padding:13px 26px;border-radius:999px;background:var(--red);color:#fff;
   font-family:"Inter";font-weight:700;letter-spacing:-.01em;box-shadow:0 10px 24px rgba(215,38,46,.25)}
 #swipe svg{width:1.1em;height:1.1em}
@@ -55,7 +53,6 @@ h1 .ul{text-decoration:underline;text-decoration-color:var(--red);text-decoratio
     <div id="lead" class="serif"></div>
     <div id="stats" class="card"></div>
     <div id="record" class="card"><div class="lab"></div><div class="rows"></div></div>
-    <div id="src"></div>
     <div id="swipe"><span></span><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15M13 6l6 6-6 6"/></svg></div>
     <div id="foot"><div id="name"><div class="n"></div><div class="r"></div></div><img id="logo" src="logo-navy.png" alt="Jess Wilson's Liberal Victoria"></div>
   </div>
@@ -63,7 +60,7 @@ h1 .ul{text-decoration:underline;text-decoration-color:var(--red);text-decoratio
 <script>
 const P = Object.assign({
   // Defaults = the published layout. Override any key via ?p={"key":value} (see render.js).
-  wash:[.90,.30,.88], top:102,
+  wash:[.90,.30,.88], top:128,
   head:'Under Labor,<br><span class="acc ul">TAFE is failing</span>', hSize:94,
   lead:'<span class="lt">Victoria is facing a</span> <span class="bd">skills crisis</span>', leadSize:52,
   stats:[['12%','youth unemployment<br>and rising'],['700,000','vocationally qualified<br>workers needed over<br>the next decade'],['$73.5m','underlying TAFE<br>deficit, the largest<br>since 2021']],
@@ -73,9 +70,8 @@ const P = Object.assign({
     '<b>Lowest</b> student satisfaction with training quality in the nation',
     '<b>Worse</b> finances at most Victorian TAFEs in 2025',
   ]},
-  src:'Sources: Victorian Auditor-General’s Office, results of the 2025 TAFE audits; Productivity Commission, Report on Government Services 2026 (mid-year); Liberal Party of Victoria.', srcSize:13,
   swipe:'Swipe for our plan', swipeSize:21,
-  gaps:[26,44,26,28,26,32],               // after head, lead, stats, record, src, swipe
+  gaps:[26,44,26,40,0,36],               // after head, lead, stats, record, src, swipe
   name:{size:54, text:'Jim Overend', role:'Liberal for Greenvale', roleSize:19}, logoW:146, footGap:12
 }, JSON.parse(new URLSearchParams(location.search).get('p')||'{}'));
 const $=id=>document.getElementById(id), px=v=>v+'px';
@@ -87,9 +83,8 @@ $('stats').innerHTML=P.stats.map(([n,l])=>`<div class="st"><div class="n" style=
 const R=P.record, cross=`<svg width="${R.size*1.45}" height="${R.size*1.45}" viewBox="0 0 34 34"><circle cx="17" cy="17" r="16" fill="#d7262e"/><path d="M11.5 11.5l11 11M22.5 11.5l-11 11" stroke="#fff" stroke-width="3.6" stroke-linecap="round"/></svg>`;
 $('record').querySelector('.lab').innerHTML=R.lab; $('record').querySelector('.lab').style.fontSize=px(R.labSize);
 $('record').querySelector('.rows').innerHTML=R.rows.map(t=>`<div class="x" style="font-size:${R.size}px">${cross}<span>${t}</span></div>`).join('');
-$('src').innerHTML=P.src; $('src').style.fontSize=px(P.srcSize);
 $('swipe').querySelector('span').innerHTML=P.swipe; $('swipe').style.fontSize=px(P.swipeSize);
-[['h',0],['lead',1],['stats',2],['record',3],['src',4],['swipe',5]].forEach(([id,i])=>$(id).style.marginBottom=px(P.gaps[i]));
+[['h',0],['lead',1],['stats',2],['record',3],['swipe',5]].forEach(([id,i])=>$(id).style.marginBottom=px(P.gaps[i]));
 $('name').querySelector('.n').innerHTML=P.name.text; $('name').querySelector('.n').style.fontSize=px(P.name.size);
 $('name').querySelector('.r').innerHTML=P.name.role; $('name').querySelector('.r').style.fontSize=px(P.name.roleSize);
 $('logo').style.width=px(P.logoW); $('foot').style.gap=px(P.footGap);

@@ -25,13 +25,16 @@ h1 .ul{text-decoration:underline;text-decoration-color:var(--blue);text-decorati
 .serif .bd{font-family:"Serif Bold";display:inline-block;transform:scaleX(.86)}
 .card{width:100%;border-radius:36px;background:rgba(255,255,255,.93);backdrop-filter:blur(6px);
   box-shadow:inset 0 0 0 1.5px rgba(0,83,154,.10),0 18px 40px rgba(20,40,80,.10)}
-#statcard{padding:30px 34px 30px}
+#statcard{padding:26px 34px 32px}
+#statcard .lab{font-family:"Inter";font-weight:700;color:var(--blue);letter-spacing:.07em;text-transform:uppercase;line-height:1;margin-bottom:18px}
+/* "The Liberal Plan" kicker: solid blue pill, counterpart to slide 1's red swipe pill */
+#kicker{display:inline-flex;align-items:center;gap:12px;padding:12px 26px;border-radius:999px;background:var(--blue);color:#fff;
+  font-family:"Inter";font-weight:800;letter-spacing:.08em;text-transform:uppercase;box-shadow:0 10px 24px rgba(0,83,154,.25)}
 #stats{display:flex}
 .st{flex:1;padding:0 10px}
-.st+.st{border-left:2px solid rgba(0,83,154,.14)}
 .st .n{font-family:"Serif Bold";color:var(--blue);line-height:1;display:inline-block;transform:scaleX(.86);text-shadow:var(--shadow)}
 .st .l{margin-top:8px;font-family:"Inter";font-weight:700;color:var(--navy);letter-spacing:-.015em;line-height:1.25}
-#ticks{display:grid;grid-template-columns:1fr 1fr;gap:16px 30px;text-align:left;margin-top:26px;padding-top:26px;border-top:2px solid rgba(0,83,154,.12)}
+#ticks{display:grid;grid-template-columns:1fr 1fr;gap:16px 30px;text-align:left;margin-top:30px}
 .tk{display:flex;gap:14px;align-items:flex-start;font-family:"Inter";font-weight:700;color:var(--navy);letter-spacing:-.015em;line-height:1.25;text-shadow:var(--shadow)}
 .tk svg{flex:none;width:30px;height:30px;margin-top:-2px}
 #quote{padding:30px 44px 28px;text-align:left;background:linear-gradient(170deg,rgba(241,246,252,.94),rgba(226,236,248,.94));position:relative}
@@ -48,9 +51,10 @@ h1 .ul{text-decoration:underline;text-decoration-color:var(--blue);text-decorati
   <img id="bg" class="abs" src="bg.jpg" alt="">
   <div id="wash" class="abs"></div>
   <div id="col" class="abs">
+    <div id="kicker"></div>
     <h1 id="h"></h1>
     <div id="lead" class="serif"></div>
-    <div id="statcard" class="card"><div id="stats"></div><div id="ticks"></div></div>
+    <div id="statcard" class="card"><div class="lab"></div><div id="stats"></div><div id="ticks"></div></div>
     <div id="quote" class="card"><div class="mark">“</div><div class="q"></div><div class="who"></div></div>
     <div id="foot"><div id="name"><div class="n"></div><div class="r"></div></div><img id="logo" src="logo-navy.png" alt="Jess Wilson's Liberal Victoria"></div>
   </div>
@@ -58,7 +62,8 @@ h1 .ul{text-decoration:underline;text-decoration-color:var(--blue);text-decorati
 <script>
 const P = Object.assign({
   // Defaults = the published layout. Override any key via ?p={"key":value} (see render.js).
-  wash:[.86,.18,.86], top:122,
+  wash:[.86,.18,.86], top:70,
+  kicker:'The Liberal Plan', kickerSize:27, kickerGap:28, cardLab:'What we’ll deliver', labSize:18,
   head:'Bringing back<br><span class="acc ul">Technical Colleges</span>', hSize:88,
   lead:'<span class="lt">Training the next generation of</span> <span class="bd">tradies sooner</span>', leadSize:46,
   // stats from the 11 Oct 2026 Liberal commitment
@@ -82,6 +87,8 @@ $('ticks').innerHTML=P.ticks.map(t=>`<div class="tk" style="font-size:${P.tickSi
 const Q=P.quote; $('quote').querySelector('.q').innerHTML='“'+Q.text; $('quote').querySelector('.q').style.fontSize=px(Q.size);
 $('quote').querySelector('.who').innerHTML=Q.who; $('quote').querySelector('.who').style.fontSize=px(Q.whoSize);
 $('quote').querySelector('.mark').style.fontSize=px(Q.markSize); $('quote').querySelector('.mark').style.display='none';
+$('kicker').innerHTML=P.kicker; $('kicker').style.fontSize=px(P.kickerSize); $('kicker').style.marginBottom=px(P.kickerGap);
+$('statcard').querySelector('.lab').innerHTML=P.cardLab; $('statcard').querySelector('.lab').style.fontSize=px(P.labSize);
 ['h','lead','statcard','quote'].forEach((id,i)=>$(id).style.marginBottom=px(P.gaps[i]));
 $('name').querySelector('.n').innerHTML=P.name.text; $('name').querySelector('.n').style.fontSize=px(P.name.size);
 $('name').querySelector('.r').innerHTML=P.name.role; $('name').querySelector('.r').style.fontSize=px(P.name.roleSize);

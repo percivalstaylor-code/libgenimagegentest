@@ -9,10 +9,11 @@ background from `../policy-background/`.
    unemployment and rising; 700,000 vocationally qualified workers needed over the next decade; $73.5m
    underlying TAFE deficit, largest since 2021) and a "Labor's record" list with red crosses, mirroring the
    plan slide's ticks (highest unemployment rate in the nation; lowest student satisfaction with training
-   quality in the nation; worse finances at most Victorian TAFEs in 2025), sources line, red "Swipe for our
-   plan" cue. The $718m Free TAFE figure was dropped (it read as Labor investment). Source:
+   quality in the nation; worse finances at most Victorian TAFEs in 2025), and a red "Swipe for our plan"
+   cue. No divider lines or on-slide sources (sources go in the post description — see table below). The $718m Free TAFE figure was dropped (it read as Labor investment). Source:
    `source/labor-tafe.html`.
-2. `tech-colleges-2-plan.png` — **"Bringing back Technical Colleges"**: 10 new colleges and $222m over
+2. `tech-colleges-2-plan.png` — headed by a solid blue **"The Liberal Plan"** pill, then **"Bringing back
+   Technical Colleges"**; a "What we'll deliver" card with 10 new colleges and $222m over
    eight years offset by budget savings; six ticks (plumbing/electrical/carpentry, healthcare & hospitality,
    full-time with dedicated teachers, real vocational qualifications, partnered with local industry,
    pathways into apprenticeships); Jess Wilson quote. Source: `source/tech-colleges.html`.
