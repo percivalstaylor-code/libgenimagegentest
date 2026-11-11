@@ -5,7 +5,7 @@ Two 1080×1350 slides (plus `@2x`, 2160×2700) in the same style as the Technica
 1. `crime-1-labor.png` — **Labor's failure**, in Labor red and white
 2. `crime-2-plan.png` — **The Liberal Plan**, in Liberal blue
 
-Both slides are signed off by three candidates, in equal-width columns ordered alphabetically by electorate
+Slide 1 carries only the Liberal Victoria logo (no candidate names). Slide 2 is signed off by three candidates, in equal-width columns ordered alphabetically by electorate
 (which puts Jim in the centre): **Baris Duzova, Liberal for Broadmeadows** · **Jim Overend, Liberal for
 Greenvale** · **Eddie Dadisho, Liberal for Kalkallo**, with the Jess Wilson's Liberal Victoria logo centred
 beneath (`cands` in each page's defaults).
@@ -53,6 +53,9 @@ Serif line: *Crime across Hume is **up 30% since 2022***
 | 723 Victorians became a victim of crime every day | 263,746 victims in the 12 months to June 2026 | CSA (via Liberal material) |
 | 1,400+ vacancies on Victoria Police rosters | | Liberal material |
 | 40+ police stations closed or on reduced hours | | Liberal material |
+| 279,102 crimes remain unsolved | year to June 2026 | CSA (via Liberal material) |
+| PSOs stripped from 119 train stations | permanent PSOs removed from 119 Melbourne stations | Liberal policy, *Our Plan to Keep Victorians Safe* |
+| A crime every 50 seconds across Victoria | | Liberal policy, citing Crime Statistics Agency |
 
 **Caveat:** the CSA figures cover the **whole Hume council area**. They are not published by state district, so they include areas outside Greenvale. That's why the slide says "Hume", not "Greenvale".
 

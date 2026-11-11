@@ -63,7 +63,7 @@ h1 .ul{text-decoration:underline;text-decoration-color:var(--red);text-decoratio
 <script>
 const P = Object.assign({
   // Defaults = the published layout. Override any key via ?p={"key":value} (see render.js).
-  wash:[.90,.30,.88], top:115,
+  wash:[.90,.30,.88], top:83,
   head:'Labor has lost<br><span class="acc ul">control of crime.</span>', hSize:94,
   lead:'<span class="lt">Crime across Hume is</span> <span class="bd">up 30% since 2022</span>', leadSize:50,
   // Crime Statistics Agency, Hume LGA, year to June 2026 vs year to December 2022: [big, label, before → after]
@@ -74,11 +74,14 @@ const P = Object.assign({
     '<b>723 Victorians</b> became a victim of crime every day',
     '<b>1,400+</b> vacancies on Victoria Police rosters',
     '<b>40+</b> police stations closed or on reduced hours',
+    '<b>279,102</b> crimes remain unsolved',
+    '<b>PSOs stripped</b> from 119 train stations',
+    '<b>A crime every 50 seconds</b> across Victoria',
   ]},
   swipe:'Swipe for our plan', swipeSize:21,
   gaps:[26,44,26,40,0,36],               // after head, lead, stats, record, (unused), swipe
   // candidates, ordered by electorate
-  cands:[['Baris Duzova','Liberal for Broadmeadows'],['Jim Overend','Liberal for Greenvale'],['Eddie Dadisho','Liberal for Kalkallo']],
+  cands:[],                              // no candidate names on this slide (they sign off slide 2)
   nameSize:44, roleSize:16, nameGap:20, colW:280, logoW:136, footGap:14
 }, JSON.parse(new URLSearchParams(location.search).get('p')||'{}'));
 const $=id=>document.getElementById(id), px=v=>v+'px';
@@ -93,7 +96,7 @@ $('record').querySelector('.rows').innerHTML=R.rows.map(t=>`<div class="x" style
 $('swipe').querySelector('span').innerHTML=P.swipe; $('swipe').style.fontSize=px(P.swipeSize);
 [['h',0],['lead',1],['stats',2],['record',3],['swipe',5]].forEach(([id,i])=>$(id).style.marginBottom=px(P.gaps[i]));
 $('names').innerHTML=P.cands.map(([n,r])=>`<div class="cand"><div class="n" style="font-size:${P.nameSize}px">${n}</div><div class="r" style="font-size:${P.roleSize}px">${r}</div></div>`).join('');
-$('names').style.setProperty('--ngap',px(P.nameGap)); $('names').style.setProperty('--ncols',P.cands.length); $('names').style.setProperty('--ncol',px(P.colW));
+$('names').style.setProperty('--ngap',px(P.nameGap)); if(!P.cands.length) $('names').style.display='none'; $('names').style.setProperty('--ncols',P.cands.length); $('names').style.setProperty('--ncol',px(P.colW));
 document.fonts.ready.then(()=>document.querySelectorAll('.cand .n').forEach(el=>{const m=-(el.offsetWidth*(1-0.86)/2); el.style.marginLeft=el.style.marginRight=m+'px';}));
 $('logo').style.width=px(P.logoW); $('foot').style.gap=px(P.footGap);
 document.fonts.ready.then(()=>document.querySelectorAll('.serif .bd').forEach(el=>{const m=-(el.offsetWidth*(1-0.86)/2); el.style.marginLeft=el.style.marginRight=m+'px';}));
