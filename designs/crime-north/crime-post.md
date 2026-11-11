@@ -54,7 +54,7 @@ Serif line: *Crime across Hume is **up 30% since 2022***
 | 1,400+ vacancies on Victoria Police rosters | | Liberal material |
 | 40+ police stations closed or on reduced hours | | Liberal material |
 | 279,102 crimes remain unsolved | year to June 2026 | CSA (via Liberal material) |
-| PSOs stripped from Roxburgh Park, Coolaroo, Jacana, Oak Park, Gowrie and Fawkner stations | local stations among the 119 that lost permanent PSOs | Campaign-supplied — **please confirm** (statewide figure: Liberal policy) |
+| PSOs stripped from Roxburgh Park, Coolaroo, Jacana, Oak Park, Gowrie, Fawkner and over 100 other stations | local stations among the 119 that lost permanent PSOs | Campaign-supplied — **please confirm** (statewide figure: Liberal policy) |
 | A crime every 50 seconds across Victoria | | Liberal policy, citing Crime Statistics Agency |
 
 **Caveat:** the CSA figures cover the **whole Hume council area**. They are not published by state district, so they include areas outside Greenvale. That's why the slide says "Hume", not "Greenvale".
@@ -65,7 +65,7 @@ Serif line: *More police on the beat and **real consequences***
 - **3,000** more police officers
 - **40+** police stations reopened
 - **200** more PSOs, back at every metro station
-- Local commitment cards (solid blue), replacing the tick list:
+- Local commitment cards (solid blue), replacing the tick list. Stats card heading: "What we’ll deliver for all Victorians".
   -  **"For our community — Craigieburn Police Station, reopened 24 hours a day, 7 days a week"** (answers slide 1's "cut from 24/7 to two days a week")
   - **"For our community — PSOs back at our stations: Coolaroo, Jacana, Oak Park, Gowrie and Fawkner"**
     (Roxburgh Park is on slide 1's stripped list but not on this card, as supplied — check whether to add it)
