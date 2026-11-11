@@ -24,7 +24,7 @@ Our Liberal and Nationals team has a comprehensive plan to reduce crime and keep
 
 ✅ Recruit 3,000 more police officers
 ✅ Reopen the more than 40 police stations closed under Labor, including reopening Craigieburn Police Station 24 hours a day, 7 days a week
-✅ Recruit 200 additional PSOs and return them to every single metropolitan train station
+✅ Recruit 200 additional PSOs and return them to every single metropolitan train station, including Coolaroo, Jacana, Oak Park, Gowrie and Fawkner
 ✅ Implement real Adult Crime, Adult Time laws, including for arson and motor vehicle theft
 ✅ Introduce a tough new one-strike rule for bail
 ✅ Establish a new Court of Criminal Appeal
@@ -54,7 +54,7 @@ Serif line: *Crime across Hume is **up 30% since 2022***
 | 1,400+ vacancies on Victoria Police rosters | | Liberal material |
 | 40+ police stations closed or on reduced hours | | Liberal material |
 | 279,102 crimes remain unsolved | year to June 2026 | CSA (via Liberal material) |
-| PSOs stripped from 119 train stations | permanent PSOs removed from 119 Melbourne stations | Liberal policy, *Our Plan to Keep Victorians Safe* |
+| PSOs stripped from Roxburgh Park, Coolaroo, Jacana, Oak Park, Gowrie and Fawkner stations | local stations among the 119 that lost permanent PSOs | Campaign-supplied — **please confirm** (statewide figure: Liberal policy) |
 | A crime every 50 seconds across Victoria | | Liberal policy, citing Crime Statistics Agency |
 
 **Caveat:** the CSA figures cover the **whole Hume council area**. They are not published by state district, so they include areas outside Greenvale. That's why the slide says "Hume", not "Greenvale".
@@ -65,12 +65,14 @@ Serif line: *More police on the beat and **real consequences***
 - **3,000** more police officers
 - **40+** police stations reopened
 - **200** more PSOs, back at every metro station
-- Ticks: one-strike rule for bail · Adult Crime, Adult Time · tougher on car theft & arson · new Court of Criminal Appeal · stronger police pursuit powers · proven early intervention programs
-- Local commitment card (solid blue): **"For our community — Craigieburn Police Station, reopened 24 hours a day, 7 days a week"** (campaign commitment; answers slide 1's "cut from 24/7 to two days a week")
+- Local commitment cards (solid blue), replacing the tick list:
+  -  **"For our community — Craigieburn Police Station, reopened 24 hours a day, 7 days a week"** (answers slide 1's "cut from 24/7 to two days a week")
+  - **"For our community — PSOs back at our stations: Coolaroo, Jacana, Oak Park, Gowrie and Fawkner"**
+    (Roxburgh Park is on slide 1's stripped list but not on this card, as supplied — check whether to add it)
 
 **Note on PSO numbers:** the policy document says 270 additional PSOs for stations plus 200 for shopping-centre strike teams. The campaign's latest summary says "200 additional PSOs … return them to every single metropolitan train station". The slide follows the latest summary. Confirm which one is current.
 
-The Craigieburn commitment (reopen, 24/7) was supplied by the campaign — **confirm it is an announced Liberal commitment** before posting.
+The Craigieburn (reopen, 24/7) and local PSO commitments were supplied by the campaign — **confirm they are announced Liberal commitments** before posting. The other plan points (one-strike bail, Adult Crime Adult Time, Court of Criminal Appeal, early intervention) are no longer on the slide but remain in the caption's ✅ list.
 
 ---
 
