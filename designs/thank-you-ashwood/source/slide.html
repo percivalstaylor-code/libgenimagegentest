@@ -1,0 +1,67 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<!-- 1920x1080 projection slide: "Thank you Ashwood." for Theo Zographos, Liberal for Ashwood.
+     Liberal-blue field (matches Theo's corflute), big white type, campaign-day photo on the right. -->
+<style>
+@font-face{font-family:"Serif Bold";src:url(DMSerifDisplay-Regular.ttf)}
+@font-face{font-family:"Inter";font-weight:500;src:url(Inter-Medium.otf)}
+@font-face{font-family:"Inter";font-weight:600;src:url(Inter-SemiBold.otf)}
+@font-face{font-family:"Inter";font-weight:700;src:url(Inter-Bold.otf)}
+@font-face{font-family:"Inter";font-weight:800;src:url(Inter-ExtraBold.otf)}
+:root{ --deep:#052a6e; --blue:#0b4aa8; --bright:#1a6be0; --sky:#8fd6f2; --white:#ffffff; }
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1920px;height:1080px;overflow:hidden;background:var(--deep)}
+#stage{position:relative;width:1920px;height:1080px;overflow:hidden;
+  background:linear-gradient(125deg,#06307a 0%,#0b47a3 48%,#0a3d92 72%,#052a6e 100%)}
+.abs{position:absolute}
+/* soft light bloom behind the type and a gentle edge vignette */
+#bloom{left:-260px;top:-200px;width:1300px;height:1300px;border-radius:50%;
+  background:radial-gradient(circle,rgba(143,214,242,.22) 0%,rgba(143,214,242,.06) 45%,transparent 70%)}
+#vign{inset:0;background:radial-gradient(ellipse 90% 85% at 40% 50%,transparent 60%,rgba(2,14,45,.45) 100%)}
+#text{left:var(--tx);top:50%;transform:translateY(-50%);color:var(--white)}
+#t1{font-family:"Inter";font-weight:800;letter-spacing:-.035em;line-height:1;text-shadow:0 6px 30px rgba(0,10,40,.35)}
+#t2{margin-top:4px;font-family:"Inter";font-weight:800;letter-spacing:-.045em;line-height:.98;white-space:nowrap;
+  text-decoration:underline;text-decoration-color:var(--sky);text-decoration-thickness:.07em;text-underline-offset:.12em;
+  text-shadow:0 8px 40px rgba(0,10,40,.4)}
+#who{margin-top:var(--whogap)}
+#who .n{font-family:"Serif Bold";line-height:1;letter-spacing:-.005em;display:inline-block;transform:scaleX(.88);transform-origin:0 50%;white-space:nowrap}
+#who .r{margin-top:12px;font-family:"Inter";font-weight:700;color:var(--sky);letter-spacing:.09em;text-transform:uppercase}
+#logo{left:var(--tx);bottom:72px;opacity:.95}
+/* photo: rounded, white-edged print, slight tilt */
+#photo{border-radius:28px;overflow:hidden;box-shadow:0 0 0 10px rgba(255,255,255,.95),0 40px 90px rgba(0,8,35,.55),0 10px 24px rgba(0,8,35,.35)}
+#photo img{width:100%;height:100%;object-fit:cover;display:block}
+</style></head>
+<body><div id="stage">
+  <div id="bloom" class="abs"></div>
+  <div id="vign" class="abs"></div>
+  <div id="text" class="abs">
+    <div id="t1"></div>
+    <div id="t2"></div>
+    <div id="who"><div class="n"></div><div class="r"></div></div>
+  </div>
+  <img id="logo" class="abs" src="logo-white.png" alt="Jess Wilson's Liberal Victoria">
+  <div id="photo" class="abs"><img src="photo.png" alt="Theo Zographos with volunteers at Chadstone Village"></div>
+</div>
+<script>
+const P = Object.assign({
+  // Defaults = the published layout. Override any key via ?p={"key":value} (see render.js).
+  tx:120,
+  t1:'Thank you', t1Size:118,
+  t2:'Ashwood.', t2Size:178,
+  name:'Theo Zographos', nameSize:78, role:'Liberal for Ashwood', roleSize:28, whoGap:64,
+  logoW:250,
+  photo:{left:1012, top:96, width:812, height:888, rotate:2, focus:'50% 38%'},
+}, JSON.parse(new URLSearchParams(location.search).get('p')||'{}'));
+const $=id=>document.getElementById(id), px=v=>v+'px';
+const st=$('stage').style; st.setProperty('--tx',px(P.tx));
+$('t1').textContent=P.t1; $('t1').style.fontSize=px(P.t1Size);
+$('t2').textContent=P.t2; $('t2').style.fontSize=px(P.t2Size);
+$('who').style.setProperty('--whogap',px(P.whoGap));
+$('who').querySelector('.n').textContent=P.name; $('who').querySelector('.n').style.fontSize=px(P.nameSize);
+$('who').querySelector('.r').textContent=P.role; $('who').querySelector('.r').style.fontSize=px(P.roleSize);
+$('logo').style.width=px(P.logoW);
+const F=P.photo, ph=$('photo');
+Object.assign(ph.style,{left:px(F.left),top:px(F.top),width:px(F.width),height:px(F.height),transform:`rotate(${F.rotate}deg)`});
+ph.querySelector('img').style.objectPosition=F.focus;
+</script>
+</body></html>
